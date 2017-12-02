@@ -1095,12 +1095,14 @@ class Automation {
             }
 
             if ($isSecondRow) {
-                $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
-					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis)." destroyed.";
+                if ($tbid > 0 || ($tbid == 0 && strpos($info_cat, 'The village has') === false)) {
+                    $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
+					<img class=\"unit u" . $catp_pic . "\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> " . $this->procResType( $tbgid, $can_destroy, $isoasis ) . " destroyed.";
+                }
 
                 // embassy level was changed
                 if ($tbgid==18){
-                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], false);
+                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], $bdo['f'.$catapultTarget], false);
                 }
 
                 $info_cat .= "</td></tr></tbody>";
@@ -1109,7 +1111,7 @@ class Automation {
 
                 // embassy level was changed
                 if ($tbgid==18){
-                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], false);
+                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], $bdo['f'.$catapultTarget], false);
                 }
             }
         }
@@ -1117,8 +1119,10 @@ class Automation {
         elseif ($battlepart[4]==0)
         {
             if ($isSecondRow) {
-                $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
-					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis)." was not damaged.</td></tr></tbody>";
+                if ($tbid > 0 || ($tbid == 0 && strpos($info_cat, 'The village has') === false)) {
+                    $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
+					<img class=\"unit u" . $catp_pic . "\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> " . $this->procResType( $tbgid, $can_destroy, $isoasis ) . " was not damaged.</td></tr></tbody>";
+                }
             } else {
                 $info_cat = "" . $catp_pic . "," . $this->procResType( $tbgid, $can_destroy, $isoasis ) . " was not damaged.";
             }
@@ -1197,7 +1201,7 @@ class Automation {
 
                 // embassy level was changed
                 if ( $tbgid == 18 ) {
-                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], false );
+                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], $bdo['f'.$catapultTarget], false );
                 }
 
                 $info_cat .= "</td></tr></tbody>";
@@ -1206,7 +1210,7 @@ class Automation {
 
                 // embassy level was changed
                 if ( $tbgid == 18 ) {
-                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], false );
+                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], $bdo['f'.$catapultTarget], false );
                 }
             }
         }
@@ -2744,7 +2748,7 @@ class Automation {
                     else{
                         if(isset($village_destroyed) && $village_destroyed == 1 && $can_destroy==1){
                             //check if village pop=0 and no info destroy
-                            if (strpos($info_cat,"The village has")==0) {
+                            if (strpos($info_cat,"The village has") === false) {
                                 $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
                                           <img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> The village has been destroyed.</td></tr></tbody>";
                             }
@@ -3238,6 +3242,20 @@ class Automation {
 
         if (mysqli_affected_rows($database->dblink)>0) {
             $q = "UPDATE ".TB_PREFIX."wdata set occupied = 0 where id = $wref";
+            $database->query($q);
+
+            // clear expansion slots, if this village is an expansion of any other village
+            $q = "
+                UPDATE
+                    ".TB_PREFIX."vdata
+                SET
+                    exp1 = IF(exp1 = $wref, 0, exp1),
+                    exp2 = IF(exp2 = $wref, 0, exp2),
+                    exp3 = IF(exp3 = $wref, 0, exp3)
+                WHERE
+                    exp1 = $wref OR
+                    exp2 = $wref OR
+                    exp3 = $wref";
             $database->query($q);
 
             $getprisoners = $database->getPrisoners($wref);
