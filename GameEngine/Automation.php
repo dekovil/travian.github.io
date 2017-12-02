@@ -1084,11 +1084,6 @@ class Automation {
                 $database->setMaxCropForVillage($data['to'], $buildarray[$tblevel]['attri']);
             }
 
-            // embassy level was changed
-            if ($tbgid==18){
-                $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], false);
-            }
-
             // oasis cannot be destroyed
             $pop=$this->recountPop($data['to'], false);
             if ($isoasis == 0) {
@@ -1101,9 +1096,21 @@ class Automation {
 
             if ($isSecondRow) {
                 $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
-					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis)." destroyed.</td></tr></tbody>";
+					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis)." destroyed.";
+
+                // embassy level was changed
+                if ($tbgid==18){
+                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], false);
+                }
+
+                $info_cat .= "</td></tr></tbody>";
             } else {
                 $info_cat = "" . $catp_pic . ", " . $this->procResType( $tbgid, $can_destroy, $isoasis ) . " destroyed.";
+
+                // embassy level was changed
+                if ($tbgid==18){
+                    $info_cat .= $database->checkEmbassiesAfterBattle($data['to'], false);
+                }
             }
         }
         // building/field not damaged
@@ -1161,11 +1168,6 @@ class Automation {
                 if ( $tbgid == 11 || $tbgid == 39 ) {
                     $database->setMaxCropForVillage( $data['to'], $buildarray[ $tblevel ]['attri'] );
                 }
-
-                // embassy level was changed
-                if ( $tbgid == 18 ) {
-                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], false );
-                }
             }
 
             $fieldsToSet = ["f" . $tbid];
@@ -1191,9 +1193,21 @@ class Automation {
 
             if ($isSecondRow) {
                 $info_cat .= "<br><tbody class=\"goods\"><tr><th>Information</th><td colspan=\"11\">
-					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis).$info_cata."</td></tr></tbody>";
+					<img class=\"unit u".$catp_pic."\" src=\"img/x.gif\" alt=\"Catapult\" title=\"Catapult\" /> ".$this->procResType($tbgid,$can_destroy,$isoasis).$info_cata;
+
+                // embassy level was changed
+                if ( $tbgid == 18 ) {
+                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], false );
+                }
+
+                $info_cat .= "</td></tr></tbody>";
             } else {
                 $info_cat = "" . $catp_pic . "," . $this->procResType( $tbgid, $can_destroy, $isoasis ) . $info_cata;
+
+                // embassy level was changed
+                if ( $tbgid == 18 ) {
+                    $info_cat .= $database->checkEmbassiesAfterBattle( $data['to'], false );
+                }
             }
         }
     }
@@ -2340,8 +2354,6 @@ class Automation {
                                 /**
                                  * SECOND CATAPULTS ROW
                                  */
-                                // reload resource levels, since they've changed now
-                                $bdo = $database->getResourceLevel($basearray, false);
 
                                 // we're manually targetting 2nd row of catapults
                                 if (!$catapults2TargetRandom)
@@ -2358,6 +2370,7 @@ class Automation {
                                         // 2nd row of catapults pre-selected target calculations, if needed
                                         if (!$catapults2TargetRandom && !$catapults2WillNotShoot && $bdo['f'.$i.'t'] == $catapultTarget2 && $bdo['f'.$i] > 0 && $catapultTarget2 != 31 && $catapultTarget2 != 32 && $catapultTarget2 != 33)
                                         {
+                                            $j++;
                                             $_catapultsTarget2Levels[$j]=$bdo['f'.$i];
                                             $__catapultsTarget2AltTargets[$j]=$i;
                                         }
