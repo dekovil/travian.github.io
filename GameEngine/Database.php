@@ -2569,10 +2569,10 @@ class MYSQLi_DB implements IDbConnection {
 	}
 
     function CreatTopic($title, $post, $cat, $owner, $alli, $ends, $alliance, $player, $coor, $report) {
-        list($title, $post, $cat, $owner, $alli, $ends, $alliance, $player, $coor, $report) = $this->escape_input($title, $post, $cat, $owner, $alli, $ends, (int) $alliance, (int) $player, (int) $coor, (int) $report);
+        list($title, $post, $cat, $owner, $alli, $ends, $alliance, $player, $coor, $report) = $this->escape_input($title, $post, (int) $cat, (int) $owner, (int) $alli, (int) $ends, (int) $alliance, (int) $player, (int) $coor, (int) $report);
 
         $date = time();
-        $q = "INSERT into " . TB_PREFIX . "forum_topic values (0,'$title','$post','$date','$date','$cat','$owner','$alli','$ends','','',$alliance,$player,$coor,$report)";
+        $q = "INSERT into " . TB_PREFIX . "forum_topic values (0,'$title','$post',$date, $date, $cat, $owner, $alli, $ends, 0, 0, $alliance, $player, $coor, $report)";
         mysqli_query($this->dblink,$q);
         return mysqli_insert_id($this->dblink);
     }
@@ -4367,7 +4367,14 @@ References: User ID/Message ID, Mode
 		$q = "DELETE FROM " . TB_PREFIX . "route where id = $id";
 		return mysqli_query($this->dblink,$q);
 	}
+	
+	function deleteTradeRoutesByVillage($id) {
+	    list($id) = $this->escape_input((int) $id);
 
+		$q = "DELETE FROM " . TB_PREFIX . "route where `from` = $id";
+		return mysqli_query($this->dblink,$q);
+	}
+	
 	function addBuilding($wid, $field, $type, $loop, $time, $master, $level) {
 	    list($wid, $field, $type, $loop, $time, $master, $level) = $this->escape_input((int) $wid, $field, (int) $type, (int) $loop, (int) $time, (int) $master, (int) $level);
 
@@ -5871,7 +5878,7 @@ References: User ID/Message ID, Mode
 	function modifyHeroXp($column,$value,$heroid) {
 	    list($column,$value,$heroid) = $this->escape_input($column,(int) $value,(int) $heroid);
 
-		$q = "UPDATE ".TB_PREFIX."hero SET $column = $column + $value WHERE uid=$heroid AND dead = 0";
+		$q = "UPDATE ".TB_PREFIX."hero SET $column = $column + $value WHERE uid=$heroid";
 		return mysqli_query($this->dblink,$q);
 	}
 
@@ -7130,6 +7137,24 @@ References: User ID/Message ID, Mode
         }
 	}
 
+	function villageHasArtefact($vref) {
+        // this is a somewhat non-ideal, externally non-changeable way of caching
+        // but since we're only ever going to be calling this from a single point of Automation,
+        // this will more than suffice
+        static $cachedData = [];
+        $vref = (int) $vref;
+
+        if (isset($cachedData[$vref])) {
+            return $cachedData[$vref];
+        }
+
+        $q = "SELECT Count(*) as Total FROM " . TB_PREFIX . "artefacts WHERE vref = $vref";
+        $result = mysqli_fetch_array(mysqli_query($this->dblink, $q), MYSQLI_ASSOC);
+        $cachedData[$vref] = $result['Total'];
+
+        return $cachedData[$vref];
+    }
+
 	function claimArtefact($vref, $ovref, $id) {
 	    list($vref, $ovref, $id) = $this->escape_input((int) $vref, (int) $ovref, (int) $id);
 
@@ -7581,19 +7606,26 @@ References: User ID/Message ID, Mode
         }
 
         if(!$mode) {
-            $q = "SELECT * FROM " . TB_PREFIX . "prisoners where wref IN(".implode(' ', $wid).")";
+            $q = "SELECT * FROM " . TB_PREFIX . "prisoners where wref IN(".implode(', ', $wid).")";
         }else {
-            $q = "SELECT * FROM " . TB_PREFIX . "prisoners where `from` IN(".implode(' ', $wid).")";
+            $q = "SELECT * FROM " . TB_PREFIX . "prisoners where `from` IN(".implode(', ', $wid).")";
         }
         $result = $this->mysqli_fetch_all(mysqli_query($this->dblink,$q));
 
         // return a single value
         if (!$array_passed) {
-            self::$prisonersCache[$wid[0].$mode] = $result;
+            if (count($result) == 1) {
+                $result = $result[0];
+            }
+            self::$prisonersCache[$wid[0].$mode] = (count($result) ? [$result] : []);
         } else {
             if ($result && count($result)) {
+                if (!isset(self::$prisonersCache[ $record[ ( $mode ? 'from' : 'wref' ) ] . $mode ])) {
+                    self::$prisonersCache[ $record[ ( $mode ? 'from' : 'wref' ) ] . $mode ] = [];
+                }
+
                 foreach ( $result as $record ) {
-                    self::$prisonersCache[ $record[ ( $mode ? 'from' : 'wref' ) ] . $mode ] = $record;
+                    self::$prisonersCache[ $record[ ( $mode ? 'from' : 'wref' ) ] . $mode ][] = $record;
                 }
             }
 

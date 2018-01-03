@@ -47,6 +47,9 @@ div#content {
     overflow: hidden;
     position: relative;
 }
+div#content.reports, div#content.build {
+    overflow: auto;
+}
 div.universal {
     padding: 0 25px;
     width: 502px;
@@ -3452,7 +3455,7 @@ div.village1 table#movements td.empty {
 }
 div.village1 table#movements td.typ {
     vertical-align: top;
-    width: 32px;
+    width: 34px;
 }
 div.village1 table#movements td.typ img {
     float: left;
@@ -8949,7 +8952,7 @@ div.plus table#plus_features td.preview img.att_mark {
     width: 200px;
 }
 div.logout img.roman, div.signup img.roman {
-    background-image: url("http://img.travian.org/img/de/temp/roemer.gif");
+    background-image: url("../../img/un/h/roemer.jpg");
     height: 156px;
     width: 129px;
 }
@@ -9084,4 +9087,9 @@ input.accept{width:12px;height:12px;background-image:url(../../img/a/acc.gif);}
 #Frame {
 	top: 0;
     z-index: 1000;
+}
+
+.reports table {
+    width: auto;
+    min-width: 500px;
 }

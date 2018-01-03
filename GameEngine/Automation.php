@@ -1053,6 +1053,21 @@ class Automation {
         // currently targeted building/field ID in the database (fdata, the fID field, e.g. f1, f2, f3...)
         $tbid = (int) $catapultTarget;
 
+        // recalculate data for catapults
+        global $bid34;
+        $stonemason = 0;
+        foreach($bdo as $key=>$b){
+        if($b == 34 AND strpos($key, "t") !== false){
+        $stonemason = str_replace("t", "", $key);
+        $stonemason = $bdo[$stonemason];
+        }
+        }
+        if($stonemason > 0){
+        $stonemasonEffect = $bid34[$stonemason]['attri'] / 100;
+        }else{
+        $stonemasonEffect = 1;
+        }
+        $battlepart[3] = round((($battlepart[5] * (pow($tblevel,2) + $tblevel + 1)) / (8 * (round(200 * pow(1.0205,$battlepart[9]))/200) / $stonemasonEffect / $battlepart[10])) + 0.5);
         // building/field destroyed
         if ($battlepart[4]>$battlepart[3])
         {
@@ -1132,8 +1147,7 @@ class Automation {
         {
             //TODO: MUST TO BE FIX This part goes also below 0 if u have a lot of catapults
             // TODO: this whole math seems incorrect, it needs a revision, and potentially a rewrite
-            $totallvl = round( sqrt( pow( ( $tblevel + 0.5 ), 2 ) - ( ( !$twoRowsCatapultSetup ? (int) $battlepart[4] : (int) $battlepart[4] / 2 ) * 8 ) ) );
-
+            $totallvl = round( sqrt( pow( ( $tblevel + 0.5 ), 2 ) - ( ( !$twoRowsCatapultSetup ? (float) $battlepart[4] : (float) $battlepart[4] / 2 ) * 8 ) ) );
             // sometimes this goes above the actual level, so in that case we just reverse everything
             // and take the buiding down so many levels
             if ($totallvl > $tblevel) {
@@ -2230,9 +2244,14 @@ class Automation {
                     //catapults look :D
                     $info_cat = $info_chief = $info_ram = $info_hero = ",";
                     //check to see if can destroy village
-                    if(count($varray)!='1' AND $to['capital']!='1'){
+                    $hasArtefact = false;
+                    if (count($varray) != 1 && $to['capital'] != 1 && !$database->villageHasArtefact($DefenderWref)) {
                         $can_destroy=1;
-                    }else{
+                    } else {
+                        if ($database->villageHasArtefact($DefenderWref)) {
+                            $hasArtefact = true;
+                        }
+
                         $can_destroy=0;
                     }
                     if ($isoasis == 1) $can_destroy=0;
@@ -2343,7 +2362,7 @@ class Automation {
                                         if ($i==41) $i=99;
                                         if ($bdo['f'.$i] > 0 && $catapultTarget != 31 && $catapultTarget != 32 && $catapultTarget != 33)
                                         {
-                                            $list[]=$i;
+                                            $list[] = $i;
                                         }
                                     }
                                     $catapultTarget = $list[ rand(0, count($list) - 1) ];
@@ -2405,7 +2424,7 @@ class Automation {
                                         if ($i==41) $i=99;
                                         if ($bdo['f'.$i] > 0)
                                         {
-                                            $list[]=$i;
+                                            $list[] = $i;
                                         }
                                     }
                                     $catapultTarget2 = $list[ rand(0, count($list) - 1) ];
@@ -2582,6 +2601,12 @@ class Automation {
                                                                 $leveldown = $buildlevel['f'.$i]-1;
                                                                 $newLevels_fieldNames[] = "f".$i;
                                                                 $newLevels_fieldValues[] = $leveldown;
+
+                                                                // building at level 0, remove it completely
+                                                                if (!$leveldown > 0) {
+                                                                    $newLevels_fieldNames[] = "f".$i."t";
+                                                                    $newLevels_fieldValues[] = 0;
+                                                                }
                                                             }else{
                                                                 $newLevels_fieldNames[] = "f".$i;
                                                                 $newLevels_fieldValues[] = 0;
@@ -2629,7 +2654,10 @@ class Automation {
                                                 //remove oasis related to village
                                                 $units->returnTroops($data['to'],1);
                                                 $chiefing_village = 1;
-
+                                                
+												//Remove trade routes related to village
+												$database->deleteTradeRoutesByVillage($data['to']);
+												
                                                 // update data in the database
                                                 $database->clearExpansionSlot($data['to']);
                                                 $database->setVillageLevel($data['to'], $newLevels_fieldNames, $newLevels_fieldValues);
@@ -2888,6 +2916,7 @@ class Automation {
                                     ['99', '99o'],
                                     [$newtraps, $mytroops+$anothertroops],
                                     [0, 0]
+											 
                                 );
                                 $trapper_pic = "<img src=\"".GP_LOCATE."img/u/98.gif\" alt=\"Trap\" title=\"Trap\" />";
                                 $p_username = $database->getUserField($from['owner'],"username",0);
@@ -3093,15 +3122,19 @@ class Automation {
                     }
                     unset($crop,$unitarrays,$getvillage,$village_upkeep);
                 }
-
+                
+				//Returning units back to village is not necessary because it will be taken care when processing movement			
+				// Fix by AL-Kateb
                 // if evasion was active, return units back to base
-                if (isset($evaded)) {
+               /*
+			   if (isset($evaded)) {
                     foreach ($evasionUnitModifications_modes as $index => $mode) {
                         $evasionUnitModifications_modes[$index] = 1;
                     }
 
                     $database->modifyUnit($data['to'], $evasionUnitModifications_units, $evasionUnitModifications_amounts, $evasionUnitModifications_modes);
                 }
+				*/
 
                 #################################################
                 ################FIXED BY SONGER################
@@ -3660,6 +3693,7 @@ class Automation {
                         array($u."1",$u."2",$u."3",$u."4",$u."5",$u."6",$u."7",$u."8",$u."9",$tribe."0","hero"),
                         array($data['t1'],$data['t2'],$data['t3'],$data['t4'],$data['t5'],$data['t6'],$data['t7'],$data['t8'],$data['t9'],$data['t10'],$data['t11']),
                         array(1,1,1,1,1,1,1,1,1,1,1)
+								 
                         );
                     $movementProcIDs[] = $data['moveid'];
                     $crop = $database->getCropProdstarv($data['to']);
@@ -4735,7 +4769,7 @@ class Automation {
                 }
 
                 if (count($columns)) {
-                    $database->modifyHero( $columns, $columnValues, $hdata['heroid'] );
+                    $database->modifyHero( $columns, $columnValues, $hdata['heroid'], $modes );
                 }
             }
 

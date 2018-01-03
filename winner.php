@@ -16,7 +16,7 @@ $start_timer = $generator->pageLoadTimeStart();
 ## License:     TravianZ Project 						##
 ## Copyright:   TravianZ (c) 2010-2013. All rights reserved. 			##
 ## URLs:        http://travian.shadowss.ro 					##
-## Source code: http://github.com/Shadowss/TravianZ-by-Shadow/ 			##
+## Source code: https://github.com/Shadowss/TravianZ/	 			##
 ## 										##
 #################################################################################
 
@@ -170,7 +170,7 @@ else {
 		<script src="unx.js?f4b7h" type="text/javascript"></script>
 		<script src="new.js?0faab" type="text/javascript"></script>
 		<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
-		<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7h" rel="stylesheet" type="text/css" />
+		<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
 		<?php
 		if($session->gpack == null || GP_ENABLE == false)
 		{
