@@ -30,7 +30,6 @@ since the installer logic has changed and you would just crash your old version
 * [PHP](http://php.net/) 7.0.0+
 * [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 5.5+
   * or alternatively, [MariaDB](https://downloads.mariadb.org/) 5.5+
-  * please see also the compatibility notes on [this Wiki page](https://github.com/iopietro/TravianZ/wiki/Known-Bugs)
 
 **Dedicated or shared hosting?**
 
