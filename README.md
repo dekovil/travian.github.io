@@ -1,22 +1,21 @@
 [![Join the our Discord](https://user-images.githubusercontent.com/7288322/34429152-141689f8-ecb9-11e7-8003-b5a10a5fcb29.png)](https://discord.gg/2PufRFH)
-[![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)](https://github.com/iopietro/TravianZ)
-[![GitHub Release](https://img.shields.io/github/release/iopietro/TravianZ/all.svg)](https://github.com/iopietro/TravianZ)
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/iopietro/TravianZ)
-[![GitHub contributors](https://img.shields.io/github/contributors/iopietro/TravianZ.svg)](https://github.com/iopietro/TravianZ)
-[![license](https://img.shields.io/github/license/iopietro/TravianZ.svg)](https://github.com/iopietro/TravianZ)
-[![GitHub last commit](https://img.shields.io/github/last-commit/iopietro/TravianZ.svg)](https://github.com/iopietro/TravianZ)
+[![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)](https://github.com/martinambrus/TravianZ)
+[![GitHub Release](https://img.shields.io/github/release/martinambrus/TravianZ/all.svg)](https://github.com/martinambrus/TravianZ)
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/martinambrus/TravianZ)
+[![GitHub contributors](https://img.shields.io/github/contributors/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
+[![license](https://img.shields.io/github/license/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
+[![GitHub last commit](https://img.shields.io/github/last-commit/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
 [![Watch how this was made on YouTube](https://img.shields.io/badge/The%20making%20of...-YouTube-FF0000.svg)](https://www.youtube.com/watch?v=1XiHhpGUmQg&list=PLzV5avt1FFHorlIeoL9YX0pdb9bj-FO84)
 ======
-[![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)](https://github.com/iopietro/TravianZ)
-[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars)](https://github.com/iopietro/TravianZ)
-[![GitHub watchers](https://img.shields.io/github/watchers/badges/shields.svg?style=social&label=Watch)](https://github.com/iopietro/TravianZ)
-[![GitHub followers](https://img.shields.io/github/followers/espadrine.svg?style=social&label=Follow)](https://github.com/iopietro/TravianZ)
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/cata7007)
+[![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)](https://github.com/martinambrus/TravianZ)
+[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars)](https://github.com/martinambrus/TravianZ)
+[![GitHub watchers](https://img.shields.io/github/watchers/badges/shields.svg?style=social&label=Watch)](https://github.com/martinambrus/TravianZ)
+[![GitHub followers](https://img.shields.io/github/followers/espadrine.svg?style=social&label=Follow)](https://github.com/martinambrus/TravianZ)
 ======
 TravianZ Version **v.8.3.5**
 ======
 
-**THIS VERSION WILL BECOME "LEGACY" AS WE ARE REWRITING SCRIPT FROM SCRATCH - PLEASE JOIN OUR DISCORD TO GET MORE INFO**
+***Test server for latest fixed 8.3.5 version available at [travian.martinambrus.com](https://travian.martinambrus.com)***
 
 **Note:** this game is still in a pre-release state, although at this point it is very playable, tested and found to be fairly stable
 
@@ -24,8 +23,8 @@ TravianZ Version **v.8.3.5**
 since the installer logic has changed and you would just crash your old version
 
 **Quick links:**
-* [Download and Updates](https://github.com/iopietro/TravianZ) &raquo;&raquo; https://github.com/iopietro/TravianZ
-* [Wiki](https://github.com/iopietro/TravianZ/wiki)
+* [Download and Updates](https://github.com/martinambrus/TravianZ) &raquo;&raquo; https://github.com/martinambrus/TravianZ
+* [Wiki](https://github.com/martinambrus/TravianZ/wiki)
 * [Game Mechanics](http://travian.wikia.com/wiki/Travian_Wiki)
 
 **Minimum requirements:**
@@ -44,14 +43,10 @@ with a big enough player base.
 
 **Support & Bug reports**
 
-We are usually available to chat at our [Discord](https://discord.gg/2PufRFH), if you like to ask 
-any questions or just talk to the developers about how great their day is today :) As for bug reports, please use 
-the [Issues tab](https://github.com/iopietro/TravianZ/issues) and create new issue, whether it's an error in game 
-or you have a feature request to be included in the play.
+Please use the [Issues tab](https://github.com/martinambrus/TravianZ/issues) and create new issue, whether it's an error in game or you have a feature request to be included in the play.
 
 **The team**
-* [Dzoki](https://github.com/idzoki) - Project Owner & Lead Developer
-* [iopietro](https://github.com/iopietro) - Project Owner & Lead Developer
+* [martinambrus](https://github.com/martinambrus) - Project Resurrector & Lead Developer
 
 **Thanks**
 
@@ -62,5 +57,5 @@ own servers. This includes [ZZJHONS](https://github.com/ZZJHONS), [DracoMilesX](
 running this game :)
 
 Also, our thanks go to all both, the original and occasional developers, especially [Shadowss](https://github.com/Shadowss), [yi12345](https://github.com/yi12345/), [advocaite](https://github.com/advocaite/), [brainiacX](https://github.com/brainiacX/), [ronix](https://github.com/ronix/), 
-[MisterX](https://github.com/MisterX/), [Elio](https://github.com/eliopinho/), [Vladyslav](https://github.com/velhbxtyrj), [martinambrus](https://github.com/martinambrus), [AL-Kateb](https://github.com/AL-Kateb) and many others who were part of this 
+[MisterX](https://github.com/MisterX/), [Elio](https://github.com/eliopinho/), [Vladyslav](https://github.com/velhbxtyrj), [martinambrus](https://github.com/martinambrus), [AL-Kateb](https://github.com/AL-Kateb), [Dzoki](https://github.com/idzoki), [iopietro](https://github.com/iopietro) and many others who were part of this 
 project's history.
