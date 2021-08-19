@@ -1,5 +1,4 @@
-[![Join the our Discord](https://user-images.githubusercontent.com/7288322/34429152-141689f8-ecb9-11e7-8003-b5a10a5fcb29.png)](https://discord.gg/2PufRFH)
-[![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)](https://github.com/martinambrus/TravianZ)
+[![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/martinambrus/TravianZ)
 [![GitHub Release](https://img.shields.io/github/release/martinambrus/TravianZ/all.svg)](https://github.com/martinambrus/TravianZ)
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/martinambrus/TravianZ)
 [![GitHub contributors](https://img.shields.io/github/contributors/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
