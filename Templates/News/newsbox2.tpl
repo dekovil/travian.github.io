@@ -1,55 +1,29 @@
-<h5><img src="img/en/t2/newsbox2.gif" alt="newsbox 2"></h5>
 <?php
-
-$online = mysqli_query($GLOBALS['link'],"SELECT Count(*) as Total FROM " . TB_PREFIX . "users WHERE timestamp > ".(time() - (60*10))." AND tribe!=0 AND tribe!=4 AND tribe!=5");
+$textArray = [["Natars Spawn", "WW Spawn", "WW Plan Spawn"], ["Natars Tribe", "WW Village", "Construction Plan"]];
+$spawnTimeArray = [NATARS_SPAWN_TIME, NATARS_WW_SPAWN_TIME, NATARS_WW_BUILDING_PLAN_SPAWN_TIME];
+$areSpawned = [$database->areArtifactsSpawned(), $database->areWWVillagesSpawned(), $database->areArtifactsSpawned(true)];
 
 ?>
-
+<h5><img src="img/en/t2/newsbox2.gif" alt="newsbox 2"></h5>
 <div class="news">
-<table width="100%" border="0">
+<table width="100%">
+<?php for($i = 0; $i < count($spawnTimeArray); $i++){ ?>
 <tr>
-<td align="left"><b>Online Users</td>
-<td>: <font color="Red"><?php
-
-	if (!empty($online)) {
-    	echo mysqli_fetch_assoc($online)['Total'];
-    } else {
-    	echo 0;
+<td><b>
+<?php
+    if($areSpawned[$i]) echo $textArray[1][$i];
+    else echo $textArray[0][$i];
+    ?></b></td>
+<td><b>: <font color="Red"><?php
+    if($areSpawned[$i]) echo "Released";
+    else
+    {
+        $time = strtotime(START_DATE); // Date of server started (the countdown for the appearance of Natars begins)
+        $interval = $spawnTimeArray[$i] * 86400; // The number of seconds in the number of days that is set for the appearance of Natars
+        echo date('d.m.Y', $time + $interval);
     }
-
-?> users</font></b></td>
+    ?></font></b></td>
 </tr>
-<tr>
-<td><b>Server Speed</td>
-<td>: <font color="Red"><?php echo ''.SPEED.'x';?></font></b></td>
-</tr>
-<tr>
-<td><b>Troop Speed</td>
-<td>: <font color="Red"><?php echo INCREASE_SPEED;?>x</font></b></td>
-</tr>
-<tr>
-<td><b>Evasion Speed</td>
-<td>: <font color="Red"><?php echo EVASION_SPEED;?></font></b></td>
-</tr>
-<tr>
-<td><b>Map Size</td>
-<td>: <font color="Red"><?php echo WORLD_MAX;?>x<?php echo WORLD_MAX;?></font></b></td>
-</tr>
-<tr>
-<td><b>Village Exp.</td>
-<td>: <font color="Red"><?php if(CP == 0){ echo "Fast"; } else if(CP == 1){ echo "Slow"; } ?></font></b></td>
-</tr>
-<tr>
-<td><b>Beginners Prot.</td>
-<td>: <font color="Red"><?php echo (PROTECTION/3600);?> hrs</font></b></td>
-</tr>
-<tr>
-<td><b>Medal Interval</td>
-<td>: <font color="Red"><?php if(MEDALINTERVAL >= 86400){ echo ''.(MEDALINTERVAL/86400).' Days'; } else if(MEDALINTERVAL < 86400){ echo ''.(MEDALINTERVAL/3600).' Hours'; } ?></font></b></td>
-</tr>
-<tr>
-<td><b>Server Start</td>
-<td>: <font color="Red"><?php echo START_DATE;?></font></b></td>
-</tr>
+<?php } ?>
 </table>
 </div>

@@ -92,17 +92,14 @@ $start_timer = $generator->pageLoadTimeStart();
 ?>
 <div id="mid">
 <?php
-
-   include ("Templates/menu.tpl");
-
-   if(is_numeric($_GET['x']) AND is_numeric($_GET['y'])) {
-	   $coor2['x'] = preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['x']);
-	   $coor2['y'] = preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['y']);
-   } else {
-	   $wref2 = $village->wid;
-	   $coor2 = $database->getCoor($wref2);
-   }
-
+include ("Templates/menu.tpl");
+if(is_numeric($_GET['x']) && is_numeric($_GET['y'])) {
+	$coor2['x'] = preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['x']);
+	$coor2['y'] = preg_replace("/[^a-zA-Z0-9_-]/","",$_GET['y']);
+} else {
+	$wref2 = $village->wid;
+	$coor2 = $database->getCoor($wref2);
+}
 ?>
 <div id="content"  class="player">
 
@@ -115,106 +112,57 @@ $start_timer = $generator->pageLoadTimeStart();
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>?s" method="post">
  <table>
   <tr>
-   <td width="100">Search for:</td>
+   <td width="100">Cropper Type:</td>
    <td width="250">
-	<input type="radio" class="radio" name="type" value="15" <?php if($_GET['s'] == 1) { print 'checked="checked"'; } ?> /> 15 crop
-	<input type="radio" class="radio" name="type" value="9" <?php if($_GET['s'] == 2) { print 'checked="checked"'; } ?> /> 9 crop
-	<input type="radio" class="radio" name="type" value="both" <?php if($_GET['s'] == 3) { print 'checked="checked"'; } ?> /> both<br />
+	<input type="radio" class="radio" name="type" value="15" <?php if($_GET['s'] == 1) echo 'checked="checked"'; ?> /> 15 crop
+	<input type="radio" class="radio" name="type" value="9" <?php if($_GET['s'] == 2) echo 'checked="checked"'; ?> /> 9 crop
+	<input type="radio" class="radio" name="type" value="both" <?php if($_GET['s'] == 3) echo 'checked="checked"'; ?> /> both<br />
    </td>
+  </tr>
+    <tr>
+   <td width="100">Oasis Crop Bonus (at least):</td>
+   <td>
+	 <select class="dropdown" name="bonus_getreide">
+			<option value="all" selected="selected">either</option>
+			<option value="25" >+25%</option>
+			<option value="50" >+50%</option>
+			<option value="75" >+75%</option>
+			<option value="100" >+100%</option>
+			<option value="125" >+125%</option>
+			<option value="150" >+150%</option>
+	 </select>
+	</td>
   </tr>
   <tr>
    <td>Startposition:</td>
    <td>x: <input type="text" name="x" value="<?php print $coor2['x']; ?>" size="3" /> y: <input type="text" name="y" value="<?php print $coor2['y']; ?>"  size="3" /></td>
   </tr>
   <tr>
-   <td colspan="2"><input type="submit" name="submit" value="Search" /></td>
+   <td colspan="2"><button type="submit" class="trav_buttons" value="Search">Search</button></td>
   </tr>
  </table>
 </form>
 
-<?php
-
-   define('PREFIX', TB_PREFIX);
-   $type15 = mysqli_query($GLOBALS['link'],"SELECT id,x,y,occupied FROM ".PREFIX."wdata WHERE fieldtype = 6");
-   $type9 = mysqli_query($GLOBALS['link'],"SELECT id,x,y,occupied FROM ".PREFIX."wdata WHERE fieldtype = 1");
-   $type_both = mysqli_query($GLOBALS['link'],"SELECT id,x,y,occupied,fieldtype FROM ".PREFIX."wdata WHERE fieldtype = 1 OR fieldtype = 6");
-
-   if(is_numeric($_GET['x']) AND is_numeric($_GET['y'])) {
-	   $coor['x'] = $_GET['x'];
-	   $coor['y'] = $_GET['y'];
-   } else {
-	   $wref = $village->wid;
-	   $coor = $database->getCoor($wref);
-   }
-
-	  function getDistance($coorx1, $coory1, $coorx2, $coory2) {
-   $max = 2 * WORLD_MAX + 1;
-   $x1 = intval($coorx1);
-   $y1 = intval($coory1);
-   $x2 = intval($coorx2);
-   $y2 = intval($coory2);
-   $distanceX = min(abs($x2 - $x1), abs($max - abs($x2 - $x1)));
-   $distanceY = min(abs($y2 - $y1), abs($max - abs($y2 - $y1)));
-   $dist = sqrt(pow($distanceX, 2) + pow($distanceY, 2));
-   return round($dist, 1);
-   }
-
-   if($_GET['s'] == 1) {
-
-?>
- <table id="member">
-	<thead>
-	<tr>
-		<th colspan='5'>Crop Finder - 15c</th>
-	</tr>
-	<tr>
-		<td>Type</td>
-		<td>Coordinates</td>
-		<td>Owner</td>
-		<td>Occupied</td>
-		<td>Distance</td>
-	</tr>
-	</thead><tbody>
 
 <?php
+$fieldType = ($_GET['s'] == 1) ? "fieldtype = 6" : (($_GET['s'] == 2) ? "fieldtype = 1" : "fieldtype = 1 OR fieldtype = 6");
+$type = mysqli_query($database->dblink,"SELECT id, x, y, occupied, fieldtype FROM ".TB_PREFIX."wdata WHERE $fieldType");
 
-   while($row = mysqli_fetch_array($type15)) {
-	   $dist = getDistance($coor['x'], $coor['y'], $row['x'], $row['y']);
+if(is_numeric($_GET['x']) && is_numeric($_GET['y'])) {
+	$coor['x'] = $_GET['x'];
+	$coor['y'] = $_GET['y'];
+} else {
+	$wref = $village->wid;
+	$coor = $database->getCoor($wref);
+}
 
-	   $rows[$dist] = $row;
-
-   }
-   ksort($rows);
-   foreach($rows as $dist => $row) {
-
-	   echo "<tr>";
-	   echo "<td>15c</td>";
-	   if($row['occupied'] == 0) {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</td>";
-		   echo "<td>-</td>";
-		   echo "<td><b><font color=\"green\">Unoccupied</b></font></td>";
-	   } else {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</a></td>";
-		   echo "<td><a href=\"spieler.php?uid=".$database->getVillageField($row['id'], "owner")."\">".$database->getUserField($database->getVillageField($row['id'], "owner"), "username", 0)."</a></td>";
-		   echo "<td><b><font color=\"red\">Occupied</b></font></td>";
-	   }
-	   echo "<td><div style=\"text-align: center\">".getDistance($coor['x'], $coor['y'], $row['x'], $row['y'])."</div></td>";
-   }
-
+if($_GET['s'] >= 1 && $_GET['s'] <= 3) {
 ?>
 
-</tbody></table>
-
-<?php
-
-   }
-   else if($_GET['s'] == 2) {
-
-?>
 <table id="member">
 	<thead>
 	<tr>
-		<th colspan='5'>Crop Finder - 9c</th>
+		<th colspan='6'>Crop Finder - 9c and 15c</th>
 	</tr>
 	<tr>
 		<td>Type</td>
@@ -222,92 +170,32 @@ $start_timer = $generator->pageLoadTimeStart();
 		<td>Owner</td>
 		<td>Occupied</td>
 		<td>Distance</td>
+		<td>Oasis</td>
 	</tr>
 	</thead><tbody>
 
 <?php
-
-   unset($rows);
-   while($row = mysqli_fetch_array($type9)) {
-	   $dist = getDistance($coor['x'], $coor['y'], $row['x'], $row['y']);
-
-	   $rows[$dist] = $row;
-
-   }
-   ksort($rows);
-   foreach($rows as $dist => $row) {
-
-
-	   echo "<tr>";
-	   echo "<td>9c</td>";
-	   if($row['occupied'] == 0) {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</td>";
-		   echo "<td>-</td>";
-		   echo "<td><b><font color=\"green\">Unoccupied</b></font></td>";
-	   } else {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</a></td>";
-		   echo "<td><a href=\"spieler.php?uid=".$database->getVillageField($row['id'], "owner")."\">".$database->getUserField($database->getVillageField($row['id'], "owner"), "username", 0)."</a></td>";
-		   echo "<td><b><font color=\"red\">Occupied</b></font></td>";
-	   }
-	   echo "<td><div style=\"text-align: center\">".getDistance($coor['x'], $coor['y'], $row['x'], $row['y'])."</div></td>";
-   }
-
-?>
-
-</tbody></table>
-
-<?php
-
-   }
-   else if($_GET['s'] == 3) {
-
-?>
-<table id="member">
-	<thead>
-	<tr>
-		<th colspan='5'>Crop Finder - 9c and 15c</th>
-	</tr>
-	<tr>
-		<td>Type</td>
-		<td>Coordinates</td>
-		<td>Owner</td>
-		<td>Occupied</td>
-		<td>Distance</td>
-	</tr>
-	</thead><tbody>
-
-<?php
-
-   unset($rows);
-   while($row = mysqli_fetch_array($type_both)) {
-	   $dist = getDistance($coor['x'], $coor['y'], $row['x'], $row['y']);
-
-	   $rows[$dist] = $row;
-
-   }
-   ksort($rows);
-   foreach($rows as $dist => $row) {
-
-	   if($row['fieldtype'] == 1) {
-		   $field = '9c';
-	   } elseif($row['fieldtype'] == 6) {
-		   $field = '15c';
-	   }
-
-	   echo "<tr>";
-	   echo "<td>" . $field . "</td>";
-	   if($row['occupied'] == 0) {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</td>";
-		   echo "<td>-</td>";
-		   echo "<td><b><font color=\"green\">Unoccupied</b></font></td>";
-	   } else {
-		   echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</a></td>";
-		   echo "<td><a href=\"spieler.php?uid=".$database->getVillageField($row['id'], "owner")."\">".$database->getUserField($database->getVillageField($row['id'], "owner"), "username", 0)."</a></td>";
-		   echo "<td><b><font color=\"red\">Occupied</b></font></td>";
-	   }
-	   echo "<td><div style=\"text-align: center\">".getDistance($coor['x'], $coor['y'], $row['x'], $row['y'])."</div></td>";
-   }
-
+while($row = mysqli_fetch_array($type)) {
+	$dist = $database->getDistance($coor['x'], $coor['y'], $row['x'], $row['y']);
+	$rows[$dist] = $row;
+}
+ksort($rows);
+foreach($rows as $row) {
+	$field = $row['fieldtype'] == 1 ? '9c' : '15c';
+	
+	echo "<tr><td>" . $field . "</td>";
+	if($row['occupied'] == 0) {
+		echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".ABANDVALLEY." (".$row['x']."|".$row['y'].")</td>";
+		echo "<td>-</td>";
+		echo "<td><b><font color=\"green\">".UNOCCUPIED."</b></font></td>";
+	} else {
+		echo "<td><a href=\"karte.php?d=".$row['id']."&c=".$generator->getMapCheck($row['id'])."\">".$database->getVillageField($row['id'], "name")." (".$row['x']."|".$row['y'].")</a></td>";
+		echo "<td><a href=\"spieler.php?uid=".$database->getVillageField($row['id'], "owner")."\">".$database->getUserField($database->getVillageField($row['id'], "owner"), "username", 0)."</a></td>";
+		echo "<td><b><font color=\"red\">".OCCUPIED."</b></font></td>";
+	}
+	echo "<td><div style=\"text-align: center\">".$database->getDistance($coor['x'], $coor['y'], $row['x'], $row['y'])."</div></td>";
+	echo "<td>-</td>";
+}
 ?>
 
 </tbody></table>
@@ -322,7 +210,10 @@ $start_timer = $generator->pageLoadTimeStart();
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>
@@ -339,17 +230,11 @@ include("Templates/links.tpl");
 <div id="stime">
 <div id="ltime">
 <div id="ltimeWrap">
-Calculated in <b><?php
-
-echo round(($generator->pageLoadTimeEnd() - $start_timer) * 1000);
-
+<?php echo CALCULATED_IN;?> <b><?php
+echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
 ?></b> ms
 
-<br />Server time: <span id="tp1" class="b"><?php
-
-   echo date('H:i:s');
-
-?></span>
+<br /><?php echo SEVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
 </div>
 	</div>
 </div>

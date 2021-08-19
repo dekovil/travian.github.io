@@ -11,7 +11,7 @@
 		<th class="sent"><a href="nachrichten.php?o=1">Sent</a></th>
 	    </tr></thead><tfoot><tr><th>
 		<?php
-		$MyGold = mysqli_query($GLOBALS['link'],"SELECT plus FROM ".TB_PREFIX."users WHERE `id`='".(int) $session->uid."'") or die(mysqli_error($database->dblink));
+		$MyGold = mysqli_query($database->dblink,"SELECT plus FROM ".TB_PREFIX."users WHERE `id`='".(int) $session->uid."'") or die(mysqli_error($database->dblink));
 		$golds = mysqli_fetch_array($MyGold);
 		$date2=strtotime("NOW");
 		if ($golds['plus'] <= $date2) { ?>
@@ -20,8 +20,8 @@
 		<?php } ?>
 	    </th>
 	    <th colspan="2" class="buttons">
-		<input name="delmsg" value="delete" type="image" id="btn_delete" class="dynamic_img" src="img/x.gif" alt="delete" />
-		<?php if($session->plus) { echo "<input name=\"archive\" value=\"Archive\" type=\"image\" id=\"btn_archiv\" class=\"dynamic_img\" src=\"img/x.gif\" alt=\"Archive\" />"; } ?>
+		<button name="delmsg" value="delete" id="btn_delete" class="trav_buttons"> Delete </button>
+		<?php if($session->plus) { echo "<button name=\"archive\" value=\"Archive\" id=\"btn_archiv\" class=\"trav_buttons\" alt=\"Archive\" /> Archive </button>"; } ?>
 		<input name="ft" value="m3" type="hidden" />
 	    </th><th class="navi"><?php
 		if(!isset($_GET['s']) && count($message->inbox1) < 10) {
@@ -86,7 +86,7 @@
 			}
 			$date = $generator->procMtime($message->inbox1[$i-1]['time']);
 			if($message->inbox1[$i-1]['owner'] <= 1) {
-			echo "</td><td class=\"send\"><a href=\"support.php\"><u>".$database->getUserField($message->inbox1[$i-1]['owner'],'username',0)."</u></a></td>
+			echo "</td><td class=\"send\"><a href=\"spieler.php?uid=1\"><u>".$database->getUserField($message->inbox1[$i-1]['owner'],'username',0)."</u></a></td>
 		    <td class=\"dat\">".$date[0]." ".$date[1]."</td></tr>";
 		    }
 		    else {

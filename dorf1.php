@@ -17,16 +17,17 @@ include_once("GameEngine/Village.php");
 AccessLogger::logRequest();
 
 if(isset($_GET['ok'])){
-	$database->updateUserField($session->uid,'ok','0','1'); $_SESSION['ok'] = '0';
+	$database->updateUserField($session->uid,'ok', 0, 1);
+	$_SESSION['ok'] = '0';
 }
+
 if(isset($_GET['newdid'])) {
     $_SESSION['wid'] = $_GET['newdid'];
     $database->query("UPDATE ".TB_PREFIX."users SET village_select=".$database->escape((int) $_GET['newdid'])." WHERE id=".$session->uid);  
 	header("Location: ".$_SERVER['PHP_SELF']);
 	exit;
-} else {
-	$building->procBuild($_GET);
-}
+} 
+else $building->procBuild($_GET);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -39,9 +40,9 @@ if(isset($_GET['newdid'])) {
 	<meta http-equiv="imagetoolbar" content="no" />
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<script src="mt-full.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
+	<script src="unx.js?f4b7i" type="text/javascript"></script>
 	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7j" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?e21d2" rel="stylesheet" type="text/css" />
 	<?php
 	if($session->gpack == null || GP_ENABLE == false) {
@@ -81,9 +82,7 @@ include("Templates/movement.tpl");
 include("Templates/production.tpl");
 include("Templates/troops.tpl");
 
-if($building->NewBuilding) {
-	include("Templates/Building.tpl");
-}
+if($building->NewBuilding) include("Templates/Building.tpl");
 ?>
 </div>
 <br /><br /><br /><br /><div id="side_info">
@@ -91,7 +90,10 @@ if($building->NewBuilding) {
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>

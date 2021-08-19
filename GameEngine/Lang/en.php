@@ -63,7 +63,7 @@ define("LOGIN_PASS_EMPTY","Enter password.");
 define("EMAIL_ERROR","Email does not match existing");
 define("PASS_MISMATCH","Passwords do not match");
 define("ALLI_OWNER","Please appoint an alliance owner before deleting");
-define("SIT_ERROR","Sitter already set");
+define("SIT_ERROR","Sitter already set or player not found");
 define("USR_NT_FOUND","Name does not exist.");
 define("LOGIN_PW_ERROR","The password is wrong.");
 define("WEL_TOPIC","Useful tips & information ");
@@ -71,6 +71,26 @@ define("ATAG_EMPTY","Tag empty");
 define("ANAME_EMPTY","Name empty");
 define("ATAG_EXIST","Tag taken");
 define("ANAME_EXIST","Name taken");
+define("ALREADY_ALLY_MEMBER","You're already in an alliance");
+define("ALLY_TOO_LOW", "You must have a level 3 or greater embassy");
+define("USER_NOT_IN_YOUR_ALLY","This user is not in your alliance!");
+define("CANT_EDIT_YOUR_PERMISSIONS","You can't edit your own permissions!");
+define("CANT_EDIT_LEADER_PERMISSIONS","Alliance leader's permissions can't be edited!");
+define("NO_PERMISSION", "You don't have enough permissions!");
+define("NAME_OR_DIPL_EMPTY", "Name or diplomacy empty");
+define("ALLY_DOESNT_EXISTS","Alliance does not exist");
+define("CANNOT_INVITE_SAME_ALLY","You cannot invite your own alliance");
+define("WRONG_DIPLOMACY","Wrong choice made");
+define("INVITE_ALREADY_SENT","Either you have already sent a pact to this alliance, they sent it to yours or you already have a pact with them");
+define("INVITE_SENT","Invite sent");
+define("DECLARED_WAR_ON","declared war to");
+define("OFFERED_NON_AGGRESION_PACT_TO","offered non-aggression pact to");
+define("OFFERED_CONFED_TO","offered a confederation to");
+define("ALLY_TOO_MUCH_PACTS","Either You cannot offer more pacts of this kind or this alliance has reached the limit for this kind of patcs");
+define("ALLY_PERMISSIONS_UPDATED","Permissions updated");
+define("ALLY_FORUM_LINK_UPDATED", "Forum link updated");
+define("NO_FORUMS_YET","There are no forums yet.");
+define("ALLY_USER_KICKED"," has been kicked from the alliance");
 define("NOT_OPENED_YET","Server not started yet.");
 define("REGISTER_CLOSED","The register is closed. You can't register to this server.");
 define("NAME_EMPTY","Please insert name");
@@ -78,7 +98,10 @@ define("NAME_NO_EXIST","There is no user with the name ");
 define("ID_NO_EXIST","There is no user with the id ");
 define("SAME_NAME","You can't invite yourself");
 define("ALREADY_INVITED"," already invited");
-define("ALREADY_IN_ALLY"," already in this alliance");
+define("ALREADY_IN_ALLY"," is already in this alliance");
+define("ALREADY_IN_AN_ALLY"," is already in an alliance");
+define("NAME_OR_TAG_CHANGED","Name or Tag changed");
+define("VAC_MODE_WRONG_DAYS","You've inserted a wrong number of days");
 
 //COPYRIGHT
 define("TRAVIAN_COPYRIGHT","TravianZ 100% Open Source Travian Clone.");
@@ -112,6 +135,7 @@ define("GO2MY_VILLAGE","Go to my village");
 define("VILLAGE_CENTER","Village centre");
 define("FINISH_GOLD","Finish all construction and research orders in this village immediately for 2 Gold?");
 define("WAITING_LOOP","(waiting loop)");
+define("CROP_NEGATIVE","Your crop production is negative, you'll neaver reach the amount of requested resources.");
 define("HRS","(hrs.)");
 define("DONE_AT","done at");
 define("CANCEL","cancel");
@@ -621,13 +645,14 @@ define("REINFORCEMENTFOR","Reinforcement to");
 define("ATTACK_ON","Attack to");
 define("RAID_ON","Raid to");
 define("SCOUTING","Scouting");
-define("PRISONERS","Prisioners");
-define("PRISONERSIN","Prisioners in");
-define("PRISONERSFROM","Prisioners from");
+define("PRISONERS","Prisoners");
+define("PRISONERSIN","Prisoners in");
+define("PRISONERSFROM","Prisoners from");
 define("TROOPS","Troops");
 define("TROOPSFROM","Troops");
 define("BOUNTY","Bounty");
 define("ARRIVAL","Arrival");
+define("CATAPULT_TARGET","Catapult target(s)");
 define("INCOMING_TROOPS","Incoming Troops");
 define("TROOPS_ON_THEIR_WAY","Troops on their way");
 define("OWN_TROOPS","Own troops");
@@ -656,6 +681,8 @@ define("NOTROOP","no troops");
 //map
 define("DETAIL","Details");
 define("ABANDVALLEY","Abandoned valley");
+define("OCCUPIED","Occupied");
+define("UNOCCUPIED","Unoccupied");
 define("UNOCCUOASIS","Unoccupied oasis");
 define("OCCUOASIS","Occupied oasis");
 define("THERENOINFO","There is no<br>information available.");
@@ -686,6 +713,8 @@ define("WEST","West");
 //other
 define("VILLAGE","Village");
 define("OASIS","Oasis");
+define("NO_OASIS", "You do not own any oases.");
+define("NO_VILLAGES", "There are no villages.");
 define("PLAYER","Player");
 
 //LOGIN.php
@@ -799,6 +828,7 @@ define("DEMOLITION_OF","Demolition of ");
 define("MAINBUILDING_DESC","In the main building the village's master builders live. The higher its level the faster your master builders complete the construction of new buildings.");
 
 define("RALLYPOINT","Rally Point");
+define("RALLYPOINT_COMMENCE","Troops movement will be displayed when the ".RALLYPOINT." is completed");
 define("OVERVIEW","Overview");
 define("REINFORCEMENT","Reinforcement");
 define("EVASION_SETTINGS","evasion settings");
@@ -839,6 +869,9 @@ define("OFFERING","Offering");
 define("MAX_TIME_TRANSPORT","max. time of transport");
 define("OWN_ALLIANCE_ONLY","own alliance only");
 define("INVALID_OFFER","Invalid offer");
+define("INVALID_MERCHANTS_REPETITION","Invalid merchants repetition rate");
+define("USER_ON_VACATION","User is on vacation mode");
+define("NOT_ENOUGH_RESOURCES","Not enough resources");
 define("OFFER","Offer");
 define("SEARCH","Search");
 define("OWN_OFFERS","Own offers");
@@ -855,24 +888,24 @@ define("YOU_CAN_NAT_NPC_WW","You can't use NPC trade in WW village.");
 define("NPC_TRADING","NPC trading");
 define("SEND_RESOURCES","Send Resources");
 define("BUY","Buy");
-define("TRADE_ROUTES","trade routes");
+define("TRADE_ROUTES","Trade routes");
 define("DESCRIPTION","Description");
 define("TIME_LEFT","Time left");
 define("START","Start");
 define("NO_TRADE_ROUTES","No active trade routes");
 define("TRADE_ROUTE_TO","Trade route to");
 define("CHECKED","checked");
-define("DAYS","days");
-define("EXTEND","extend");
-define("EDIT","edit");
-define("EXTEND_TRADE_ROUTES","Extend the trade route by 7 days for");
+define("DAYS","Days");
+define("EXTEND","Extend");
+define("EDIT","Edit");
+define("EXTEND_TRADE_ROUTES","Extend the trade route by <b>7</b> days for");
 define("CREATE_TRADE_ROUTES","Create new trade route");
-define("DELIVERIES","deliveries");
-define("START_TIME_TRADE","start time");
+define("DELIVERIES","Deliveries");
+define("START_TIME_TRADE","Start time");
 define("CREATE_TRADE_ROUTE","Create trade route");
-define("TARGET_VILLAGE","target village");
+define("TARGET_VILLAGE","Target village");
 define("EDIT_TRADE_ROUTES","Edit trade route");
-define("TRADE_ROUTES_DESC","Trade route allows you to set up routes for your merchant that he will walk every day at a certain hour. <br /><br /> Standard this holds on for 7 days, but you can extend it with 7 days for the cost of");
+define("TRADE_ROUTES_DESC","Trade route allows you to set up routes for your merchant that he will walk every day at a certain hour. <br /><br /> Standard this holds on for <b>7</b> days, but you can extend it with <b>7</b> days for the cost of");
 define("NPC_TRADE_DESC","With the NPC merchant you can distribute the resources in your warehouse as you desire. <br /><br /> The first line shows the current stock. In the second line you can choose another distribution. The third line shows the difference between the old and new stock.");
 define("MARKETPLACE_DESC","At the Marketplace you can trade resources with other players. The higher its level, the more resources can be transported at the same time.");
 
@@ -894,16 +927,16 @@ define("TRAINING","Training");
 define("FINISHED","Finished");
 define("UNIT_FINISHED","The next unit will be finished in");
 define("AVAILABLE","Available");
-define("TRAINING_COMMENCE_BARRACKS","Training can commence when barracks are completed.");
+define("TRAINING_COMMENCE_BARRACKS","Training can commence when barracks is completed.");
 define("BARRACKS_DESC","All foot soldiers are trained in the barracks. The higher the level of the barracks, the faster the troops are trained.");
 
 define("STABLE","Stable");
 define("AVAILABLE_ACADEMY","No units available. Research at academy");
-define("TRAINING_COMMENCE_STABLE","Training can commence when stable are completed.");
+define("TRAINING_COMMENCE_STABLE","Training can commence when stable is completed.");
 define("STABLE_DESC","Cavalry can be trained in the stable. The higher its level the faster the troops are trained.");
 
 define("WORKSHOP","Workshop");
-define("TRAINING_COMMENCE_WORKSHOP","Training can commence when workshop are completed.");
+define("TRAINING_COMMENCE_WORKSHOP","Training can commence when workshop is completed.");
 define("WORKSHOP_DESC","Siege engines like catapults and rams can be built in the workshop. The higher its level the faster the units are produced.");
 
 define("ACADEMY","Academy");
@@ -962,36 +995,44 @@ define("SECURITY_CHANGE_CAPITAL","Are you sure, that you want to change your cap
 define("PALACE_DESC","The king or queen of the empire lives in the palace. Only one palace can exist in your realm at a time. You need a palace in order to proclaim a village to be your capital.");
 
 define("TREASURY","Treasury");
+define("TREASURY_COMMENCE","Artifacts can be viewed when treasury is completed.");
 define("ARTIFACTS_AREA","Artefacts in your area");
-define("NO_ARTIFACTS_AREA","There is no artefacts in your area.");
+define("NO_ARTIFACTS_AREA","There are no artefacts in your area.");
 define("OWN_ARTIFACTS","Own artefacts");
 define("CONQUERED","Conquered");
 define("DISTANCE","Distance");
 define("EFFECT","Effect");
-define("ACCOUNT","account");
+define("ACCOUNT","Account");
 define("SMALL_ARTIFACTS","Small artefacts");
 define("LARGE_ARTIFACTS","Large artefacts");
-define("NO_ARTIFACTS","There is no artefacts.");
+define("NO_ARTIFACTS","There are no artefacts.");
 define("ANY_ARTIFACTS","You do not own any artefacts.");
 define("OWNER","Owner");
 define("AREA_EFFECT","Area of effect");
+define("VILLAGE_EFFECT","Village effect");
+define("ACCOUNT_EFFECT","Account effect");
+define("UNIQUE_EFFECT","Unique effect");
 define("REQUIRED_LEVEL","Required level");
 define("TIME_CONQUER","Time of conquer");
 define("TIME_ACTIVATION","Time of activation");
+define("NEXT_EFFECT"," Next effect");
 define("FORMER_OWNER","Former owner(s)");
-define("BUILDING_STRONGER","building stronger with");
-define("BUILDING_WEAKER","building weaker with");
-define("TROOPS_FASTER","makes troops faster with");
-define("TROOPS_SLOWEST","makes troops slowest with");
-define("SPIES_INCREASE","spies increase ability with");
-define("SPIES_DECRESE","spies decrese ability with");
-define("CONSUME_LESS","all troops consume less with");
-define("CONSUME_HIGH","all troops consume high with");
-define("TROOPS_MAKE_FASTER","troops make faster with");
-define("TROOPS_MAKE_SLOWEST","troops make slowest with");
-define("YOU_CONSTRUCT","you can construct ");
-define("CRANNY_INCREASED","cranny capacity is increased by");
-define("CRANNY_DECRESE","cranny capacity is decrese by");
+define("BUILDING_STRONGER","Building stronger with");
+define("BUILDING_WEAKER","Building weaker with");
+define("TROOPS_FASTER","Makes troops faster with");
+define("TROOPS_SLOWEST","Makes troops slowest with");
+define("SPIES_INCREASE","Spies increase ability with");
+define("SPIES_DECRESE","Spies decrese ability with");
+define("CONSUME_LESS","All troops consume less with");
+define("CONSUME_HIGH","All troops consume high with");
+define("TROOPS_MAKE_FASTER","Troops make faster with");
+define("TROOPS_MAKE_SLOWEST","Troops make slowest with");
+define("YOU_CONSTRUCT","You can construct ");
+define("CRANNY_INCREASED","Cranny capacity is increased by");
+define("CRANNY_DECRESE","Cranny capacity is decrese by");
+define("WW_BUILDING_PLAN","You can build the Wonder of the World");
+define("NO_WW","There are no Wonders of the World");
+define("NO_PREVIOUS_OWNERS","There are no previous owners.");
 define("TREASURY_DESC","The riches of your empire are kept in the treasury. The treasury has room for one treasure. After you have captured an artefact it takes 24 hours on a normal server or 12 hours on a thrice speed server to be effective.");
 
 define("TRADEOFFICE","Trade Office");
@@ -1000,11 +1041,11 @@ define("MERCHANT_LEVEL","Merchant load at level");
 define("TRADEOFFICE_DESC","In the trade office the merchants' carts get improved and equipped with powerful horses. The higher its level the more your merchants are able to carry.");
 
 define("GREATBARRACKS","Great Barracks");
-define("TRAINING_COMMENCE_GREATBARRACKS","Training can commence when great barracks are completed.");
+define("TRAINING_COMMENCE_GREATBARRACKS","Training can commence when great barracks is completed.");
 define("GREATBARRACKS_DESC","Foot soldiers are trained in the great barracks. The higher the level of the barracks, the faster the troops are trained.");
 
 define("GREATSTABLE","Great Stable");
-define("TRAINING_COMMENCE_GREATSTABLE","Training can commence when great stables are completed.");
+define("TRAINING_COMMENCE_GREATSTABLE","Training can commence when great stable is completed.");
 define("GREATSTABLE_DESC","Cavalry can be trained in the great stable. The higher its level the faster the troops are trained.");
 
 define("CITYWALL","City Wall");
@@ -1035,7 +1076,7 @@ define("TRAPS","Traps");
 define("TRAP","Trap");
 define("CURRENT_HAVE","Your currently have");
 define("WHICH_OCCUPIED","of which are occupied.");
-define("TRAINING_COMMENCE_TRAPPER","Training can commence when trapper are completed.");
+define("TRAINING_COMMENCE_TRAPPER","Training can commence when trapper is completed.");
 define("TRAPPER_DESC","The trapper protects your village with well hidden traps. This means that unwary enemies can be imprisoned and won't be able to harm your village anymore.");
 
 define("HEROSMANSION","Hero's Mansion");
@@ -1046,7 +1087,7 @@ define("NOT","Not ");
 define("TRAIN_HERO","Train New Hero");
 define("REVIVE","Revive");
 define("OASES","Oases");
-define("DELETE","delete");
+define("DELETE","Delete");
 define("RESOURCES","Resources");
 define("OFFENCE","Offence");
 define("DEFENCE","Defence");
@@ -1060,7 +1101,7 @@ define("RESET","reset");
 define("YOUR_POINT_UNTIL"," your points until you are level ");
 define("OR_LOWER"," or lower!");
 define("YOUR_HERO_HAS","Your hero has ");
-define("OF_HIT_POINTS","of his hit points.");
+define("OF_HIT_POINTS","of his life points");
 define("ERROR_NAME_SHORT","Error: name too short");
 define("HEROSMANSION_DESC","In the Hero's mansion you can train your own hero and at level 10, 15 and 20 you can conquer oases with Hero in the immediate vicinity.");
 
@@ -1090,7 +1131,7 @@ define("BUILDING_BEING_DEMOLISHED","Building presently being demolished");
 define("COSTS_UPGRADING_LEVEL","Costs</b> for upgrading to level");
 define("WORKERS_ALREADY_WORK","The workers are already at work.");
 define("CONSTRUCTING_MASTER_BUILDER","Constructing with master builder ");
-define("COSTS","costs");
+define("COSTS","Costs");
 define("GOLD","Gold");
 define("WORKERS_ALREADY_WORK_WAITING","The workers are already at work. (waiting loop)");
 define("ENOUGH_FOOD_EXPAND_CROPLAND","Not enough food. Expand cropland.");
@@ -1158,30 +1199,24 @@ define("FOOL_SMALL","Artefact of the slight fool");
 define("FOOL_SMALLVILLAGE","Pendant of Mischief");
 define("FOOL_UNIQUE","Artefact of the unique fool");
 define("FOOL_UNIQUEVILLAGE","Forbidden Manuscript");
-define("ARTEFACT","Construction plans
+define("WWVILLAGE","WW village");
+define("ARTEFACT","<h1><b>Natars Artifacts</b></h1>
 
+Whispering rumors echo through the villages, sharing legends told only by the best storytellers. It refers to NATARS, the most feared warrior of the TRAVIAN world. Their killing is the dream of any hero, the purpose of any fighter. No one knows how NATARS got to get such power, and their warriors so cruel. Determined to discover the source of the NATARS power, the fighters send a group of elite spies to spy them. I do not go through many hours and come back with fear in their eyes and balancing fantastic theories: it seems that the natural power comes from the mysterious objects they call artifacts that they stole from our ancestors. Try to steal the artefacts of her, and you can control their power.
 
+<img src=\"img/x.gif\" class=\"ArtifactsAnnouncement\">
 
-Countless days have passed since the first battles upon the walls of the cursed villages of the Dread Natars, many armies of both the free ones and the Natarian empire struggled and died before the walls of the many strongholds from which the Natars had once ruled all creation. Now with the dust settled and a relative calm having settled in, armies began to count their losses and collect their dead, the stench of combat still lingering in the night air, a smell of a slaughter unforgettable in its extent and brutality yet soon to be dwarfed by yet others. The largest armies of the free ones and the Dread Natars were marshalling for yet another renewed assault upon the coveted former strongholds of the Natarian Empire.
+The time has come for claiming artifacts. Collaborate with your alliance and bring your worriors to get these wanted objects. However, NATARS will not give up without war to the artefacts ... nor your enemies. If you are successful in retrieving artifacts and you will be able to reject enemies, you will be able to collect the rewards. Your buildings will become incredibly strong and mightest, and the troops will be much faster and will consume less food. Capture the artifacts, bring glory over your empire and become new legends for your followers.
 
-Soon scouts arrived telling of a most awesome sight and a chilling reminder, a dread army of an unfathomable size had been spotted marshalling at the end of the world, the Natarian capital, a force so great and unstoppable that the dust from their march would choke off all light, a force so brutal and ruthless that it would crush all hope. The free people knew that they had to race now, race against time and the endless hordes of the Natarian Empire to raise a Wonder of the World to restore the world to peace and vanquish the Natarian threat.
-
-But to raise such a great Wonder would be no easy task, one would need construction plans created in the distant past, plans of such an arcane nature that even the very wisest of sages knew not their contents or locations.
-
-Tens of thousands of scouts roamed across all existence searching in vain for these mystical plans, looking in all places but the dreaded Natarian Capital, yet could not find them. Today however, they return bearing good news, they return baring the locations of the plans, hidden by the armies of the Natars inside secret strongholds constructed to be hidden from the eyes of man.
-
-Now begins the final stretch, when the greatest armies of the Free people and the Natars will clash across the world for the fate of all that lies under heaven. This is the war that will echo across the eons, this is your war, and here you shall etch your name across history, here you shall become legend.
-
-
-Facts:
 To steal one, the following things must happen:
-You must attack the village (NO Raid!)
-WIN the Attack
-Destroy the treasury
-An empty treasury lvl 10 MUST be in the village where that attack came from
-Have a hero in an attack
 
-If not, the next attack on that village, winning with a hero and empty treasury will take the building plan.
+1. You must attack the village (NO Raid!)
+2. WIN the Attack
+3. Destroy the treasury
+4. An empty treasury level 10 for SMALL ARTIFACTS and level 20 for LARGE ARTIFACT must be in the village where that attack came from
+5. Have a hero in an attack
+
+If not, the next attack on that village, winning with a hero and empty treasury will take the artifact.
 
 To build a WW, you must own a plan yourself (you = the WW village owner) from lvl 0 to 50, from 51 to 100 you need an additional plan in your alliance! Two plans in the WW village account would not work!
 
@@ -1189,12 +1224,38 @@ The construction plans are conquerable immediately when they appear to the serve
 
 There will be a countdown in game, showing the exact time of the release, 5 days prior to the launch. ");
 
+//WW Village Release Message
+define("WWVILLAGEMSG","<h1><b>Wonder of the World Villages</b></h1>
+
+Countless days have passed since the first battles upon the walls of the cursed villages of the Dread Natars, many armies of both the free ones and the Natarian empire struggled and died before the walls of the many strongholds from which the Natars had once ruled all creation. Now with the dust settled and a relative calm having settled in, armies began to count their losses and collect their dead, the stench of combat still lingering in the night air, a smell of a slaughter unforgettable in its extent and brutality yet soon to be dwarfed by yet others. The largest armies of the free ones and the Dread Natars were marshalling for yet another renewed assault upon the coveted former strongholds of the Natarian Empire.
+Soon scouts arrived telling of a most awesome sight and a chilling reminder, a dread army of an unfathomable size had been spotted marshalling at the end of the world, the Natarian capital, a force so great and unstoppable that the dust from their march would choke off all light, a force so brutal and ruthless that it would crush all hope. The free people knew that they had to race now, race against time and the endless hordes of the Natarian Empire to raise a Wonder of the World to restore the world to peace and vanquish the Natarian threat.
+But to raise such a great Wonder would be no easy task, one would need construction plans created in the distant past, plans of such an arcane nature that even the very wisest of sages knew not their contents or locations.
+Tens of thousands of scouts roamed across all existence searching in vain for these mystical plans, looking in all places but the dreaded Natarian Capital, yet could not find them. Today however, they return bearing good news, they return baring the locations of the plans, hidden by the armies of the Natars inside secret strongholds constructed to be hidden from the eyes of man.
+Now begins the final stretch, when the greatest armies of the Free people and the Natars will clash across the world for the fate of all that lies under heaven. This is the war that will echo across the eons, this is your war, and here you shall etch your name across history, here you shall become legend.
+
+<img src=\"img/x.gif\" class=\"WWVillagesAnnouncement\" title=\"".WWVILLAGE."\" alt=\"".WWVILLAGE."\">
+
+To conquer one, the following things must happen:
+
+1. You must attack the village (NO Raid!)
+2. WIN the Attack
+3. Destroy the RESIDENCE
+4. You must decrease the loyalty to 0 with : SENATORS , CHIEF , CHIEFTAIN
+5. You must have enough culture points to conquer the village
+
+If not, the next attack on that village, winning with a SENATORS , CHIEF , CHIEFTAIN and empty slots in RESIDENCE/PALACE will take the village.
+
+To build a WW, you must own a plan yourself (you = the WW village owner) from lvl 0 to 50, from 51 to 100 you need an additional plan in your alliance! Two plans in the WW village account would not work!
+
+The construction plans are conquerable immediately when they appear to the server. 
+
+There will be a countdown in game, showing the exact time of the release, ".(5 / SPEED)." days prior to the launch. ");
 
 //Building Plans
 define("PLAN","Ancient Construction Plan");
 define("PLANVILLAGE","WW Buildingplan");
 define("PLAN_DESC","With this ancient construction plan you will able to build World Wonder to level 50. to build further, your alliance must hold at least two plans.");
-define("PLAN_INFO","World Wonder Construction Plans 
+define("PLAN_INFO","<h1><b>World Wonder Construction Plans</b></h1>
 
 
 Many moons ago the tribes of Travian were surprised by the unforeseen return of the Natars. This tribe from immemorial times surpassing all in wisdom, might and glory was about to trouble the free ones again. Thus they put all their efforts in preparing a last war against the Natars and vanquishing them forever. Many thought about the so-called 'Wonders of the World', a construction of many legends, as the only solution. It was told that it would render anyone invincible once completed. Ultimately making the constructors the rulers and conquerors of all known Travian. 
@@ -1207,7 +1268,7 @@ Today, however, this last secret will be revealed. Deprivations and endeavors of
 
 In the end, we will see whether the free tribes of Travian can once again outwit the Natars and vanquish them once and for all. Do not be so foolish as to assume that the Natars will leave without a fight, though!
 
-
+<img src=\"img/x.gif\" class=\"WWBuildingPlansAnnouncement\" title=\"".PLAN."\" alt=\"".PLAN."\">
 
 To steal a set of Construction Plans from the Natars, the following things must happen:
 - You must Attack the village (NOT Raid!)
@@ -1222,7 +1283,189 @@ NOTE: If the above criteria is not met during the attack, the next attack on tha
 To build a Treasure Chamber (Treasury), you will need a Main Building level 10 and the village MUST NOT be  contain a World Wonder.
 
 To build a World Wonder, you must own the Construction Plans yourself (you = the World Wonder Village Owner) from level 0 to 50, and then from level 51 to 100 you will need an additional set of Construction Plans in your Alliance! Two sets of Construction Plans in the World Wonder Village Account will not work!");
-define("WWVILLAGE","WW village");
+
+//Admin setting - Admin/Templates/config.tpl & editServerSet.tpl
+define("EDIT_BACK","Back");
+define("SERV_CONFIG","Server Configuration");
+define("SERV_SETT","Server Settings");
+define("EDIT_SERV_SETT","Edit Server Settings");
+define("SERV_VARIABLE","Variable");
+define("SERV_VALUE","Value");
+define("CONF_SERV_NAME","Server Name");
+define("CONF_SERV_NAME_TOOLTIP","Name of the game server.");
+define("CONF_SERV_STARTED","Server Started");
+define("CONF_SERV_STARTED_TOOLTIP","Time when the game server was started. This parameter can not be changed on the installed game server.");
+define("CONF_SERV_TIMEZONE","Server Timezone");
+define("CONF_SERV_TIMEZONE_TOOLTIP","Timezone of the game server.");
+define("CONF_SERV_LANG","Language");
+define("CONF_SERV_LANG_TOOLTIP","The language that is used in the admin panel and for everyone on the game server by default.");
+define("CONF_SERV_SERVSPEED","Server Speed");
+define("CONF_SERV_SERVSPEED_TOOLTIP","The speed of the game server. The higher the speed of the game server, the faster all buildings are built, the studies and improvements in the smithies are carried out, the troops are quickly built and the productivity of all resources is increased.");
+define("CONF_SERV_TROOPSPEED","Troop Speed");
+define("CONF_SERV_TROOPSPEED_TOOLTIP","Speed of movement of troops on the game server. The higher this indicator, the faster the troops move across the map.");
+define("CONF_SERV_EVASIONSPEED","Evasion Speed");
+define("CONF_SERV_EVASIONSPEED_TOOLTIP","The evasion speed is the time that troops spend on the road to return home after evasion an attack.");
+define("CONF_SERV_STORMULTIPLER","Storage Multipler");
+define("CONF_SERV_STORMULTIPLER_TOOLTIP","A multiplier for the storage capacity warehouse and granary. The value 1 is equal to the capacity of 80,000 of each resource at the maximum level. If you set the value to 2, then the capacity at the maximum level will be 160,000 of each resource.<br><b>Note:</b> the amount of resources that will be generated by unoccupied oases for robbery depends on this value. The default is 800. If you set the value to 2, the maximum number for each resource being generated is 1600.");
+define("CONF_SERV_TRADCAPACITY","Trader Capacity");
+define("CONF_SERV_TRADCAPACITY_TOOLTIP","A multiplier for the capacity of resources that can be carried by one trader. The value of 1 equals 500 capacity for the Romans, 750 for the Gauls, 1000 for the Teutons. If you set the value to 2, then the capacity of the transferred resources will double accordingly, 1000, 1500, 2000.");
+define("CONF_SERV_CRANCAPACITY","Cranny Capacity");
+define("CONF_SERV_CRANCAPACITY_TOOLTIP","A multiplier for the capacity of resources in Cranny, which can be saved from robbery. The value of 1 is equal to 1000 for Romans and Teutons, 2000 for Gauls. If you set the value to 2, then the capacity of the Cranny will double to 2000 and 4000 respectively.");
+define("CONF_SERV_TRAPCAPACITY","Trapper Capacity");
+define("CONF_SERV_TRAPCAPACITY_TOOLTIP","A multiplier for the capacity of the trap of the Gauls, which can capture enemy soldiers even before attacking the village. The value of 1 is equal to the capacity of 400 at the 20 level of construction. If you set the value to 2, then the capacity will be 800.");
+define("CONF_SERV_NATUNITSMULTIPLIER","Natars Units Multiplier");
+define("CONF_SERV_NATUNITSMULTIPLIER_TOOLTIP","This parameter is responsible for the number of troops of Natars, on artifacts and WW villages.");
+define("CONF_SERV_NATARS_SPAWN_TIME","Natars Spawn");
+define("CONF_SERV_NATARS_SPAWN_TIME_TOOLTIP","After how long Natars and artifacts will spawn from the start date of the server, in days");
+define("CONF_SERV_NATARS_WW_SPAWN_TIME","World Wonders Spawn");
+define("CONF_SERV_NATARS_WW_SPAWN_TIME_TOOLTIP","After how long WW villages will spawn from the start date of the server, in days");
+define("CONF_SERV_NATARS_WW_BUILDING_PLAN_SPAWN_TIME","WW Building Plan Spawn");
+define("CONF_SERV_NATARS_WW_BUILDING_PLAN_SPAWN_TIME_TOOLTIP","After how long WW building plans will spawn from the start date of the server, in days");
+define("CONF_SERV_MAPSIZE","Map Size");
+define("CONF_SERV_MAPSIZE_TOOLTIP","The size of the map of the game world. Can not be changed on an already installed game server.");
+define("CONF_SERV_VILLEXPSPEED","Village Expanding Speed");
+define("CONF_SERV_VILLEXPSPEED_TOOLTIP","Speed, which affects the expansion of the empire. With a slow speed more culture points are needed to found new village, with a fast speed the required number of culture points is reduced.");
+define("CONF_SERV_BEGINPROTECT","Beginners Protection");
+define("CONF_SERV_BEGINPROTECT_TOOLTIP","Protection, which prohibits a certain time to attack the villages of new players.");
+define("CONF_SERV_REGOPEN","Register Open");
+define("CONF_SERV_REGOPEN_TOOLTIP","Allows to enable (True) or disable (False) the registration of players on the game server.");
+define("CONF_SERV_ACTIVMAIL","Activation Mail");
+define("CONF_SERV_ACTIVMAIL_TOOLTIP","If enabled (Yes), during registration it will be necessary to confirm email address. If disabled (No) does not require confirmation of e-mail.");
+define("CONF_SERV_QUEST","Quest");
+define("CONF_SERV_QUEST_TOOLTIP","Enable (Yes) or disable (No) the quest on the game server.");
+define("CONF_SERV_QTYPE","Quest Type");
+define("CONF_SERV_QTYPE_TOOLTIP","The quest type can be official which is a bit shorter, and extended which is longer.");
+define("CONF_SERV_DLR","Demolish - Level required");
+define("CONF_SERV_DLR_TOOLTIP","The required level of the main building, on which can carry out the demolition of buildings in the village.");
+define("CONF_SERV_WWSTATS","World Wonder - Statistics");
+define("CONF_SERV_WWSTATS_TOOLTIP","Enable (True) or disable (False) the display in the statistics of villages with a Wonder of the World.");
+define("CONF_SERV_NTRTIME","Nature Troops Regeneration Time");
+define("CONF_SERV_NTRTIME_TOOLTIP","Time through which the nature troops will be restored in oases.");
+define("CONF_SERV_OASIS_WOOD_PROD_MULT","Oasis Wood Production Multiplier");
+define("CONF_SERV_OASIS_WOOD_PROD_MULT_TOOLTIP","The base wood oasis production");
+define("CONF_SERV_OASIS_CLAY_PROD_MULT","Oasis Clay Production Multiplier");
+define("CONF_SERV_OASIS_CLAY_PROD_MULT_TOOLTIP","The base clay oasis production");
+define("CONF_SERV_OASIS_IRON_PROD_MULT","Oasis Iron Production Multiplier");
+define("CONF_SERV_OASIS_IRON_PROD_MULT_TOOLTIP","The base iron oasis production");
+define("CONF_SERV_OASIS_CROP_PROD_MULT","Oasis Crop Production Multiplier");
+define("CONF_SERV_OASIS_CROP_PROD_MULT_TOOLTIP","The base crop oasis production");
+define("CONF_SERV_MEDALINTERVAL","Medal Interval");
+define("CONF_SERV_MEDALINTERVAL_TOOLTIP","The time interval for issuing medals for the top players and alliances. If this parameter is changed on the installed server, the time interval changes after the subsequent issuance of the medals.");
+define("CONF_SERV_TOURNTHRES","Tourn Threshold");
+define("CONF_SERV_TOURNTHRES_TOOLTIP","The number of squares on the game map, after which Tournament Square will start working.");
+define("CONF_SERV_GWORKSHOP","Great Workshop");
+define("CONF_SERV_GWORKSHOP_TOOLTIP","Enable (True) or disable (False) the use of a Great Workshop in the game.");
+define("CONF_SERV_NATARSTAT","Show Natars in Statistics");
+define("CONF_SERV_NATARSTAT_TOOLTIP","Enable (True) or disable (False) the display of the Natars account in statistics.");
+define("CONF_SERV_PEACESYST","Peace system");
+define("CONF_SERV_PEACESYST_TOOLTIP","Enable or disable the Peace system. When the peace system is activated, players will be able to attack each other but instead of any actions in the reports there will be a congratulatory inscription. The troops will not die of hunger.");
+define("CONF_SERV_GRAPHICPACK","Graphic Pack");
+define("CONF_SERV_GRAPHICPACK_TOOLTIP","Enable (Yes) or disable (No) the ability to use the graphics package.");
+define("CONF_SERV_ERRORREPORT","Error Reporting");
+define("CONF_SERV_ERRORREPORT_TOOLTIP","Enable (Yes) or disable (No) the display of error reports on the game server.");
+
+//Admin setting - Admin/Templates/config.tpl & editPlusSet.tpl
+define("PLUS_CONFIGURATION","<b><font color='#71D000'>P</font><font color='#FF6F0F'>l</font><font color='#71D000'>u</font><font color='#FF6F0F'>s</font></b> Configuration");
+define("PLUS_SETT","<b><font color='#71D000'>P</font><font color='#FF6F0F'>l</font><font color='#71D000'>u</font><font color='#FF6F0F'>s</font></b> Settings");
+define("EDIT_PLUS_SETT","Edit <b><font color='#71D000'>P</font><font color='#FF6F0F'>l</font><font color='#71D000'>u</font><font color='#FF6F0F'>s</font></b> Setting");
+define("EDIT_PLUS_SETT1","Edit PLUS Setting");
+define("CONF_PLUS_PAYPALEMAIL","<a href='https://www.paypal.com' target='_blank'>PayPal</a> E-Mail Address");
+define("CONF_PLUS_PAYPALEMAIL_TOOLTIP","The E-Mail Address specified at registration on PayPal.<br><font color='red'><b>Must be Business or Premier account!</b></font>");
+define("CONF_PLUS_CURRENCY","Payment Currency");
+define("CONF_PLUS_CURRENCY_TOOLTIP","The currency to be used for payment.");
+define("CONF_PLUS_PACKAGEGOLDA","Package \"A\" Amount of Gold");
+define("CONF_PLUS_PACKAGEGOLDA_TOOLTIP","The amount of gold issued for the payment of the package \"A\".");
+define("CONF_PLUS_PACKAGEPRICEA","Package \"A\" Amount of Price");
+define("CONF_PLUS_PACKAGEPRICEA_TOOLTIP","The amount necessary to pay the cost of package \"A\".");
+define("CONF_PLUS_PACKAGEGOLDB","Package \"B\" Amount of Gold");
+define("CONF_PLUS_PACKAGEGOLDB_TOOLTIP","The amount of gold issued for the payment of the package \"B\".");
+define("CONF_PLUS_PACKAGEPRICEB","Package \"B\" Amount of Price");
+define("CONF_PLUS_PACKAGEPRICEB_TOOLTIP","The amount necessary to pay the cost of package \"B\".");
+define("CONF_PLUS_PACKAGEGOLDC","Package \"C\" Amount of Gold");
+define("CONF_PLUS_PACKAGEGOLDC_TOOLTIP","The amount of gold issued for the payment of the package \"C\".");
+define("CONF_PLUS_PACKAGEPRICEC","Package \"C\" Amount of Price");
+define("CONF_PLUS_PACKAGEPRICEC_TOOLTIP","The amount necessary to pay the cost of package \"C\".");
+define("CONF_PLUS_PACKAGEGOLDD","Package \"D\" Amount of Gold");
+define("CONF_PLUS_PACKAGEGOLDD_TOOLTIP","The amount of gold issued for the payment of the package \"D\".");
+define("CONF_PLUS_PACKAGEPRICED","Package \"D\" Amount of Price");
+define("CONF_PLUS_PACKAGEPRICED_TOOLTIP","The amount necessary to pay the cost of package \"D\".");
+define("CONF_PLUS_PACKAGEGOLDE","Package \"E\" Amount of Gold");
+define("CONF_PLUS_PACKAGEGOLDE_TOOLTIP","The amount of gold issued for the payment of the package \"E\".");
+define("CONF_PLUS_PACKAGEPRICEE","Package \"E\" Amount of Price");
+define("CONF_PLUS_PACKAGEPRICEE_TOOLTIP","The amount necessary to pay the cost of package \"E\".");
+define("CONF_PLUS_ACCDURATION","<b><font color='#71D000'>P</font><font color='#FF6F0F'>l</font><font color='#71D000'>u</font><font color='#FF6F0F'>s</font></b> account duration");
+define("CONF_PLUS_ACCDURATION_TOOLTIP","The duration of the game function <b><font color='#71D000'>P</font><font color='#FF6F0F'>l</font><font color='#71D000'>u</font><font color='#FF6F0F'>s</font></b> for the account at the time of activation by the player.");
+define("CONF_PLUS_PRODUCTDURATION","+25% production duration");
+define("CONF_PLUS_PRODUCTDURATION_TOOLTIP","The duration of the game function +25% production duration for the account at the time of activation by the player.");
+
+//Admin setting - Admin/Templates/config.tpl & editLogSet.tpl
+define("LOG_SETT","Log Settings");
+define("EDIT_LOG_SETT","Edit Log Setting");
+define("CONF_LOG_BUILD","Log Build");
+define("CONF_LOG_BUILD_TOOLTIP","Enable (Yes) or disable (No) the display of logs for the construction of buildings in the village.");
+define("CONF_LOG_TECHNOLOGY","Log Technology");
+define("CONF_LOG_TECHNOLOGY_TOOLTIP","Enable (Yes) or disable (No) display logs to improve troops in Blacksmith and Armoury.");
+define("CONF_LOG_LOGIN","Log Login");
+define("CONF_LOG_LOGIN_TOOLTIP","Enable (Yes) or disable (No) the display logs players login the game.");
+define("CONF_LOG_GOLD","Log Gold");
+define("CONF_LOG_GOLD_TOOLTIP","Enable (Yes) or disable (No) the display of gold use logs in-game by players.");
+define("CONF_LOG_ADMIN","Log Admin");
+define("CONF_LOG_ADMIN_TOOLTIP","Enable (Yes) or disable (No) the display of logs for administrator actions in the control panel.");
+define("CONF_LOG_WAR","Log War");
+define("CONF_LOG_WAR_TOOLTIP","Enable (Yes) or disable (No) the display of logs attacks on players in the game.");
+define("CONF_LOG_MARKET","Log Market");
+define("CONF_LOG_MARKET_TOOLTIP","Enable (Yes) or disable (No) the display of the logs of the use of the market in the game by the players.");
+define("CONF_LOG_ILLEGAL","Log Illegal");
+define("CONF_LOG_ILLEGAL_TOOLTIP","Enable (Yes) or disable (No) the display of illegal logs. (I do not know exactly what it is)");
+
+//Admin setting - Admin/Templates/config.tpl & editNewsboxSet.tpl
+define("NEWSBOX_SETT","Newsbox Settings");
+define("EDIT_NEWSBOX_SETT","Edit Newsbox Setting");
+define("EDIT_NEWSBOX1","Newsbox 1");
+define("EDIT_NEWSBOX1_TOOLTIP","Enable or disable the display of the Newsbox 1. Displayed on the authorization page and on the game pages.");
+define("EDIT_NEWSBOX2","Newsbox 2");
+define("EDIT_NEWSBOX2_TOOLTIP","Enable or disable the display of the Newsbox 2. Displayed on the authorization page and on the game pages.");
+define("EDIT_NEWSBOX3","Newsbox 3");
+define("EDIT_NEWSBOX3_TOOLTIP","Enable or disable the display of the Newsbox 3. Displayed on the authorization page and on the game pages.");
+
+//Admin setting - Admin/Templates/config.tpl SQL Settings
+define("SQL_SETTINGS","SQL Settings");
+define("CONF_SQL_HOSTNAME","Hostname");
+define("CONF_SQL_HOSTNAME_TOOLTIP","The name of the server where MySQL is started (by default is: localhost).");
+define("CONF_SQL_PORT","Port");
+define("CONF_SQL_PORT_TOOLTIP","MySQL port for remote connection. The standard port for connecting is: 3306.");
+define("CONF_SQL_DBUSER","DB Username");
+define("CONF_SQL_DBUSER_TOOLTIP","The user name to connect to the database.");
+define("CONF_SQL_DBPASS","DB Password");
+define("CONF_SQL_DBPASS_TOOLTIP","Password from the user to connect to the database.");
+define("CONF_SQL_DBNAME","DB Name");
+define("CONF_SQL_DBNAME_TOOLTIP","Name of the database to which you are connecting.");
+define("CONF_SQL_TBPREFIX","Table Prefix");
+define("CONF_SQL_TBPREFIX_TOOLTIP","The prefix used for the database tables.");
+define("CONF_SQL_DBTYPE","DB Type");
+define("CONF_SQL_DBTYPE_TOOLTIP","The type of database used.");
+
+//Admin setting - Admin/Templates/config.tpl & editExtraSet.tpl
+define("EXTRA_SETT","Extra Settings");
+define("EDIT_EXTRA_SETT","Edit Extra Settings");
+define("CONF_EXTRA_LIMITMAIL","Limit Mailbox");
+define("CONF_EXTRA_LIMITMAIL_TOOLTIP","Enable (Yes) or disable (No) the mailbox limit.");
+define("CONF_EXTRA_MAXMAIL","Max number of mails");
+define("CONF_EXTRA_MAXMAIL_TOOLTIP","The maximum number of messages that can fit in the mailbox.");
+
+//Admin setting - Admin/Templates/config.tpl & editAdminInfo.tpl
+define("ADMIN_INFO","Admin Information");
+define("EDIT_ADMIN_INFO","Edit Admin Information");
+define("CONF_ADMIN_NAME","Admin Name");
+define("CONF_ADMIN_NAME_TOOLTIP","Name for the administrator account.");
+define("CONF_ADMIN_EMAIL","Admin E-Mail");
+define("CONF_ADMIN_EMAIL_TOOLTIP","The email address for the administrator account.");
+define("CONF_ADMIN_SHOWSTATS","Include Admin in Stats");
+define("CONF_ADMIN_SHOWSTATS_TOOLTIP","Enable (True) or disable (False) the display of the administrator account in the general statistics of players.");
+define("CONF_ADMIN_SUPPMESS","Include Support Messages");
+define("CONF_ADMIN_SUPPMESS_TOOLTIP","Enable (True) or disable (False) the sending of messages to the mailbox of the administrator addressed to Support.");
+define("CONF_ADMIN_RAIDATT","Allow Raided and Attacked");
+define("CONF_ADMIN_RAIDATT_TOOLTIP","Enable (True) or disable (False) the ability to Raided and Attacked an administrator.");
 
 /*
 |--------------------------------------------------------------------------

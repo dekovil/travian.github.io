@@ -200,15 +200,36 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%artefacts` (
  `bad_effect` tinyint(1) NULL DEFAULT '0',
  `effect2` tinyint(2) NULL DEFAULT '0',
  `lastupdate` int(11) NULL DEFAULT '0', 
+ `del` tinyint(1) NULL DEFAULT '0',
  PRIMARY KEY (`id`),
  KEY `owner-active` (`owner`,`active`),
  KEY `vref-type-kind` (`vref`,`type`,`kind`) USING BTREE,
  KEY `active-type-lastupdate` (`active`,`type`,`lastupdate`),
- KEY `size-type` (`size`, `type`)
+ KEY `size-type` (`size`, `type`),
+ KEY `active-owner-conquered-del` (`active`, `owner`, `conquered`, `del`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Table structure for table `%PREFIX%artefacts`
+--
+-- --------------------------------------------------------
+
+--
+-- Table structure for `%PREFIX%artefacts_chrono`
+--
+
+CREATE TABLE IF NOT EXISTS `%PREFIX%artefacts_chrono` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `artefactid` int(11) NULL,
+  `uid` int(11) NULL,
+  `vref` int(11) NULL,
+  `conqueredtime` int(11) NULL,
+  PRIMARY KEY (`id`),
+  KEY `artefactid-conqueredtime` (`artefactid`,`conqueredtime`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--
+-- Table structure for table `%PREFIX%artefacts_chrono`
 --
 -- --------------------------------------------------------
 
@@ -707,6 +728,7 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%fdata` (
  `f99` tinyint(2) NULL DEFAULT '0',
  `f99t` tinyint(2) NULL DEFAULT '0',
  `wwname` varchar(100) NULL DEFAULT 'World Wonder',
+ `ww_lastupdate` int(11) DEFAULT NULL,
  PRIMARY KEY (`vref`),
  KEY `f99` (`f99`),
  KEY `f99t` (`f99t`)
@@ -725,13 +747,19 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%fdata` (
 
 CREATE TABLE IF NOT EXISTS `%PREFIX%forum_cat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sorting` int(11) NOT NULL,
   `owner` varchar(255) DEFAULT NULL,
   `alliance` int(11) NOT NULL,
   `forum_name` varchar(255) DEFAULT NULL,
   `forum_des` text,
   `forum_area` varchar(255) DEFAULT NULL,
+  `display_to_alliances` text,
+  `display_to_users` text,
   PRIMARY KEY (`id`),
-  KEY `alliance-forum_area` (`alliance`,`forum_area`)
+  KEY `alliance-forum_area` (`alliance`,`forum_area`),
+  KEY `display_to_alliances` (`display_to_alliances`(11)),
+  KEY `display_to_users` (`display_to_users`(11)),
+  KEY `sorting` (`sorting`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -770,10 +798,6 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%forum_post` (
   `topic` int(11) NOT NULL,
   `owner` int(11) NOT NULL,
   `date` int(11) DEFAULT NULL,
-  `alliance0` int(11) DEFAULT NULL,
-  `player0` int(11) DEFAULT NULL,
-  `coor0` int(11) DEFAULT NULL,
-  `report0` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
  KEY `topic-owner` (`topic`,`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -835,10 +859,6 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%forum_topic` (
   `ends` int(11) NOT NULL,
   `close` tinyint(4) NOT NULL,
   `stick` tinyint(4) NOT NULL,
-  `alliance0` int(11) DEFAULT NULL,
-  `player0` int(11) DEFAULT NULL,
-  `coor0` int(11) DEFAULT NULL,
-  `report0` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cat-stick` (`cat`, `stick`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -1160,7 +1180,8 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%odata` (
  KEY `crop` (`crop`),
  KEY `loyalty` (`loyalty`),
  KEY `maxcrop` (`maxcrop`),
- KEY `maxstore` (`maxstore`)
+ KEY `maxstore` (`maxstore`),
+ KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1237,10 +1258,6 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%raidlist` (
  `t4` int(11) NULL,
  `t5` int(11) NULL,
  `t6` int(11) NULL,
- `t7` int(11) NULL,
- `t8` int(11) NULL,
- `t9` int(11) NULL,
- `t10` int(11) NULL,
  PRIMARY KEY (`id`),
  KEY `lid-distance` (`lid`, `distance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -1606,10 +1623,10 @@ CREATE TABLE IF NOT EXISTS `%PREFIX%users` (
 --
 
 INSERT INTO `%PREFIX%users` (`id`, `username`, `password`, `email`, `tribe`, `access`, `gold`, `gender`, `birthday`, `location`, `desc1`, `desc2`, `plus`, `b1`, `b2`, `b3`, `b4`, `sit1`, `sit2`, `alliance`, `sessid`, `act`, `timestamp`, `ap`, `apall`, `dp`, `dpall`, `protect`, `quest`, `gpack`, `cp`, `lastupdate`, `RR`, `Rc`, `ok`, `is_bcrypt`) VALUES
-(5, 'Multihunter', '', 'multihunter@travianz.game', 0, 9, 0, 0, '1970-01-01', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1),
+(5, 'Multihunter', '', 'multihunter@travianz.game', 1, 9, 0, 0, '1970-01-01', '', '[#MH]', '[#MULTIHUNTER]', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1),
 (1, 'Support', '', 'support@travianz.game', 0, 8, 0, 0, '1970-01-01', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1),
-(2, 'Nature', '', 'nature@travianz.game', 4, 2, 0, 0, '1970-01-01', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1),
-(4, 'Taskmaster', '', 'taskmaster@travianz.game', 0, 8, 0, 0, '1970-01-01', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1);
+(2, 'Nature', '', 'nature@travianz.game', 4, 2, 0, 0, '1970-01-01', '', '[#NATURE]', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1),
+(4, 'Taskmaster', '', 'taskmaster@travianz.game', 0, 8, 0, 0, '1970-01-01', '', '[#TASKMASTER]', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 'gpack/travian_default/', 1, 0, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 

@@ -23,10 +23,8 @@ if(isset($_GET['newdid'])) {
 	header("Location: ".$_SERVER['PHP_SELF']);
 	exit;
 }
-else {
-	$building->procBuild($_GET);
-}
-$automation->isWinner();
+else $building->procBuild($_GET);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -68,7 +66,7 @@ $automation->isWinner();
 <div id="mid">
 <?php include("Templates/menu.tpl"); ?>
 <?php include("Templates/version.tpl"); ?>
-<div id="products">
+<div id="products"><b>
 1. ronix - For coding above and beyond the call of duty<br />
 2. Dzoki - Version starter<br />
 3. Shadow - For coding above and beyond the call of duty<br />
@@ -101,7 +99,13 @@ $automation->isWinner();
 30. Armando<br />
 31. aggenkeech<br />
 32. Niko28<br />
-33. martinambrus<br />
+33. martinambrus - alumni developer<br />
+34. iopietro - lead developer<br />
+35. Vladyslav - rigorous game tester<br />
+36. AL-Kateb - developer</b></div><br />
+<div style="text-align: center"><b><u>Released by: TravianZ Team</u></b><br /><br />
+<b>Visit: <a href="http://forum.ragezone.com/f583/travianz-version-modified-shadow-many-967580/">RageZone.com</a></b></div><br />
+<div style="text-align: center"><b>Download from <u><a href="https://github.com/Shadowss/TravianZ/archive/master.zip">Github</a></u></b><br />
 </div>
 </div>
 <br /><br /><br /><br /><div id="side_info">
@@ -109,7 +113,10 @@ $automation->isWinner();
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>
@@ -124,11 +131,11 @@ include("Templates/res.tpl");
 <div id="stime">
 <div id="ltime">
 <div id="ltimeWrap">
-Calculated in <b><?php
+<?php echo CALCULATED_IN;?> <b><?php
 echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
 ?></b> ms
 
-<br />Server time: <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
+<br /><?php echo SEVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
 </div>
 	</div>
 </div>

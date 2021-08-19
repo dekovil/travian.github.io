@@ -1,10 +1,7 @@
 ﻿<?php
-if(isset($_GET['aid'])) {
-$aid = $_GET['aid'];
-}
-else {
-$aid = $session->alliance;
-}
+if(isset($_GET['aid'])) $aid = $_GET['aid'];
+else $aid = $session->alliance;
+
 $varmedal = $database->getProfileMedalAlly($aid);
 
 $allianceinfo = $database->getAlliance($aid);
@@ -109,12 +106,14 @@ include("alli_menu.tpl");
             </tr>
 			<?php } ?>
             <tr>
-                <td class="desc2" colspan="2"><?php echo stripslashes(nl2br($profiel[0])); ?>
+                <td class="desc2" colspan="2">
+                    <div class="desc2div"><?php echo stripslashes(nl2br($profiel[0])); ?></div>
                 </td>
             </tr>
             </table>
     </td>
-    <td class="desc1"><?php echo stripslashes(nl2br($profiel[1])); ?>
+    <td class="desc1">
+        <div class="desc1div"><?php echo stripslashes(nl2br($profiel[1])); ?></div>
     </td>
 </tr>
 </tbody>

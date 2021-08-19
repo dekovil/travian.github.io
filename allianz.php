@@ -5,7 +5,12 @@ $start_timer = $generator->pageLoadTimeStart();
 //fix by ronix
 use App\Utils\AccessLogger;
 
-if(isset($_GET['aid']) && !is_numeric($_GET['aid'])) die('Hacking Attemp');
+if(isset($_GET['aid']) && !is_numeric($_GET['aid'])) 
+{
+    header("location: allianz.php"); 
+    exit;
+}
+
 include_once("GameEngine/Village.php");
 include_once("GameEngine/Chat.php");
 AccessLogger::logRequest();
@@ -24,82 +29,60 @@ if(isset($_GET['newdid'])) {
 		exit;
 	}
 }
-if(isset($_GET['s'])){
-	$automation->isWinner();
-}
 
-if(isset($_GET['fid'])){
-	$fid = preg_replace("/[^0-9]/","",$_GET['fid']);
-	$forum = mysqli_query($GLOBALS['link'],"SELECT * FROM " . TB_PREFIX . "forum_cat WHERE id = ".(int) $fid."");
-	$forum_type = mysqli_fetch_array($forum);
-	if($forum_type['forum_name'] != "" && $forum_type['forum_area'] == 0){
-		if($forum_type['alliance'] != $session->alliance){
-			header("Location: ".$_SERVER['PHP_SELF']);
-			exit;
-		}
+if(isset($_GET['fid']) || isset($_GET['fid2'])){
+	$fid = preg_replace("/[^0-9]/","",!empty($_GET['fid']) ? $_GET['fid'] : $_GET['fid2']);
+	$forumInfos = $database->ForumCatEdit($fid);
+	
+	if(empty($forumInfos)){
+		header("Location: ".$_SERVER['PHP_SELF']);
+		exit;
 	}
-}else if(isset($_GET['fid2'])){
-	$fid = preg_replace("/[^0-9]/","",$_GET['fid2']);
-	$forum = mysqli_query($GLOBALS['link'],"SELECT * FROM " . TB_PREFIX . "forum_cat WHERE id = ".(int) $fid."");
-	if (!empty($forum)) {
-		$forum_type = mysqli_fetch_array($forum);
-		if($forum_type['forum_name'] != "" && $forum_type['forum_area'] != 1){
-			if($forum_type['forum_area'] == 0){
-				if($forum_type['alliance'] != $session->alliance){
-					header("Location: ".$_SERVER['PHP_SELF']);
-					exit;
-				}
-			}else if($forum_type['forum_area'] == 2){
-				if($forum_type['alliance'] != $session->alliance){
-					header("Location: ".$_SERVER['PHP_SELF']);
-					exit;
-				}
-			}else if($forum_type['forum_area'] == 3){
-				if($forum_type['alliance'] != $session->alliance){
-					header("Location: ".$_SERVER['PHP_SELF']);
-					exit;
-				}
-			}else{
+	
+	$forum_type = reset($forumInfos);
+	if (!empty($forum_type)) {
+		if($forum_type['forum_area'] != 1 && !$alliance->isForumAccessible($fid)){
+			if($forum_type['alliance'] != $session->alliance){
 				header("Location: ".$_SERVER['PHP_SELF']);
 				exit;
 			}
 		}
-	}	
+	}
 }
-if(isset($_GET['aid']) or isset($_GET['fid']) or isset($_GET['fid2']) or $session->alliance!=0){
+if(isset($_GET['aid']) || isset($_GET['fid']) || isset($_GET['fid2']) ||
+		$session->alliance > 0 || ($session->alliance == 0 && isset($_GET['s']) && $_GET['s'] == 2)){
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 	<title><?php
-
-	   echo SERVER_NAME . ' &raquo; &raquo; &raquo; Alliance ';
-	   
-	   if (!empty($_GET['s'])) {
-	       switch ($_GET['s']) {
-	           case '2':
-	               echo 'Forum ('.$alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'].')';
-	               break;
-	               
-	           case '6':
-	               echo 'Chat ('.$alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'].')';
-	               break;
-	               
-	           case '3':
-	               echo 'Attacks ('.$alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'].')';
-	               break;
-	               
-	           case '4':
-	               echo 'News ('.$alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'].')';
-	               break;
-	               
-	           case '5':
-	               echo 'Options ('.$alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'].')';
-	               break;
-	       }
-	   } else {
-	       echo $alliance->allianceArray['tag'] . ' - ' . $alliance->allianceArray['name'];
-	   }
+	echo SERVER_NAME.' &raquo; &raquo; &raquo; Alliance ';
+	
+	if(!empty($_GET['s'])){
+		switch($_GET['s']){
+			case '2' :
+				if($session->alliance == 0) echo 'Forum (No alliance)';
+				else echo 'Forum ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				break;
+			
+			case '6' :
+				echo 'Chat ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				break;
+			
+			case '3' :
+				echo 'Attacks ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				break;
+			
+			case '4' :
+				echo 'News ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				break;
+			
+			case '5' :
+				echo 'Options ('.$alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'].')';
+				break;
+		}
+	}
+	else echo $alliance->allianceArray['tag'].' - '.$alliance->allianceArray['name'];
 
 ?></title>
 	<link rel="shortcut icon" href="favicon.ico"/>
@@ -125,12 +108,12 @@ if(isset($_GET['aid']) or isset($_GET['fid']) or isset($_GET['fid2']) or $sessio
 
 	   if($session->gpack == null || GP_ENABLE == false) {
 		echo "
-	<link href='" . GP_LOCATE . "travian.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='" . GP_LOCATE . "lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
+	<link href='".GP_LOCATE."travian.css?e21d2' rel='stylesheet' type='text/css' />
+	<link href='".GP_LOCATE."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
 	   } else {
 		echo "
-	<link href='" . $session->gpack . "travian.css?e21d2' rel='stylesheet' type='text/css' />
-	<link href='" . $session->gpack . "lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
+	<link href='".$session->gpack."travian.css?e21d2' rel='stylesheet' type='text/css' />
+	<link href='".$session->gpack."lang/en/lang.css?e21d2' rel='stylesheet' type='text/css' />";
 	   }
 
 ?>
@@ -196,139 +179,114 @@ if(isset($_GET['aid']) or isset($_GET['fid']) or isset($_GET['fid2']) or $sessio
 ?>
 <div id="mid">
 <?php
-$invite_permission = $database->getAlliancePermission($session->uid, "opt4", 0);
-	   include ("Templates/menu.tpl");
-
-	   if(isset($_GET['s']) && $_GET['s'] == 2) {
-		echo '<div id="content"  class="forum">';
-	   } else {
-		echo '<div id="content"  class="alliance">';
-	   }
-
-	   if(isset($_GET['s'])) {
-	   if($_GET['s'] != 5 or $session->sit == 0){
-		switch($_GET['s']) {
-			case 2:
-				if(isset($_POST['vote'])){
-				$alliance->Vote($_POST);
-				}
-				include ("Templates/Alliance/forum.tpl");
-				break;
-			case 3:
-				include ("Templates/Alliance/attacks.tpl");
-				break;
-			case 4:
-				include ("Templates/Alliance/news.tpl");
-				break;
-			case 5:
-				include ("Templates/Alliance/option.tpl");
-				break;
-			case 6:
-				include ("Templates/Alliance/chat.tpl");
-				break;
-			case 1:
-			default:
-				include ("Templates/Alliance/overview.tpl");
-				break;
-		}
-		// Options
-	   }else{
-		header("Location: ".$_SERVER['PHP_SELF']);
-		exit;
-	   }}else if(isset($_GET['delinvite']) && $invite_permission == 1){
-		include ("Templates/Alliance/invite.tpl");
-	    } elseif(isset($_POST['o'])) {
-		switch($_POST['o']) {
-			case 1:
-				if(isset($_POST['s']) == 5 && isset($_POST['a_user'])) {
-					$alliance->procAlliForm($_POST);
-					//echo "Funcion para el cambio de nombre de la alianza";
-					include ("Templates/Alliance/changepos.tpl");
-				} else {
-					include ("Templates/Alliance/assignpos.tpl");
-				}
-				break;
-			case 2:
-				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 2) {
-					$alliance->procAlliForm($_POST);
-					include ("Templates/Alliance/kick.tpl");
-				} else {
-					include ("Templates/Alliance/kick.tpl");
-				}
-				break;
-			case 3:
-				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 3) {
-					$alliance->procAlliForm($_POST);
-					//echo "Funcion para el cambio de nombre de la alianza";
-					include ("Templates/Alliance/allidesc.tpl");
-				} else {
-					include ("Templates/Alliance/allidesc.tpl");
-				}
-				break;
-			case 4:
-				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 4) {
-					$alliance->procAlliForm($_POST);
-					//echo "Funcion para el cambio de nombre de la alianza";
-					include ("Templates/Alliance/invite.tpl");
-				} else {
-					include ("Templates/Alliance/invite.tpl");
-				}
-				break;
-			case 5:
-				$alliance->setForumLink($_POST);
-				include ("Templates/Alliance/linkforum.tpl");
-				break;
-			case 6:
-				if(isset($_POST['dipl']) and isset($_POST['a_name'])) {
-					$alliance->procAlliForm($_POST);
-					include ("Templates/Alliance/chgdiplo.tpl");
-				} else {
-					include ("Templates/Alliance/chgdiplo.tpl");
-				}
-				break;
-			case 11:
-				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 11) {
-					$alliance->procAlliForm($_POST);
-					//echo "Funcion para el cambio de nombre de la alianza";
-					include ("Templates/Alliance/quitalli.tpl");
-				} else {
-					include ("Templates/Alliance/quitalli.tpl");
-				}
-				break;
-			default:
-				include ("Templates/Alliance/option.tpl");
-				break;
-			case 100:
-				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 100) {
-					$alliance->procAlliForm($_POST);
-					//echo "Funcion para el cambio de nombre de la alianza";
-					include ("Templates/Alliance/changename.tpl");
-				} else {
-					include ("Templates/Alliance/changename.tpl");
-				}
-				break;
-			case 101:
-				$database->diplomacyCancelOffer($_POST['id']);
-				include ("Templates/Alliance/chgdiplo.tpl");
-				break;
-			case 102:
-				$database->diplomacyInviteDenied($_POST['id'], $_POST['alli2']);
-				include ("Templates/Alliance/chgdiplo.tpl");
-				break;
-			case 103:
-			if($database->checkDiplomacyInviteAccept($session->alliance, $_POST['type'])){
-				$database->diplomacyInviteAccept($_POST['id'], $_POST['alli2']);
+$userPermissions = $database->getAlliPermissions($session->uid, $session->alliance, 0);
+	include ("Templates/menu.tpl");
+	
+	if(isset($_GET['s']) && $_GET['s'] == 2) echo '<div id="content"  class="forum">';
+	else echo '<div id="content"  class="alliance">';
+	
+	if(isset($_GET['s'])){
+		if($_GET['s'] != 5 || $session->sit == 0){
+			switch($_GET['s']){
+				case 2 :
+					if(isset($_POST['vote'])) $alliance->Vote($_POST);
+					include("Templates/Alliance/forum.tpl");
+					break;
+				case 3:
+					include("Templates/Alliance/attacks.tpl");
+					break;
+				case 4:
+					include("Templates/Alliance/news.tpl");
+					break;
+				case 5:
+					include("Templates/Alliance/option.tpl");
+					break;
+				case 6:
+					include("Templates/Alliance/chat.tpl");
+					break;
+				case 1:
+				default:
+					include("Templates/Alliance/overview.tpl");
+					break;
 			}
-				include ("Templates/Alliance/chgdiplo.tpl");
+			// Options
+		}else{
+			header("Location: ".$_SERVER['PHP_SELF']);
+			exit();
+		}
+	}else if(isset($_GET['delinvite'])){
+		if($userPermissions['opt4'] == 0) $alliance->redirect();
+		include ("Templates/Alliance/invite.tpl");
+	}elseif(isset($_POST['o'])){
+		switch($_POST['o']){
+			case 1 :
+				if($userPermissions['opt1'] == 0) $alliance->redirect();
+				if(isset($_POST['s']) == 5 && isset($_POST['a_user'])){
+					$alliance->procAlliForm($_POST);
+					include("Templates/Alliance/changepos.tpl");
+				}
+				else include("Templates/Alliance/assignpos.tpl");
 				break;
-			case 104:
-				$database->diplomacyCancelExistingRelationship($_POST['id'], $_POST['alli2']);
-				include ("Templates/Alliance/chgdiplo.tpl");
+			case 2 :
+				if($userPermissions['opt2'] == 0) $alliance->redirect();
+				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 2) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/kick.tpl");
+				break;
+			case 3 :
+				if($userPermissions['opt3'] == 0) $alliance->redirect();
+				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 3) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/allidesc.tpl");
+				break;
+			case 4 :
+				if($userPermissions['opt4'] == 0) $alliance->redirect();
+				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 4) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/invite.tpl");
+				break;
+			case 5 :
+				if($userPermissions['opt5'] == 0) $alliance->redirect();
+				if(isset($_POST['f_link'])) $alliance->setForumLink($_POST);
+				include("Templates/Alliance/linkforum.tpl");
+				break;
+			case 6 :
+				if($userPermissions['opt6'] == 0) $alliance->redirect();
+				if(isset($_POST['dipl']) && isset($_POST['a_name'])) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/chgdiplo.tpl");
+				break;
+			case 11 :
+				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 11) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/quitalli.tpl");
+				break;
+			case 100 :
+				if($userPermissions['opt3'] == 0) $alliance->redirect();
+				if(isset($_POST['s']) == 5 && isset($_POST['a']) == 100) $alliance->procAlliForm($_POST);
+				include("Templates/Alliance/changename.tpl");
+				break;
+			case 101 :
+				if($userPermissions['opt6'] == 0) $alliance->redirect();
+				if(isset($_POST['id'])) $database->diplomacyCancelOffer($_POST['id'], $session->alliance);
+				include("Templates/Alliance/chgdiplo.tpl");
+				break;
+			case 102 :
+				if($userPermissions['opt6'] == 0) $alliance->redirect();
+				if(isset($_POST['id'])) $database->diplomacyInviteDenied($_POST['id'], $session->alliance);
+				include("Templates/Alliance/chgdiplo.tpl");
+				break;
+			case 103 :
+				if($userPermissions['opt6'] == 0) $alliance->redirect();
+				if(isset($_POST['id'])) $database->diplomacyInviteAccept($_POST['id'], $session->alliance);
+				include("Templates/Alliance/chgdiplo.tpl");
+				break;
+			case 104 :
+				if($userPermissions['opt6'] == 0) $alliance->redirect();
+				if(isset($_POST['id'])) $database->diplomacyCancelExistingRelationship($_POST['id'], $session->alliance);
+				include("Templates/Alliance/chgdiplo.tpl");
+				break;
+			default :
+				include("Templates/Alliance/option.tpl");
+				break;
 		}
-		} else {
-		include ("Templates/Alliance/overview.tpl");
-		}
-
+	}
+	else include("Templates/Alliance/overview.tpl");		
 ?>
 </div>
 <br /><br /><br /><br /><div id="side_info">
@@ -336,7 +294,10 @@ $invite_permission = $database->getAlliancePermission($session->uid, "opt4", 0);
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>
@@ -345,11 +306,10 @@ include("Templates/links.tpl");
 <div class="clear"></div>
 
 <?php
-
-	   include ("Templates/footer.tpl");
-	   include ("Templates/res.tpl");
-
+include("Templates/footer.tpl");
+include("Templates/res.tpl");
 ?>
+
 <div id="stime">
 <div id="ltime">
 <div id="ltimeWrap">
@@ -381,7 +341,7 @@ include("Templates/links.tpl");
 </html>
 <?php
 }else{
-header("Location: spieler.php?uid=".$session->uid);
-exit;
+	header("Location: spieler.php?uid=".$session->uid);
+	exit;
 }
 ?>

@@ -17,14 +17,13 @@
                 <?php
 	                include("19_train.tpl");
                 ?></table>
-	<p><input type="image" id="btn_train" class="dynamic_img" value="ok" name="s1" src="img/x.gif" alt="train" onclick="this.disabled=true;this.form.submit();"/></form></p>
+	<p><button id="btn_train" class="trav_buttons" value="ok" name="s1" alt="train" onclick="this.disabled=true;this.form.submit();"/> Train </button></form></p>
     <?php
 	} else {
 		echo "<b>".TRAINING_COMMENCE_BARRACKS."</b><br>\n";
 	}
     $trainlist = $technology->getTrainingList(1);
     if(count($trainlist) > 0) {
-    //$timer = 2*count($trainlist);
     	echo "
     <table cellpadding=\"1\" cellspacing=\"1\" class=\"under_progress\">
 		<thead><tr>
@@ -41,7 +40,7 @@
 			echo $train['amt']." ".$train['name']."</td><td class=\"dur\">";
 			if ($TrainCount == 1 ) {
 				$NextFinished = $generator->getTimeFormat($train['timestamp2']-time());
-				echo "<span id=timer1>".$generator->getTimeFormat($train['timestamp']-time())."</span>";
+				echo "<span id=timer".++$session->timer.">".$generator->getTimeFormat($train['timestamp']-time())."</span>";
 			} else {
 				echo $generator->getTimeFormat($train['eachtime']*$train['amt']);
 			}
@@ -52,7 +51,7 @@
             }
 			echo $time[1];
 		} ?>
-		</tr><tr class="next"><td colspan="3"><?php echo UNIT_FINISHED; ?> <span id="timer2"><?php echo $NextFinished; ?></span></td></tr>
+		</tr><tr class="next"><td colspan="3"><?php echo UNIT_FINISHED; ?> <span id="timer<?php echo ++$session->timer?>"><?php echo $NextFinished; ?></span></td></tr>
 		</tbody></table>
     <?php }
 include("upgrade.tpl");

@@ -379,13 +379,12 @@ class adm_DB {
 
             mysqli_query($this->connection, $q);
 
-			$getmovement = $database->getMovement(3,$wref,1);
-			foreach($getmovement as $movedata) {
+			$getmovement = $database->getMovement(3, $wref, 1);
+			foreach($getmovement as $movedata){
 				$time = microtime(true);
 				$time2 = $time - $movedata['starttime'];
 				$database->setMovementProc($movedata['moveid']);
-				$database->addMovement(4,$movedata['to'],$movedata['from'],$movedata['ref'],$time,$time+$time2);
-			//$database->setMovementProc($movedata['moveid']);
+				$database->addMovement(4, $movedata['to'], $movedata['from'], $movedata['ref'], $time, $time + $time2);
 			}
 
 			//check	return enforcement from del village
@@ -648,60 +647,27 @@ class adm_DB {
 			} else {
 				$enforce['hero']='0';
 			}
-
-			$artefact = count($database->getOwnUniqueArtefactInfo2($from['owner'],2,3,0));
-			$artefact1 = count($database->getOwnUniqueArtefactInfo2($enforce['from'],2,1,1));
-			$artefact2 = count($database->getOwnUniqueArtefactInfo2($from['owner'],2,2,0));
-			if($artefact > 0){
-				$fastertroops = 3;
-			}else if($artefact1 > 0){
-				$fastertroops = 2;
-			}else if($artefact2 > 0){
-				$fastertroops = 1.5;
-			}else{
-				$fastertroops = 1;
-			}
-			$time = round($this->procDistanceTime($fromCor,$toCor,min($speeds),$enforce['from'])/$fastertroops);
-
-			$foolartefact2 = $database->getFoolArtefactInfo(2,$enforce['from'],$from['owner']);
-			if(count($foolartefact2) > 0){
-				foreach($foolartefact2 as $arte){
-					if($arte['bad_effect'] == 1){
-						$time *= $arte['effect2'];
-					}else{
-						$time /= $arte['effect2'];
-						$time = round($time);
-					}
-				}
-			}
-			$reference =  $database->addAttack($enforce['from'],$enforce['u'.$start],$enforce['u'.($start+1)],$enforce['u'.($start+2)],$enforce['u'.($start+3)],$enforce['u'.($start+4)],$enforce['u'.($start+5)],$enforce['u'.($start+6)],$enforce['u'.($start+7)],$enforce['u'.($start+8)],$enforce['u'.($start+9)],$enforce['hero'],2,0,0,0,0);
-			$database->addMovement(4,$wref,$enforce['from'],$reference,time(),($time+time()));
+			
+			$troopsTime = $this->procDistanceTime($fromCor, $toCor, min($speeds), $enforce['from']);
+			$time = $database->getArtifactsValueInfluence($from['owner'], $enforce['from'], 2, $troopsTime);
+			
+			$reference = $database->addAttack($enforce['from'], $enforce['u' . $start], $enforce['u' . ($start + 1)], $enforce['u' . ($start + 2)], $enforce['u' . ($start + 3)], $enforce['u' . ($start + 4)], $enforce['u' . ($start + 5)], $enforce['u' . ($start + 6)], $enforce['u' . ($start + 7)], $enforce['u' . ($start + 8)], $enforce['u' . ($start + 9)], $enforce['hero'], 2, 0, 0, 0, 0);
+			$database->addMovement(4, $wref, $enforce['from'], $reference, time(), ($time + time()));
 			$database->deleteReinf($enforce['id']);
 		}
 	}
 
 
-	public function calculateProduction($wid,$uid,$b1,$b2,$b3,$b4,$fdata,$ocounter,$pop) {
-		global $technology,$database;
-		$normalA = $database->getOwnArtefactInfoByType($wid,4);
-		$largeA = $database->getOwnUniqueArtefactInfo($uid,4,2);
-		$uniqueA = $database->getOwnUniqueArtefactInfo($uid,4,3);
-		$upkeep = $this->getUpkeep($this->getAllUnits($wid),0,$wid,$uid);
-
-
-		$production=array();
+	public function calculateProduction($wid, $uid, $b1, $b2, $b3, $b4, $fdata, $ocounter, $pop) {
+		global $technology, $database;
+		
+		$isNatar = $database->getVillageField($wid, "natar");
+		$upkeep = $technology->getUpkeep($this->getAllUnits($wid), 0, $wid);
+		$production = [];
 		$production['wood'] = $this->getWoodProd($fdata, $ocounter,$b1);
 		$production['clay'] = $this->getClayProd($fdata, $ocounter,$b2);
 		$production['iron'] = $this->getIronProd($fdata, $ocounter,$b3);
-		if ($uniqueA['size']==3 && $uniqueA['owner']==$uid){
-			$production['crop'] = $this->getCropProd($fdata, $ocounter,$b4)-$pop-(($upkeep)-round($upkeep*0.50));
-		}elseif ($normalA['type']==4 && $normalA['size']==1 && $normalA['owner']==$uid){
-			$production['crop'] = $this->getCropProd($fdata, $ocounter,$b4)-$pop-(($upkeep)-round($upkeep*0.25));
-		}else if ($largeA['size']==2 && $largeA['owner']==$uid){
-			$production['crop'] = $this->getCropProd($fdata, $ocounter,$b4)-$pop-(($upkeep)-round($upkeep*0.25));
-		}else{
-			$production['crop'] = $this->getCropProd($fdata, $ocounter,$b4)-$pop-$upkeep;
-		}
+		$production['crop'] = $this->getCropProd($fdata, $ocounter,$b4) - (!$isNatar ? $pop : round($pop / 2)) - $upkeep;
 		return $production;
 	}
 
@@ -870,109 +836,6 @@ class adm_DB {
 		}
 		return $ownunit;
 	}
-
-	public function getUpkeep($array,$type,$vid,$uid,$prisoners=0) {
-		global $database;
-		$buildarray = array();
-		$buildarray = $database->getResourceLevel($vid);
-		$upkeep = 0;
-		switch($type) {
-			case 0:
-			$start = 1;
-			$end = 50;
-			break;
-			case 1:
-			$start = 1;
-			$end = 10;
-			break;
-			case 2:
-			$start = 11;
-			$end = 20;
-			break;
-			case 3:
-			$start = 21;
-			$end = 30;
-			break;
-			case 4:
-			$start = 31;
-			$end = 40;
-			break;
-			case 5:
-			$start = 41;
-			$end = 50;
-			break;
-		}
-		for($i=$start;$i<=$end;$i++) {
-			$k = $i-$start+1;
-			$unit = "u".$i;
-			$unit2 = "t".$k;
-			global $$unit;
-			$dataarray = $$unit;
-			for($j=19;$j<=38;$j++) {
-			if($buildarray['f'.$j.'t'] == 41) {
-			$horsedrinking = $j;
-			}
-			}
-			if($prisoners == 0){
-			if(isset($horsedrinking)){
-			if(($i==4 && $buildarray['f'.$horsedrinking] >= 10)
-			|| ($i==5 && $buildarray['f'.$horsedrinking] >= 15)
-			|| ($i==6 && $buildarray['f'.$horsedrinking] == 20)) {
-			$upkeep += ($dataarray['pop']-1) * $array[$unit];
-			} else {
-			$upkeep += $dataarray['pop'] * $array[$unit];
-			}}else{
-			$upkeep += $dataarray['pop'] * $array[$unit];
-			}
-			}else{
-			if(isset($horsedrinking)){
-			if(($i==4 && $buildarray['f'.$horsedrinking] >= 10)
-			|| ($i==5 && $buildarray['f'.$horsedrinking] >= 15)
-			|| ($i==6 && $buildarray['f'.$horsedrinking] == 20)) {
-			$upkeep += ($dataarray['pop']-1) * $array[$unit2];
-			} else {
-			$upkeep += $dataarray['pop'] * $array[$unit2];
-			}}else{
-			$upkeep += $dataarray['pop'] * $array[$unit2];
-			}
-			}
-		}
-		 //   $unit = "hero";
-		 //   global $$unit;
-		 //   $dataarray = $$unit;
-		 if($prisoners == 0){
-			$upkeep += (isset($array['hero'])? $array['hero'] * 6:0);
-		 }else{
-			$upkeep += (isset($array['t11'])? $array['t11'] * 6:0);
-		 }
-			$artefact = count($database->getOwnUniqueArtefactInfo2($uid,4,3,0));
-			$artefact1 = count($database->getOwnUniqueArtefactInfo2($vid,4,1,1));
-			$artefact2 = count($database->getOwnUniqueArtefactInfo2($uid,4,2,0));
-			if($artefact > 0){
-			$upkeep /= 2;
-			$upkeep = round($upkeep);
-			}else if($artefact1 > 0){
-			$upkeep /= 2;
-			$upkeep = round($upkeep);
-			}else if($artefact2 > 0){
-			$upkeep /= 4;
-			$upkeep = round($upkeep);
-			$upkeep *= 3;
-			}
-			$foolartefact = $database->getFoolArtefactInfo(4,$vid,$uid);
-			if(count($foolartefact) > 0){
-			foreach($foolartefact as $arte){
-			if($arte['bad_effect'] == 1){
-			$upkeep *= $arte['effect2'];
-			}else{
-			$upkeep /= $arte['effect2'];
-			$upkeep = round($upkeep);
-			}
-			}
-			}
-		return $upkeep;
-	}
-
 };
 
 $admin = new adm_DB;

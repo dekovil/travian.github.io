@@ -20,7 +20,7 @@
 				<tbody>
                 <?php
 				if($session->tribe != 4){
-                include("20_".$session->tribe.".tpl");
+                    include("20_train.tpl");
 				}
                 ?>
 				</tbody>
@@ -36,7 +36,6 @@
 	}
     $trainlist = $technology->getTrainingList(2);
     if(count($trainlist) > 0) {
-    //$timer = 2*count($trainlist);
     	echo "
     <table cellpadding=\"1\" cellspacing=\"1\" class=\"under_progress\">
 		<thead><tr>
@@ -53,7 +52,7 @@
 			echo $train['amt']." ".$train['name']."</td><td class=\"dur\">";
 			if ($TrainCount == 1) {
 				$NextFinished = $generator->getTimeFormat($train['timestamp2']-time());
-				echo "<span id=timer1>".$generator->getTimeFormat($train['timestamp']-time())."</span>";
+				echo "<span id=timer".++$session->timer.">".$generator->getTimeFormat($train['timestamp']-time())."</span>";
 			} else {
 				echo $generator->getTimeFormat($train['eachtime']*$train['amt']);
 			}
@@ -64,7 +63,7 @@
             }
             echo $time[1];
 		} ?>
-		</tr><tr class="next"><td colspan="3"><?php echo UNIT_FINISHED; ?> <span id="timer2"><?php echo $NextFinished; ?></span></td></tr>
+		</tr><tr class="next"><td colspan="3"><?php echo UNIT_FINISHED; ?> <span id="timer<?php echo ++$session->timer?>"><?php echo $NextFinished; ?></span></td></tr>
         </tbody></table>
     <?php }
     ?>

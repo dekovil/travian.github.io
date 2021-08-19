@@ -1,6 +1,14 @@
 window.dlang = 'ar';  // edit it to en if fullscreen map not working
 window.reloading = false;
+var xhttp = new XMLHttpRequest();
 var timer=new Object();var ab=new Object();var bb=new Object();var cb=db();var eb=0;var auto_reload=1;var fb=new Object();var	is_opera=window.opera!==undefined;var	is_ie=document.all!==undefined&&window.opera===undefined;var is_ie6p=document.compatMode!==undefined&&document.all!==undefined&&window.opera===undefined;var is_ie7=document.documentElement!==undefined&&document.documentElement.style.maxHeight!==undefined;var is_ie6=is_ie6p&&!is_ie7;var is_ff2p=window.Iterator!==undefined;var is_ff3p=document.getElementsByClassName!==undefined;var is_ff2=is_ff2p&&!is_ff3p
+
+automation();
+function automation() {
+	this.xhttp.open("GET", "GameEngine/Automation.php", true);
+	this.xhttp.send();
+	//setTimeout(function(){ automation(); }, 1000);
+}
 function gb(){return hb('height');}
 function ib(){return hb('width');}
 function hb(jb){var kb=0,lb=0;if(typeof(window.innerWidth)=='number'){kb=window.innerWidth;lb=window.innerHeight;}
@@ -591,7 +599,7 @@ else{if(of.firstChild){of.removeChild(of.firstChild);}
 }
 }
 function te(_e,area){area.details={}
-;var ch=['x','y','nr','typ','querystring','img','dname','name','ew','ally','vid','atyp','atime'];for(var i=0;i<_e.length;i++){area.details[ch[i]]=_e[i];}
+;var ch=['x','y','nr','typ','querystring','img','atyp','dname','name','ew','ally','vid','atime'];for(var i=0;i<_e.length;i++){area.details[ch[i]]=_e[i];}
 area.details.normal_field=area.details.name===undefined&&area.details.typ==0;area.details.free_oasis=area.details.name===undefined&&area.details.typ!=0;area.details.occupied_oasis=area.details.name!==undefined&&area.details.typ!=0;area.details.village=area.details.name!==undefined&&area.details.typ==0;area.details.fresh={}
 ;area.details.classic_oasis=area.details.querystring==='';}
 function df(dh){switch(dh){case 1:return[3,3,3,9];case 2:return[3,4,5,6];case 3:return[4,4,4,6];case 4:return[4,5,3,6];case 5:return[5,3,4,6];case 6:return[1,1,1,15];case 7:return[4,4,3,7];case 8:return[3,4,4,7];case 9:return[4,3,4,7];case 10:return[3,5,4,6];case 11:return[4,3,5,6];case 12:return[5,4,3,6];default:return false;}
@@ -763,7 +771,7 @@ function li(step){step.i++;if(step.i==2){step.anm.style.visibility='visible';}
 for(var ji in step.target){step.current[ji]+=step.step[ji];}
 return step;}
 function ii(mi){if(mi===undefined){mi==false;}
-var ni=document.getElementById('ce');if(mi){var oi='<div class="popup3 quest"><a href="#" onClick="qst_handle()"><img src="img/x.gif" border="1" class="popup4" alt="Close"></a><div id="popup3"</div></div>';ni.innerHTML=oi;pi();qst_wfm();vc();qi(true);uc();}
+var ni=document.getElementById('ce');if(mi){var oi='<div class="popup3 quest"><a href="#" onClick="qst_handle()"><img src="img/x.gif" border="1" class="popup4" alt="Close" title="Close"></a><div id="popup3"</div></div>';ni.innerHTML=oi;pi();qst_wfm();vc();qi(true);uc();}
 else{ni.innerHTML='';qi(false);}
 }
 function qi(vis){if(!is_ie6){return;}

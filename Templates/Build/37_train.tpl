@@ -15,29 +15,12 @@
 ## 										##
 #################################################################################
 
-			$artefact = count($database->getOwnUniqueArtefactInfo2($session->uid,5,3,0));
-			$artefact1 = count($database->getOwnUniqueArtefactInfo2($village->wid,5,1,1));
-			$artefact2 = count($database->getOwnUniqueArtefactInfo2($session->uid,5,2,0));
-			if($artefact > 0){
-			$artefact_bonus = 2;
-			$artefact_bonus2 = 1;
-			}else if($artefact1 > 0){
-			$artefact_bonus = 2;
-			$artefact_bonus2 = 1;
-			}else if($artefact2 > 0){
-			$artefact_bonus = 4;
-			$artefact_bonus2 = 3;
-			}else{
-			$artefact_bonus = 1;
-			$artefact_bonus2 = 1;
-			}
-
 //check if there is unit needed in the village
 
-$result      = mysqli_query($GLOBALS['link'],"SELECT * FROM ".TB_PREFIX."units WHERE `vref` = ".(int) $village->wid."");
+$result      = mysqli_query($database->dblink,"SELECT * FROM ".TB_PREFIX."units WHERE `vref` = ".(int) $village->wid."");
 $units_array = mysqli_fetch_array($result);
 
-$count_hero = mysqli_fetch_array(mysqli_query($GLOBALS['link'],"SELECT Count(*) as Total FROM " . TB_PREFIX . "hero WHERE `uid` = " . $database->escape($session->uid) . ""), MYSQLI_ASSOC);
+$count_hero = mysqli_fetch_array(mysqli_query($database->dblink,"SELECT Count(*) as Total FROM " . TB_PREFIX . "hero WHERE `uid` = " . $database->escape($session->uid) . ""), MYSQLI_ASSOC);
 $count_hero = $count_hero['Total'];
 
 if ($count_hero < 3) {
@@ -63,7 +46,7 @@ if($session->tribe == 1) {
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u1['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />";
-     $output.=$generator->getTimeFormat(round($u1['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+    					$output .= $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5,$u1['time'] / SPEED)*3);
 	 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u1['wood'] + $u1['clay'] + $u1['iron'] + $u1['crop']);
@@ -102,7 +85,7 @@ if($session->tribe == 1) {
                             <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u2['crop']."|
                             <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                             <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />";
-        $output.=$generator->getTimeFormat(round($u2['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+        					$output.=$generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u2['time'] / SPEED) * 3);
 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u2['wood'] + $u2['clay'] + $u2['iron'] + $u2['crop']);
@@ -142,7 +125,7 @@ if($session->tribe == 1) {
                                 <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                                 <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />";
 
-         $output.=  $generator->getTimeFormat(round($u3['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+         $output.=  $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u3['time'] / SPEED) * 3);
 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u3['wood'] + $u3['clay'] + $u3['iron'] + $u3['crop']);
@@ -180,7 +163,7 @@ if($session->tribe == 1) {
                             <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u5['crop']."|
                             <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                             <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-    				        $generator->getTimeFormat(round($u5['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+    				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u5['time'] / SPEED) * 3);
 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u5['wood'] + $u5['clay'] + $u5['iron'] + $u5['crop']);
@@ -219,7 +202,7 @@ if($session->tribe == 1) {
                             <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u6['crop']."|
                             <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                             <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-    				        $generator->getTimeFormat(round($u6['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+    				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u6['time'] / SPEED) * 3);
 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u6['wood'] + $u6['clay'] + $u6['iron'] + $u6['crop']);
@@ -261,7 +244,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u11['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u11['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u11['time'] / SPEED) * 3);
 
                             //-- If available resources combined are not enough, remove NPC button
                             $total_required = (int)($u11['wood'] + $u11['clay'] + $u11['iron'] + $u11['crop']);
@@ -300,7 +283,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u12['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u12['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u12['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u12['wood'] + $u12['clay'] + $u12['iron'] + $u12['crop']);
@@ -341,7 +324,7 @@ $output.="<tr>
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />";
 
-				        $generator->getTimeFormat(round($u13['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u13['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u13['wood'] + $u13['clay'] + $u13['iron'] + $u13['crop']);
@@ -380,7 +363,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u15['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u15['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u15['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u15['wood'] + $u15['clay'] + $u15['iron'] + $u15['crop']);
@@ -420,7 +403,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u16['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u16['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u16['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u16['wood'] + $u16['clay'] + $u16['iron'] + $u16['crop']);
@@ -462,7 +445,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u21['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u21['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u21['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u21['wood'] + $u21['clay'] + $u21['iron'] + $u21['crop']);
@@ -501,7 +484,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u22['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u22['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u22['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u22['wood'] + $u22['clay'] + $u22['iron'] + $u22['crop']);
@@ -541,7 +524,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u24['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u24['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u24['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u24['wood'] + $u24['clay'] + $u24['iron'] + $u24['crop']);
@@ -580,7 +563,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u25['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u25['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u25['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u25['wood'] + $u25['clay'] + $u25['iron'] + $u25['crop']);
@@ -620,7 +603,7 @@ $output.="<tr>
                         <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$u26['crop']."|
                         <img class=\"r5\" src=\"img/x.gif\" alt=\"Crop consumption\" title=\"".CROP_COM."\" />6|
                         <img class=\"clock\" src=\"img/x.gif\" alt=\"Duration\" title=\"".DURATION."\" />".
-				        $generator->getTimeFormat(round($u26['time'] / SPEED * $artefact_bonus2 / $artefact_bonus)*3);
+				        $generator->getTimeFormat($database->getArtifactsValueInfluence($session->uid, $village->wid, 5, $u26['time'] / SPEED) * 3);
 
                         //-- If available resources combined are not enough, remove NPC button
                         $total_required = (int)($u26['wood'] + $u26['clay'] + $u26['iron'] + $u26['crop']);
@@ -664,12 +647,11 @@ $output.="<tr>
 
             // check for a valid unit value
             if (in_array($_GET['train'], $validationArray)) {
-                if($session->access != BANNED){
-                    if($count_hero < 3){
-                        $unitID = $_GET['train'];
-                        mysqli_query($GLOBALS['link'],"INSERT INTO ".TB_PREFIX."hero (`uid`, `wref`, `regeneration`, `unit`, `name`, `level`, `points`, `experience`, `dead`, `health`, `attack`, `defence`, `attackbonus`, `defencebonus`, `trainingtime`, `autoregen`, `intraining`) VALUES (".$database->escape($session->uid).", " . (int) $village->wid . ", 0, ".$unitID.", '".$database->escape($session->username)."', 0, 5, 0, 0, 100, 0, 0, 0, 0, ".round((time() + (${'u'.$unitID}['time'] / SPEED)*3)).", 50, 1)");
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "units SET `u$unitID` = `u$unitID` - 1 WHERE `vref` = " . (int) $village->wid);
-                        mysqli_query($GLOBALS['link'],"
+                if($count_hero < 3){
+                    $unitID = $_GET['train'];
+                    mysqli_query($database->dblink,"INSERT INTO ".TB_PREFIX."hero (`uid`, `wref`, `regeneration`, `unit`, `name`, `level`, `points`, `experience`, `dead`, `health`, `attack`, `defence`, `attackbonus`, `defencebonus`, `trainingtime`, `autoregen`, `intraining`) VALUES (".$database->escape($session->uid).", " . (int) $village->wid . ", 0, ".$unitID.", '".$database->escape($session->username)."', 0, 5, 0, 0, 100, 0, 0, 0, 0, ".round((time() + (${'u'.$unitID}['time'] / SPEED)*3)).", 50, 1)");
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "units SET `u$unitID` = `u$unitID` - 1 WHERE `vref` = " . (int) $village->wid);
+                    mysqli_query($database->dblink,"
 					    UPDATE " . TB_PREFIX . "vdata
 					        SET
 					            `wood` = `wood` - ".(int) ${'u'.$unitID}['wood'].",
@@ -678,13 +660,9 @@ $output.="<tr>
 					            `crop` = `crop` - ".(int) ${'u'.$unitID}['crop']."
                             WHERE
                                 `wref` = " . (int) $village->wid);
-                    }
-                    header("Location: build.php?id=".$id."");
-                    exit;
-                }else{
-                    header("Location: banned.php");
-                    exit;
                 }
+                header("Location: build.php?id=".$id."");
+                exit;
             }
         }
 

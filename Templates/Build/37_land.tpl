@@ -3,15 +3,11 @@
 	Copyright: Travianx Project */
 
 	$oasisarray = $database->getOasis($village->wid);
-if(isset($_GET['gid']) && $_GET['gid']==37 && isset($_GET['del'])){
-if($session->access != BANNED){
-	$database->removeOases($_GET['del']);
+if(isset($_GET['gid']) && $_GET['gid'] == 37 && isset($_GET['del']) && $database->getOasisField($_GET['del'], 'owner') == $session->uid){
+	$units->returnTroops($village->wid, 1);
+    $database->removeOases($_GET['del']);
 	header("Location: build.php?id=".$id."&land");
 	exit;
-}else{
-	header("Location: banned.php");
-	exit;
-}
 }
 ?>
 <table id="oases" cellpadding="1" cellspacing="1">
@@ -27,8 +23,8 @@ if($session->access != BANNED){
 <tbody>
 
 <?php
-
-	for ($i=0; $i<count($oasisarray); $i++) {
+if(!empty($oasisarray)){
+	for($i = 0; $i < count($oasisarray); $i++){
 		$oasiscoor = $database->getCoor($oasisarray[$i]['wref']); 
 ?>
 <tr>
@@ -78,6 +74,13 @@ if($session->access != BANNED){
 	}
 ?></td>
 </tr>
-<?php } ?>
+<?php 
+} 
+}else{
+?>
+<tr>
+<td class="none" colspan="4"><?php echo NO_OASIS; ?></td>
+</tr>
+<?php }?>
 </tbody>
 </table>

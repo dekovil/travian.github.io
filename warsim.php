@@ -72,36 +72,30 @@ if(isset($_POST['result'])) {
         include("Templates/Simulator/res_d".$tar.".tpl");
     }
     echo "<p>Type of attack: <b>";
-    echo $form->getValue('ktyp') == 0? "Normal" : "Raid";
+    echo $form->getValue('ktyp') == 0 ? "Normal" : "Raid";
     echo "</b></p>";
     echo "<p>";
-    if (isset($_POST['result'][7])&&isset($_POST['result'][8])){
+    if (isset($_POST['result'][7]) && isset($_POST['result'][8])){
         if ($form->getValue('ktyp') == 1) {
             echo "Hint: The ram does not work during a raid.<br>";
-        }elseif ($_POST['result'][8]>$_POST['result'][7]){
+        }elseif ($_POST['result'][7] == 0){
             echo "Damage done by ram: from level <b>".$form->getValue('walllevel')."</b> to level <b>0</b></p>";
-        }elseif ($_POST['result'][8]==0){
+        }elseif ($_POST['result'][7] == $_POST['result'][8]){
             echo "Damage done by ram: from level <b>".$form->getValue('walllevel')."</b> to level <b>".$form->getValue('walllevel')."</b></p>";
         }else{
-            $demolish_ram=$_POST['result'][8]/$_POST['result'][7];
-            $totallvl = round(sqrt(pow(($form->getValue('walllevel')+0.5),2)-($_POST['result'][8]*8)));
-            echo "Damage done by ram: from level <b>".$form->getValue('walllevel')."</b> to level <b>".$totallvl."</b></p>";
+            echo "Damage done by ram: from level <b>".$form->getValue('walllevel')."</b> to level <b>".$_POST['result'][7]."</b></p>";
         }
     }
 
-    if (isset($_POST['result'][3])&&isset($_POST['result'][4])){
+    if (isset($_POST['result'][3]) && isset($_POST['result'][4])){
         if ($form->getValue('ktyp') == 1) {
             echo "Hint: The catapult does not shoot during a raid.</p>";
-        }elseif ($_POST['result'][4]>$_POST['result'][3]){
+        }elseif ($_POST['result'][3] == 0){
             echo "Damage done by catapult: from level <b>".$form->getValue('kata')."</b> to level <b>0</b></p>";
-        }elseif ($_POST['result'][4]==0){
+        }elseif ($_POST['result'][3] == $_POST['result'][4]){
             echo "Damage done by catapult: from level <b>".$form->getValue('kata')."</b> to level <b>".$form->getValue('kata')."</b></p></p>";
         }else{
-            $demolish=$_POST['result'][4]/$_POST['result'][3];
-            //$Katalife=round($_POST['result'][4]-($_POST['result'][4]*$_POST['result'][1]));
-            //$totallvl = round($form->getValue('kata')-($form->getValue('kata') * $demolish));
-            $totallvl = round(sqrt(pow(($form->getValue('kata')+0.5),2)-($_POST['result'][4]*8)));
-            echo "Damage done by catapult: from level <b>".$form->getValue('kata')."</b> to level <b>".$totallvl."</b></p>";
+            echo "Damage done by catapult: from level <b>".$form->getValue('kata')."</b> to level <b>".$_POST['result'][3]."</b></p>";
         }
     }
 }
@@ -168,7 +162,7 @@ if(count($target) > 0) {
 </tr></tbody>
 </table>
 
-<p class="btn"><input type="image" value="ok" name="s1" id="btn_ok" class="dynamic_img" src="img/x.gif" alt="OK" /></p>
+<p class="btn"><button value="ok" name="s1" id="btn_ok" class="trav_buttons" alt="OK" /> OK </button></p>
 </form>
 </div>
 <br /><br /><br /><br /><div id="side_info">
@@ -176,7 +170,10 @@ if(count($target) > 0) {
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>
@@ -191,11 +188,11 @@ include("Templates/res.tpl");
 <div id="stime">
 <div id="ltime">
 <div id="ltimeWrap">
-Calculated in <b><?php
+<?php echo CALCULATED_IN;?> <b><?php
 echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
 ?></b> ms
 
-<br />Server time: <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
+<br /><?php echo SEVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
 </div>
 	</div>
 </div>

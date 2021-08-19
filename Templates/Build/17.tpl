@@ -20,7 +20,7 @@ for ($a = 1; $a <= 4; $a++) {
     }
 }
 $allres = (int) $_POST['r1'] + (int) $_POST['r2'] + (int) $_POST['r3'] + (int) $_POST['r4'];
-if(!empty($_POST['x']) && !empty($_POST['y']) && is_numeric($_POST['x']) && is_numeric($_POST['y'])){
+if($_POST['x'] != "" && $_POST['y'] != "" && is_numeric($_POST['x']) && is_numeric($_POST['y'])){
 	$getwref = $database->getVilWref($_POST['x'],$_POST['y']);
 	$checkexist = $database->checkVilExist($getwref);
 }
@@ -31,11 +31,12 @@ else if(!empty($_POST['dname'])){
 if(isset($checkexist) && $checkexist){
 $villageOwner = $database->getVillageField($getwref,'owner');
 $userAccess = $database->getUserField($villageOwner,'access',0);
+$userVacation = $database->getUserField($villageOwner,'vac_mode',0);
 $userID = $database->getUserField($villageOwner,'id',0);
 }
 $maxcarry = $market->maxcarry;
 $maxcarry *= $market->merchantAvail();
-if(isset($_POST['ft'])=='check' && $allres!=0 && $allres <= $maxcarry && ($_POST['x']!="" && $_POST['y']!="" or $_POST['dname']!="") && $checkexist && ($userAccess == 2 || $userAccess == MULTIHUNTER || (ADMIN_ALLOW_INCOMING_RAIDS && $userAccess == ADMIN))){
+if(isset($_POST['ft'])=='check' && (($_POST['send3'] > 1 && $_POST['send3'] <= 3 && $session->goldclub) || $_POST['send3'] == 1) && $getwref != $village->wid && $allres!=0 && $allres <= $maxcarry && ($_POST['x']!="" && $_POST['y']!="" or $_POST['dname']!="") && $checkexist && ($userAccess == 2 || $userAccess == MULTIHUNTER || (ADMIN_ALLOW_INCOMING_RAIDS && $userAccess == ADMIN)) && $userVacation == 0){
 ?>
 <form method="POST" name="snd" action="build.php"> 
 <input type="hidden" name="ft" value="mk1">
@@ -72,20 +73,20 @@ if(isset($_POST['ft'])=='check' && $allres!=0 && $allres <= $maxcarry && ($_POST
 	<tbody><tr>
 		<th><?php echo COORDINATES;?>:</th>
         <?php
-		if($_POST['x']!="" && $_POST['y']!="" && is_numeric($_POST['x']) && is_numeric($_POST['y'])){
-        $getwref = $database->getVilWref($_POST['x'],$_POST['y']);
-		$getvilname = $database->getVillageField($getwref, "name");
-		$getvilowner = $database->getVillageField($getwref, "owner");
-		$getvilcoor['y'] = $_POST['y'];
-		$getvilcoor['x'] = $_POST['x'];
-		$time = $generator->procDistanceTime($getvilcoor,$village->coor,$session->tribe,0);
+		if($_POST['x'] != "" && $_POST['y'] != "" && is_numeric($_POST['x']) && is_numeric($_POST['y'])){
+          $getwref = $database->getVilWref($_POST['x'],$_POST['y']);
+		  $getvilname = $database->getVillageField($getwref, "name");
+		  $getvilowner = $database->getVillageField($getwref, "owner");
+		  $getvilcoor['y'] = $_POST['y'];
+		  $getvilcoor['x'] = $_POST['x'];
+		  $time = $generator->procDistanceTime($getvilcoor, $village->coor, $session->tribe, 0);
 		}
-		else if($_POST['dname']!=""){
-		$getwref = $database->getVillageByName($_POST['dname']);
-		$getvilcoor = $database->getCoor($getwref);
-		$getvilname = $database->getVillageField($getwref, "name");
-		$getvilowner = $database->getVillageField($getwref, "owner");
-		$time = $generator->procDistanceTime($getvilcoor,$village->coor,$session->tribe,0);
+		else if(!empty($_POST['dname'])){
+		  $getwref = $database->getVillageByName($_POST['dname']);
+		  $getvilcoor = $database->getCoor($getwref);
+		  $getvilname = $database->getVillageField($getwref, "name");
+		  $getvilowner = $database->getVillageField($getwref, "owner");
+		  $time = $generator->procDistanceTime($getvilcoor, $village->coor, $session->tribe, 0);
 		}
         ?>
 		<td><a href="karte.php?d=<?php echo $getwref; ?>&c=<?php echo $generator->getMapCheck($getwref); ?>"><?php echo $getvilname; ?>(<?php echo $getvilcoor['x']; ?>|<?php echo $getvilcoor['y']; ?>)<span class="clear"></span></a></td>
@@ -202,7 +203,7 @@ $coor['y'] = "";
 </table>
 <div class="clear"></div>
 <?php if($session->goldclub == 1){?>
-<p><select name="send3"><option value="1" selected="selected">1x</option><option value="2">2x</option><option value="3">3x</option></select><?php echo GO;?></p>
+<p><select name="send3"><option value="1" selected="selected">1x</option><option value="2">2x</option><option value="3">3x</option></select> <?php echo GO;?></p>
 <?php
 }else{
 ?>
@@ -215,14 +216,19 @@ $coor['y'] = "";
 $error = '';
 if(isset($_POST['ft'])=='check'){
 
-	if(!$checkexist){
+    if($form->returnErrors() > 0) $error = '<span class="error"><b>'.$form->getError("error").'</b></span>';
+    elseif(!$checkexist){
 		$error = '<span class="error"><b>'.NO_COORDINATES_SELECTED.'</b></span>';
 	}elseif($getwref == $village->wid){
 		$error = '<span class="error"><b>'.CANNOT_SEND_RESOURCES.'</b></span>';
+	}elseif($_POST['send3'] < 1 || $_POST['send3'] > 3 || ($_POST['send3'] > 1 && !$session->goldclub)){
+	    $error = '<span class="error"><b>'.INVALID_MERCHANTS_REPETITION.'</b></span>';
 	}elseif($userAccess == '0' or ($userAccess == MULTIHUNTER && $userID == 5) or (!ADMIN_ALLOW_INCOMING_RAIDS && $userAccess == ADMIN)){
 		$error = '<span class="error"><b>'.BANNED_CANNOT_SEND_RESOURCES.'.</b></span>';
     }elseif($_POST['r1']==0 && $_POST['r2']==0 && $_POST['r3']==0 && $_POST['r4']==0){
 		$error = '<span class="error"><b>'.RESOURCES_NO_SELECTED.'.</b></span>';
+	}elseif($userVacation == '1') {
+		$error = '<span class="error"><b>Player is on vacation mode. You cannot send resources to him.</b></span>';
     }elseif(!$_POST['x'] && !$_POST['y'] && !$_POST['dname']){
 		$error = '<span class="error"><b>'.ENTER_COORDINATES.'.</b></span>';
     }elseif($allres > $maxcarry){
@@ -235,7 +241,6 @@ if(isset($_POST['ft'])=='check'){
 <?php } ?>
 <p><?php echo MERCHANT_CARRY;?> <b><?php echo $market->maxcarry; ?></b> <?php echo UNITS_OF_RESOURCE;?> </p>
 <?php
-$timer = 1;
 if(count($market->recieving) > 0) { 
 echo "<h4>".MERCHANT_COMING.":</h4>";
     foreach($market->recieving as $recieve) {
@@ -244,7 +249,7 @@ echo "<h4>".MERCHANT_COMING.":</h4>";
 	echo "<thead><tr><td><a href=\"spieler.php?uid=$villageowner\">".$database->getUserField($villageowner,"username",0)."</a></td>";
     echo "<td><a href=\"karte.php?d=".$recieve['from']."&c=".$generator->getMapCheck($recieve['from'])."\">".TRANSPORT_FROM." ".$database->getVillageField($recieve['from'],"name")."</a></td>";
     echo "</tr></thead><tbody><tr><th>".ARRIVAL_IN."</th><td>";
-    echo "<div class=\"in\"><span id=timer$timer>".$generator->getTimeFormat($recieve['endtime']-time())."</span> h</div>";
+    echo "<div class=\"in\"><span id=timer".++$session->timer.">".$generator->getTimeFormat($recieve['endtime']-time())."</span> h</div>";
     $datetime = $generator->procMtime($recieve['endtime']);
     echo "<div class=\"at\">";
     if($datetime[0] != "today") {
@@ -254,7 +259,6 @@ echo "<h4>".MERCHANT_COMING.":</h4>";
     echo "</td></tr></tbody> <tr class=\"res\"> <th>".RESOURCES."</th> <td colspan=\"2\"><span class=\"f10\">";
     echo "<img class=\"r1\" src=\"img/x.gif\" alt=\"Lumber\" title=\"".LUMBER."\" />".$recieve['wood']." | <img class=\"r2\" src=\"img/x.gif\" alt=\"Clay\" title=\"".CLAY."\" />".$recieve['clay']." | <img class=\"r3\" src=\"img/x.gif\" alt=\"Iron\" title=\"".IRON."\" />".$recieve['iron']." | <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$recieve['crop']."</td></tr></tbody>";
     echo "</table>";
-    $timer +=1;
     }
 }
 if(count($market->sending) > 0) {
@@ -266,7 +270,7 @@ if(count($market->sending) > 0) {
         echo "<thead><tr> <td><a href=\"spieler.php?uid=$villageowner\">$ownername</a></td>";
         echo "<td><a href=\"karte.php?d=".$send['to']."&c=".$generator->getMapCheck($send['to'])."\">".TRANSPORT_TO." ".$database->getVillageField($send['to'],"name")."</a></td>";
         echo "</tr></thead> <tbody><tr> <th>".ARRIVAL_IN."</th> <td>";
-        echo "<div class=\"in\"><span id=timer".$timer.">".$generator->getTimeFormat($send['endtime']-time())."</span> h</div>";
+        echo "<div class=\"in\"><span id=timer".++$session->timer.">".$generator->getTimeFormat($send['endtime']-time())."</span> h</div>";
         $datetime = $generator->procMtime($send['endtime']);
         echo "<div class=\"at\">";
         if($datetime[0] != "today") {
@@ -276,7 +280,6 @@ if(count($market->sending) > 0) {
         echo "</td> </tr> <tr class=\"res\"> <th>".RESOURCES."</th><td>";
         echo "<img class=\"r1\" src=\"img/x.gif\" alt=\"Lumber\" title=\"".LUMBER."\" />".$send['wood']." | <img class=\"r2\" src=\"img/x.gif\" alt=\"Clay\" title=\"".CLAY."\" />".$send['clay']." | <img class=\"r3\" src=\"img/x.gif\" alt=\"Iron\" title=\"".IRON."\" />".$send['iron']." | <img class=\"r4\" src=\"img/x.gif\" alt=\"Crop\" title=\"".CROP."\" />".$send['crop']."</td></tr></tbody>";
         echo "</table>";
-        $timer += 1;
     }
 }
 if(count($market->return) > 0) {
@@ -288,7 +291,7 @@ if(count($market->return) > 0) {
         echo "<thead><tr> <td><a href=\"spieler.php?uid=$villageowner\">$ownername</a></td>";
         echo "<td><a href=\"karte.php?d=".$return['from']."&c=".$generator->getMapCheck($return['from'])."\">".RETURNFROM." ".$database->getVillageField($return['from'],"name")."</a></td>";
         echo "</tr></thead> <tbody><tr> <th>".ARRIVAL_IN."</th> <td>";
-        echo "<div class=\"in\"><span id=timer".$timer.">".$generator->getTimeFormat($return['endtime']-time())."</span> h</div>";
+        echo "<div class=\"in\"><span id=timer".++$session->timer.">".$generator->getTimeFormat($return['endtime']-time())."</span> h</div>";
         $datetime = $generator->procMtime($return['endtime']);
         echo "<div class=\"at\">";
         if($datetime[0] != "today") {
@@ -297,7 +300,6 @@ if(count($market->return) > 0) {
         echo "".AT." ".$datetime[1]."</div>";
         echo "</td> </tr>";
         echo "</tbody></table>";
-        $timer += 1;
     }
 }
 include("upgrade.tpl");

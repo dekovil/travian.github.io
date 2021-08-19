@@ -48,9 +48,9 @@ $_SESSION[ 'csrf' ] = $key;
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<script src="mt-core.js?0faab" type="text/javascript"></script>
 	<script src="mt-more.js?0faab" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
+	<script src="unx.js?f4b7j" type="text/javascript"></script>
 	<script src="new.js?0faab" type="text/javascript"></script>
-	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
+	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7h" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE ?>travian.css?f4b7d" rel="stylesheet" type="text/css" />
 		<link href="<?php echo GP_LOCATE ?>lang/en/lang.css" rel="stylesheet" type="text/css" />
@@ -81,7 +81,7 @@ else
 <h5><img class="img_u04" src="img/x.gif" alt="login" /></h5>
 <p><?php echo COOKIES; ?></p>
 <?php
-$stime = strtotime(START_DATE)-strtotime(date('m/d/Y'))+strtotime(START_TIME);
+$stime = strtotime(START_DATE) - strtotime(date('d.m.y')) + strtotime(START_TIME);
 if($stime > time()){
 ?>
 <br/><div style="text-align: center"><big>Server will start in: </big></div>
@@ -158,9 +158,9 @@ CountBack(gsecs);
 <input type="hidden" name="ft" value="a4" />
 <script type="text/javascript">
 Element.implement({
-	 //imgid: falls zu dem link ein pfeil geh?rt kann dieser "auf/zugeklappt" werden
+	 //imgid: if an arrow belongs to the link this can be "opened"
 	 showOrHide: function(imgid) {
-		 //einblenden
+		 //insert
 		 if (this.getStyle('display') == 'none')
 		 {
 			 if (imgid != '')
@@ -168,7 +168,7 @@ Element.implement({
 				 $(imgid).className = 'open';
 			 }
 		 }
-		 //ausblenden
+		 //hide
 		 else
 		 {
 			 if (imgid != '')
@@ -195,7 +195,7 @@ Element.implement({
 
 <p class="btn">
 	<!--<input type="hidden" name="e1d9d0c" value="" />-->
-		<input type="image" value="login" name="s1"	onclick="xy();" id="btn_login" class="dynamic_img" src="img/x.gif" alt="login button"	/>
+		<button value="login" name="s1"	onclick="xy();" id="btn_login" class="trav_buttons" alt="login button"	/> Login </button>
 </p>
 
 </form>

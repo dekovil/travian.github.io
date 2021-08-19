@@ -48,7 +48,7 @@ else{
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 	<script src="mt-full.js?0ac37" type="text/javascript"></script>
-	<script src="unx.js?f4b7h" type="text/javascript"></script>
+	<script src="unx.js?f4b7i" type="text/javascript"></script>
 	<script src="new.js?0ac37" type="text/javascript"></script>
 	<link href="<?php echo GP_LOCATE; ?>lang/en/lang.css?f4b7d" rel="stylesheet" type="text/css" />
 	<link href="<?php echo GP_LOCATE; ?>lang/en/compact.css?f4b7i" rel="stylesheet" type="text/css" />
@@ -78,11 +78,10 @@ else{
 <?php include("Templates/header.tpl"); ?>
 <div id="mid">
 <?php include("Templates/menu.tpl");
-if(isset($_GET['d']) && isset($_GET['c'])) {
-	if($generator->getMapCheck($_GET['d']) == $_GET['c']) {
-	include("Templates/Map/vilview.tpl");
-	}
-	else {
+if(isset($_GET['d']) && !empty($_GET['d']) && isset($_GET['c']) && !empty($_GET['c'])) {
+    if($generator->getMapCheck($_GET['d']) == $_GET['c']) include("Templates/Map/vilview.tpl");
+	else 
+	{
 		header("Location: dorf1.php");
 		exit;
 	}
@@ -96,7 +95,10 @@ else {
 include("Templates/multivillage.tpl");
 include("Templates/quest.tpl");
 include("Templates/news.tpl");
-include("Templates/links.tpl");
+if(!NEW_FUNCTIONS_DISPLAY_LINKS) {
+	echo "<br><br><br><br>";
+	include("Templates/links.tpl");
+}
 ?>
 </div>
 <div class="clear"></div>
@@ -111,11 +113,11 @@ include("Templates/res.tpl");
 <div id="stime">
 <div id="ltime">
 <div id="ltimeWrap">
-Calculated in <b><?php
+<?php echo CALCULATED_IN;?> <b><?php
 echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
 ?></b> ms
 
-<br />Server time: <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
+<br /><?php echo SEVER_TIME;?> <span id="tp1" class="b"><?php echo date('H:i:s'); ?></span>
 </div>
 	</div>
 </div>

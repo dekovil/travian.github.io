@@ -1,3 +1,48 @@
+-- 21.06.2018 -> added one column and one index
+ALTER TABLE `s1_artefacts` ADD `del` TINYINT(1) NULL DEFAULT '0' AFTER `lastupdate`;
+ALTER TABLE `testtravian`.`s1_artefacts` ADD INDEX `active-owner-conquered-del` (`active`, `owner`, `conquered`, `del`);
+
+-- 21.05.2018 -> added three indexes
+ALTER TABLE `s1_forum_cat` ADD INDEX `display_to_alliances` (`display_to_alliances`(11));
+ALTER TABLE `s1_forum_cat` ADD INDEX `display_to_users` (`display_to_users`(11)); 
+ALTER TABLE `s1_forum_cat` ADD INDEX `sorting` (`sorting`);
+
+-- 20.05.2018 -> dropped eight columns
+ALTER TABLE `s1_forum_topic`
+  DROP `alliance0`,
+  DROP `player0`,
+  DROP `coor0`,
+  DROP `report0`;
+
+ALTER TABLE `s1_forum_post`
+  DROP `alliance0`,
+  DROP `player0`,
+  DROP `coor0`,
+  DROP `report0`;
+
+-- 19.05.2018 -> added two new columns
+ALTER TABLE s1_forum_cat ADD (`display_to_alliances` text,  `display_to_users` text)
+  
+-- 18.05.2018 -> added a new column
+ALTER TABLE s1_forum_cat ADD `sorting` int(11) NOT NULL AFTER `id`
+
+-- 16.05.2018 -> dropped four columns
+ALTER TABLE `s1_raidlist` DROP `t7`, DROP `t8`, DROP `t9`, DROP `t10`;
+
+-- 23.04.2018 -> new table
+CREATE TABLE IF NOT EXISTS `s1_artefacts_chrono` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `artefactid` int(11) NULL,
+  `uid` int(11) NULL,
+  `vref` int(11) NULL,
+  `conqueredtime` int(11) NULL,
+  PRIMARY KEY (`id`),
+  KEY `artefactid-conqueredtime` (`artefactid`,`conqueredtime`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+-- 7.01.2018 -> new column
+ALTER TABLE s1_fdata ADD `ww_lastupdate` int(11) NULL DEFAULT NULL AFTER `wwname`;
+
 -- 2.12.2017 -> new indexes
 ALTER TABLE `s1_vdata` ADD INDEX(`exp1`);
 ALTER TABLE `s1_vdata` ADD INDEX(`exp2`);

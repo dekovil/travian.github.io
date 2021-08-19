@@ -95,8 +95,20 @@ echo "<div class=\"headline\"><span class=\"f10 c5\">Error creating constant.php
         </tr>
         <tr>
             <td><span class="f9 c6">Natars Units Multiplier:</span></td>
-            <td width="140"><input type="text" name="natars_units" id="natars_units" value="100" size="3"></td>
+            <td width="140"><input type="text" name="natars_units" id="natars_units" value="100" size="3"></td>         
         </tr>
+        <tr>
+        	<td><span class="f9 c6">Natars Spawn (Days):</span></td>
+            <td width="140"><input type="text" name="natars_spawn_time" id="natars_spawn_time" value="260" size="3"></td>
+        </tr>
+        <tr>
+        	<td><span class="f9 c6">WW spawn (Days):</span></td>
+            <td width="140"><input type="text" name="natars_ww_spawn_time" id="natars_ww_spawn_time" value="260" size="3"></td>
+        </tr>
+        <tr>
+        	<td><span class="f9 c6">WW building plan spawn (Days):</span></td>
+            <td width="140"><input type="text" name="natars_ww_building_plan_spawn_time" id="natars_ww_building_plan_spawn_time" value="260" size="3"></td>           
+        </tr>      
         <tr>
             <td><span class="f9 c6">World size:</span></td>
             <td>
@@ -178,6 +190,22 @@ echo "<div class=\"headline\"><span class=\"f10 c5\">Error creating constant.php
             </td>
         </tr>
         <tr>
+        	<td><span class="f9 c6">Oasis wood production multiplier:</span></td>
+            <td width="140"><input type="text" name="oasis_wood_multiplier" id="oasis_wood_multiplier" value="40"></td>                    
+        </tr>
+        <tr>
+        	<td><span class="f9 c6">Oasis clay production multiplier:</span></td>
+            <td width="140"><input type="text" name="oasis_clay_multiplier" id="oasis_clay_multiplier" value="40"></td>
+        </tr>
+        <tr>
+        	<td><span class="f9 c6">Oasis iron production multiplier:</span></td>
+            <td width="140"><input type="text" name="oasis_iron_multiplier" id="oasis_iron_multiplier" value="40"></td>
+        </tr>
+        <tr>
+        	<td><span class="f9 c6">Oasis crop production multiplier:</span></td>
+            <td width="140"><input type="text" name="oasis_crop_multiplier" id="oasis_crop_multiplier" value="40"></td>
+        </tr>
+        <tr>
         <tr class="hover">
             <td><span class="f9 c6">Medal Interval:</span></td>
             <td>
@@ -240,7 +268,146 @@ echo "<div class=\"headline\"><span class=\"f10 c5\">Error creating constant.php
                 </select>
             </td>
         </tr>
+    </table>
+    </p>
+    <p>
+        <span class="f10 c">NEW MECHANICS AND FUNCTIONS RELATED</span>
+    <table>
         <tr>
+            <td><span class="f9 c6">Display oasis in profile:</span></td>
+            <td>
+                <select name="new_functions_oasis">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">Alliance invitation message:</span></td>
+            <td>
+                <select name="new_functions_alliance_invitation">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">New Alliance & Embassy Mechanics:</span></td>
+            <td>
+                <select name="new_functions_embassy_mechanics">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">New forum post message:</span></td>
+            <td>
+                <select name="new_functions_forum_post_message">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">Tribes images in profile:</span></td>
+            <td>
+                <select name="new_functions_tribe_images">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">MHs images in profile:</span></td>
+            <td>
+                <select name="new_functions_mhs_images">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="f9 c6">Display artifact in profile:</span></td>
+            <td>
+                <select name="new_functions_display_artifact">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Display wonder in profile:</span></td>
+            <td>
+                <select name="new_functions_display_wonder">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Vacation Mode:</span></td>
+            <td>
+                <select name="new_functions_vacation">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Catapult targets:</span></td>
+            <td>
+                <select name="new_functions_display_catapult_target">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Manual on Nature and Natars:</span></td>
+            <td>
+                <select name="new_functions_manual_naturenatars">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Direct links placement:</span></td>
+            <td>
+                <select name="new_functions_display_links">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Medal Veteran Player:</span></td>
+            <td>
+                <select name="new_functions_medal_3year">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Medal Veteran Player 5a:</span></td>
+            <td>
+                <select name="new_functions_medal_5year">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td><span class="f9 c6">Medal Veteran Player 10a:</span></td>
+            <td>
+                <select name="new_functions_medal_10year">
+                    <option value="true">true</option>
+                    <option value="false" selected="selected">false</option>
+                </select>
+            </td>
+        </tr>
     </table>
     </p>
     <p>
@@ -590,7 +757,7 @@ echo "<div class=\"headline\"><span class=\"f10 c5\">Error creating constant.php
     <table>
         <tr>
             <td><span class="f9 c6">Start Date:</span></td>
-            <td width="140"><input type="text" name="start_date" id="start_date" value="<?php echo date('m/d/Y'); ?>"></td>
+            <td width="140"><input type="text" name="start_date" id="start_date" value="<?php echo date('d.m.Y'); ?>"></td>
         </tr>
         <tr>
             <td><span class="f9 c6">Start Time:</span></td>

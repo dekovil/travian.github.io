@@ -15,7 +15,7 @@ h1 {
     margin-bottom: 8px;
 }
 p {
-    margin: 14px 0;
+    margin: 20px 0;
     padding: 0;
 }
 label {
@@ -395,6 +395,28 @@ div#side_navi p.deltimer {
 div#side_navi p.deltimer a {
     padding: 0;
     text-align: center;
+}
+div#side_navi table {
+    background-color: #FFFFFF;
+    width: auto;
+    padding-left: 12px;
+}
+div#side_navi table td {
+    line-height: 18px;
+    padding: 0;
+    text-align: left;
+    white-space: nowrap;
+}
+div#side_navi table thead td {
+    background-color: #FFFFFF;
+    height: 22px;
+}
+div#side_navi td.dot {
+    padding: 0 6px;
+    width: 10px;
+}
+div#side_navi td.link {
+    padding-right: 10px;
 }
 div#side_info {
     float: left;
@@ -3181,9 +3203,15 @@ td.cbg2 {
 .ddb {
     float: left;
 }
+.desc1div {
+    width: 236px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
 .desc2div {
-    overflow: hidden;
     width: 235px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 div.activation_time {
     padding-left: 5px;
@@ -4934,6 +4962,17 @@ div#build.gid16 table.troop_details tbody.units td {
 div#build.gid16 table.troop_details tbody.infos th, div#build.gid16 table.troop_details tbody.infos td {
     background-color: #F3F3F3;
 }
+div#build.gid16 table.troop_details tbody.goods td {
+    padding: 2px;
+    width: 7.2%;
+}
+div#build.gid16 table.troop_details tbody.goods div.res {
+    text-align: left;
+    white-space: nowrap;
+}
+div#build.gid16 table.troop_details tbody.goods div.carry {
+    text-align: right;
+}
 div#build.gid16 table.troop_details div {
     float: left;
     text-align: center;
@@ -5908,6 +5947,16 @@ div#side_navi p.deltimer a {
 div#side_navi p.deltimer a span {
     color: #FF8000;
 }
+div#side_navi table thead td a {
+    color: black;
+    font-weight: bold;
+}
+div#side_navi table tbody td {
+    font-size: 11px;
+}
+div#side_navi td.link {
+    font-size: 13px;
+}
 div#side_info h6 {
     color: #FF8000;
     font-size: 13px;
@@ -6357,6 +6406,9 @@ div#build.gid16 table#raidList thead a {
     color: black;
     font-weight: normal;
 }
+div#build.gid16 table#raidList input.text{
+    width: 75px;
+}
 div.map table#raidFavs thead a {
     color: black;
     font-weight: normal;
@@ -6632,6 +6684,65 @@ img.r4 {
 img.r5 {
     background-position: -84px 0;
 }
+img.r100,
+img.r200,
+img.r300,
+img.r400,
+img.r500,
+img.r600,
+img.r700,
+img.r800,
+img.r900,
+img.r1000,
+img.r1100 {
+  height: 21px;
+  width: 25px;
+  background-image: url(../../img/a/resNew2.png);
+}
+
+img.r100 {
+  background-position: 0px 0px;
+}
+
+img.r200 {
+  background-position: 0px -21px;
+}
+
+img.r300 {
+  background-position: 0px -42px;
+}
+
+img.r400 {
+  background-position: 0px -63px;
+}
+
+img.r500 {
+  background-position: 0px -84px;
+}
+
+img.r600 {
+  background-position: 0px -105px;
+}
+
+img.r700 {
+  background-position: 0px -126px;
+}
+
+img.r800 {
+  background-position: 0px -147px;
+}
+
+img.r900 {
+  background-position: 0px -168px;
+}
+
+img.r1000 {
+  background-position: 0px -189px;
+}
+
+img.r1100 {
+  background-position: 0px -210px;
+}
 img.attack_symbol_grey, img.attack_symbol_green, img.attack_symbol_yellow, img.attack_symbol_red {
     background-image: url("../../img/a/mark_attack.gif");
     height: 12px;
@@ -6819,6 +6930,11 @@ div#map div#map_content div span.m6 {
 div#map div#map_content div span.m9 {
     background-image: url("../../img/m/mret.gif");
 }
+img.carry {
+    background: url("../../img/a/car.gif") no-repeat scroll 0 0 transparent;
+    height: 12px;
+    width: 18px;
+}
 img.iReport {
     background-image: url("../../img/a/report_icons.gif");
     height: 17px;
@@ -6892,6 +7008,7 @@ div#map a#map_makelarge img {
 }
 div#mbig a#map_popclose img {
     background-image: url("../../img/a/close.gif");
+    cursor: pointer;
     height: 22px;
     width: 22px;
 }
@@ -6914,6 +7031,30 @@ img.online4 {
 }
 img.online5 {
     background-position: -60px 0;
+}
+img.WWVillagesAnnouncement {
+    background-image: url("../../img/artefact/WWVillagesAnnouncement.gif");
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 196px;
+    height: 324px;
+}
+img.ArtifactsAnnouncement {
+    background-image: url("../../img/artefact/ArtifactsAnnouncement.gif");
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 378px;
+    height: 157px;
+}
+img.WWBuildingPlansAnnouncement{
+	background-image: url("../../img/artefact/type-1.gif");
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 551px;
+    height: 168px;
 }
 h1 img.point {
     background-image: url("../../img/u/point.gif");
@@ -7494,36 +7635,36 @@ div.forum table#topics td.last img.latest_reply {
     height: 9px;
     width: 18px;
 }
-div#build.gid27 table td.icon img {
+table td.icon img {
     background-image: url("../../img/misc/artefacts.gif");
     height: 16px;
     width: 16px;
 }
-div#build.gid27 table td.icon img.artefact_icon_ww {
+table td.icon img.artefact_icon_ww {
     background-position: 0 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_1 {
+table td.icon img.artefact_icon_1 {
     background-position: -16px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_2 {
+table td.icon img.artefact_icon_2 {
     background-position: -32px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_3 {
+table td.icon img.artefact_icon_3 {
     background-position: -48px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_4 {
+table td.icon img.artefact_icon_4 {
     background-position: -64px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_5 {
+table td.icon img.artefact_icon_5 {
     background-position: -80px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_6 {
+table td.icon img.artefact_icon_6 {
     background-position: -96px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_7 {
+table td.icon img.artefact_icon_7 {
     background-position: -112px 0;
 }
-div#build.gid27 table td.icon img.artefact_icon_8 {
+table td.icon img.artefact_icon_8 {
     background-position: -128px 0;
 }
 img.cropfinder_icon {
@@ -7534,42 +7675,34 @@ img.cropfinder_icon {
 div#build.gid27 div.artefact {
     background-position: center bottom;
     background-repeat: no-repeat;
+    padding-bottom: 170px;
 }
 div#build.gid27 div.artefact.image-1 {
     background-image: url("../../img/artefact/type-1.gif");
-    padding-bottom: 160px;
 }
 div#build.gid27 div.artefact.image-2 {
     background-image: url("../../img/artefact/type-2.gif");
-    padding-bottom: 223px;
 }
 div#build.gid27 div.artefact.image-4 {
     background-image: url("../../img/artefact/type-4.gif");
-    padding-bottom: 200px;
 }
 div#build.gid27 div.artefact.image-5 {
     background-image: url("../../img/artefact/type-5.gif");
-    padding-bottom: 157px;
 }
 div#build.gid27 div.artefact.image-6 {
     background-image: url("../../img/artefact/type-6.gif");
-    padding-bottom: 170px;
 }
 div#build.gid27 div.artefact.image-8 {
     background-image: url("../../img/artefact/type-8.gif");
-    padding-bottom: 160px;
 }
 div#build.gid27 div.artefact.image-9 {
     background-image: url("../../img/artefact/type-9.gif");
-    padding-bottom: 198px;
 }
 div#build.gid27 div.artefact.image-10 {
     background-image: url("../../img/artefact/type-10.gif");
-    padding-bottom: 161px;
 }
 div#build.gid27 div.artefact.image-fool {
     background-image: url("../../img/artefact/type-fool.gif");
-    padding-bottom: 252px;
 }
 div.forum table img.smiley, div.forum table#posts td.pcontent div.text img.smiley, div.messages img.smiley {
     background-image: url("../../img/f/smileys.gif");

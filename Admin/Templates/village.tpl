@@ -10,38 +10,40 @@
 ##  Copyright:     TravianZ (c) 2010-2014. All rights reserved.                ##
 ##  Improved:      aggenkeech                                                  ##
 #################################################################################
-if($_SESSION['access'] < 8) die("Access Denied: You are not Admin!");
-error_reporting(0);
+include_once("../GameEngine/Generator.php");
+
 $id = $_GET['did'];
-if(isset($id))
-{
+if(isset($id)){
+
 	$coor = $database->getCoor($village['wref']);
 	$varray = $database->getProfileVillages($village['owner']);
 	$type = $database->getVillageType($village['wref']);
 	$fdata = $database->getResourceLevel($village['wref']);
 	$units = $database->getUnit($village['wref']);
 	$abtech = $database->getABTech($id); // Armory/blacksmith level
-	if($type == 1){ $typ = array(3,3,3,9); }
-	elseif($type == 2){ $typ = array(3,4,5,6); }
-	elseif($type == 3){ $typ = array(4,4,4,6); }
-	elseif($type == 4){ $typ = array(4,5,3,6); }
-	elseif($type == 5){ $typ = array(5,3,4,6); }
-	elseif($type == 6){ $typ = array(1,1,1,15); }
-	elseif($type == 7){ $typ = array(4,4,3,7); }
-	elseif($type == 8){ $typ = array(3,4,4,7); }
-	elseif($type == 9){ $typ = array(4,3,4,7); }
-	elseif($type == 10){ $typ = array(3,5,4,6); }
-	elseif($type == 11){ $typ = array(4,5,3,6); }
-	elseif($type == 12){ $typ = array(5,4,3,6); }
-	$ocounter = array();
+	
+	switch($type){
+	    case 1: $typ = [3, 3, 3, 9]; break;
+	    case 2: $typ = [3, 4, 5, 6]; break;
+	    case 3: $typ = [4, 4, 4, 6]; break;
+	    case 4: $typ = [4, 5, 3, 6]; break;
+	    case 5: $typ = [5, 3, 4, 6]; break;
+	    case 6: $typ = [1, 1, 1, 15]; break;
+	    case 7: $typ = [4, 4, 3, 7]; break;
+	    case 8: $typ = [3, 4, 4, 7]; break;
+	    case 9: $typ = [4, 3, 4, 7]; break;
+	    case 10: $typ = [3, 5, 4, 6]; break;
+	    case 11: $typ = [4, 5, 3, 6]; break;
+	    case 12: $typ = [5, 4, 3, 6]; break;
+	}
+
+	$ocounter = [];
 	$wood = $clay = $iron =$crop = 0;
 	$q = "SELECT o.*, w.x, w.y FROM ".TB_PREFIX."odata AS o LEFT JOIN ".TB_PREFIX."wdata AS w ON o.wref=w.id WHERE conqured = ".(int) $village['wref'];
 	$result = $database->query_return($q);
-	if(count($result) >0)
-		{
+	if(!empty($result)){
 		    $newResult = [];
-			foreach($result as $row)
-			{
+			foreach($result as $row){
 				$type = $row['type'];
                 if ( $type == 1 ) {
                     $row['type'] = '<img src="../img/admin/r/1.gif"> + 25%';
@@ -92,17 +94,7 @@ if(isset($id))
 	$refreshiconfrm = "../img/admin/refresh.png";
 	$refreshicon  = "<img src=\"".$refreshiconfrm."\">";
 
-	class MyGenerator
-	{
-		public function getMapCheck($wref)
-		{
-			return substr(md5($wref),5,2);
-		}
-	};
-	$generator = new MyGenerator;
-
-	if($village and $user)
-	{
+	if($village && $user){
 		include("search2.tpl"); ?>
 		<style>
 			.del {width:12px; height:12px; background-image: url(img/admin/icon/del.gif);}
@@ -153,17 +145,10 @@ if(isset($id))
 					<td>Field type</td>
 					<td colspan="2">
 						<?php
-							for ($i = 0; $i <= 3; $i++)
-							{
-								$a = $i+1;
-								if($i != 3)
-								{
-									echo $typ[$i].'x <img src="../img/admin/r/'.$a.'.gif">| ';
-								}
-								else
-								{
-									echo $typ[$i].'x <img src="../img/admin/r/'.$a.'.gif"> ';
-								}
+							for ($i = 0; $i <= 3; $i++){
+								$a = $i + 1;
+								if($i != 3) echo $typ[$i].'x <img src="../img/admin/r/'.$a.'.gif">| ';	
+							    else echo $typ[$i].'x <img src="../img/admin/r/'.$a.'.gif"> ';
 							}
 						?>
 					</td>
@@ -223,20 +208,16 @@ if(isset($id))
 			</thead>
 			<tbody>
 				<?php
-					for($e=1; $e<4; $e++)
-					{
+					for($e = 1; $e < 4; $e++){
 						$exp = $village['exp'.$e.''];
-						if($exp == 0)
-						{
+						if($exp == 0){
 							echo '
 								<tr>
 									<td class="hab"><center> - </center></td>
 									<td class="hab"><center> - </center></td>
 									<td class="hab"><center> - </center></td>
 								</tr>';
-						}
-						else
-						{
+						}else{
 							$vill = $database->getVillage($exp);
 							$link = '<a href="admin.php?p=village&did='.$vill['wref'].'">'.$vill['name'].'</a>';
 							echo '
@@ -268,13 +249,11 @@ if(isset($id))
 			</thead>
 			<tbody>
 				<?php
-					if(count($newResult))
-					{
-						foreach($newResult as $row)
-						{
+					if(!empty($newResult)){
+						foreach($newResult as $row){
 							echo "
 							<tr>
-								<td><a href=\"?action=delOas&oid=".$row['wref']."\" onClick=\"return del('oas',".$row['wref'].")\"><img src=\"../img/admin/del.gif\"></a></td>
+								<td><a href=\"?action=delOas&oid=".$row['wref']."&did=".$_GET['did']."\" onClick=\"return del('oas',".$row['wref'].")\"><img src=\"../img/admin/del.gif\"></a></td>
 								<td class=\"hab\">".$row['name']."</td>
 								<td class=\"hab\"><a href=\"../karte.php?d=".$row['wref']."&c=".$generator->getMapCheck($row['wref'])."\" target=\"blank\">(".$row['x']."|".$row['y'].")</a></td>
 								<td class=\"hab\">".round($row['loyalty'])."%</td>
@@ -282,10 +261,7 @@ if(isset($id))
 							</tr>";
 						}
 					}
-					elseif($result ==0)
-					{
-						echo '<td colspan="5"><center>This village has no oases</center></td>';
-					}
+					else echo '<td colspan="5"><center>This village has no oases</center></td>';
 				?>
 			</tbody>
 		</table>
@@ -298,13 +274,15 @@ if(isset($id))
 			include('troopUpgrades.tpl');
 		?>
 
-
+		<?php
+			include('artifact.tpl');
+		?>
+		
 		<a href="admin.php?p=editVillage&did=<?php echo $_GET['did']; ?>" title="Edit Village">
 		<div id="content" class="village1" style="min-height: 264px;">
 			<div id="village_map" class="f<?php echo $database->getVillageType($village['wref']); ?>" style="float: left;">
 				<?php
-					for($f = 1; $f <19; $f++)
-					{
+					for($f = 1; $f < 19; $f++){
 						$gid = $fdata['f'.($f).'t'];
 						$level = $fdata['f'.($f)];
 						echo "<img src=\"../img/x.gif\" class=\"reslevel rf".$f." level".$level."\">";
@@ -312,95 +290,67 @@ if(isset($id))
 
 				?>
 			</div>
-			<div id="map_details">
-			<!--	<table>
-					<tbody>
-						<tr>
-							<td class="ico"><img class="r1" src="../img/x.gif"></td>
-							<td class="res">Lumber:</td>
-							<td class="num">Coming</td>
-							<td class="per">/hr</td>
-						</tr>
-						<tr>
-							<td class="ico"><img class="r2" src="../img/x.gif"></td>
-							<td class="res">Clay:</td>
-							<td class="num">Coming</td>
-							<td class="per">/hr</td>
-						</tr>
-						<tr>
-							<td class="ico"><img class="r3" src="../img/x.gif"></td>
-							<td class="res">Iron:</td>
-							<td class="num">Coming</td>
-							<td class="per">/hr</td>
-						</tr>
-						<tr>
-							<td class="ico"><img class="r4" src="../img/x.gif"></td>
-							<td class="res">Crop:</td>
-							<td class="num">Coming</td>
-							<td class="per">/hr</td>
-						</tr>
-					</tbody>
-				</table> -->
-		</div>
 		</div></a>
+	<?php 
+	
+	$WWLevel = $fdata['f99t'];
+	$wallLevel = $fdata['f40t'];
+	if($wallLevel == 0) $wallType = "d2_0";
+	else 
+	{
+	    switch($user['tribe']){
+	        case 1:
+	        case 5:
+	        default: $wallType = "d2_11"; break;
+	        
+	        case 2: $wallType = "d2_12"; break;
+	        case 3: $wallType = "d2_1"; break;
+	    }
+	}
+	
+	?>	
 	<div id="content" class="village2" style="padding: 0; margin-left: -20px;">
 		<h1><?php echo $village['name']; ?></h1>
-		<div id="village_map" class="d2_0">
+		<div id="village_map" class="<?php echo $wallType; ?>">
 			<?php
-			for($b =1; $b <21; $b++)
-			{
+			for($b = 1; $b < 21; $b++){
 				$gid = $fdata['f'.($b + 18).'t'];
-				if($gid >0)
-				{
-					echo "<img src=\"../img/x.gif\" class=\"building d".$b." g".$gid."\">";
-				}
-				elseif($gid ==0)
-				{
-					echo "<img src=\"../img/x.gif\" class=\"building d".$b." iso\">";
-				}
+				if($gid > 0) echo "<img src=\"../img/x.gif\" class=\"building d".$b." g".$gid."\">";
+				elseif($gid == 0) echo "<img src=\"../img/x.gif\" class=\"building d".$b." iso\">";
 			}
-			$rp=16;
-			$rplevel = $fdata['f'.$rp];
-			if($rplevel > 0)
-			{
-				echo "<img src=\"../img/x.gif\" class=\"dx1 g16\">";
-			}
-			elseif($rplevel ==0)
-			{
-				echo "<img src=\"../img/x.gif\" class=\"dx1 g16e\">";
-			}
+			
+			$rplevel = $fdata['f39t'];
+			
+			if($rplevel > 0) echo "<img src=\"../img/x.gif\" class=\"dx1 g16\">";
+			elseif($rplevel == 0) echo "<img src=\"../img/x.gif\" class=\"dx1 g16e\">";
 
             $resourcearray = $database->getResourceLevel($village['wref']);
-            if($resourcearray['f99t'] == 40) {
+            if($resourcearray['f99t'] == 40){
                 if($resourcearray['f99'] >= 0 && $resourcearray['f99'] <= 19) {
-                    echo '<img class="ww g40" src="img/x.gif" alt="Worldwonder">'; }
-                if($resourcearray['f99'] >= 20 && $resourcearray['f99'] <= 39) {
-                    echo '<img class="ww g40_1" src="img/x.gif" alt="Worldwonder">'; }
-                if($resourcearray['f99'] >= 40 && $resourcearray['f99'] <= 59) {
-                    echo '<img class="ww g40_2" src="img/x.gif" alt="Worldwonder">'; }
-                if($resourcearray['f99'] >= 60 && $resourcearray['f99'] <= 79) {
-                    echo '<img class="ww g40_3" src="img/x.gif" alt="Worldwonder">'; }
-                if($resourcearray['f99'] >= 80 && $resourcearray['f99'] <= 99) {
-                    echo '<img class="ww g40_4" src="img/x.gif" alt="Worldwonder">'; }
-                if($resourcearray['f99'] == 100) {
-                    echo '<img class="ww g40_5" src="img/x.gif" alt="Worldwonder">'; }
+                    echo '<img class="ww g40" src="img/x.gif" alt="Worldwonder">';
+                }elseif($resourcearray['f99'] >= 20 && $resourcearray['f99'] <= 39) {
+                    echo '<img class="ww g40_1" src="img/x.gif" alt="Worldwonder">'; 
+                }elseif($resourcearray['f99'] >= 40 && $resourcearray['f99'] <= 59) {
+                    echo '<img class="ww g40_2" src="img/x.gif" alt="Worldwonder">';
+                }elseif($resourcearray['f99'] >= 60 && $resourcearray['f99'] <= 79) {
+                    echo '<img class="ww g40_3" src="img/x.gif" alt="Worldwonder">';
+                }elseif($resourcearray['f99'] >= 80 && $resourcearray['f99'] <= 99) {
+                    echo '<img class="ww g40_4" src="img/x.gif" alt="Worldwonder">';
+                }elseif($resourcearray['f99'] == 100) {
+                    echo '<img class="ww g40_5" src="img/x.gif" alt="Worldwonder">';
+                }
             }
 
 			?>
 			<div id="levels" class="on">
 				<?php
-					for($b =1; $b <21; $b++)
-					{
+					for($b = 1; $b < 21; $b++){
 						$level = $fdata['f'.($b + 18)];
-						if($level >0)
-						{
-							echo "<div class=\"d$b\">$level</div>";
-						}
+						if($level >0) echo "<div class=\"d$b\">$level</div>";
 					}
-					if($rplevel >0)
-					{
-						echo "<div class=\"l39\">".$fdata['f'.($b + 18)]."</div>";
-					}
+					if($rplevel > 0) echo "<div class=\"l39\">".$fdata['f39']."</div>";
+					if($wallLevel > 0) echo "<div class=\"l40\">".$fdata['f40']."</div>";
+					if($WWLevel > 0) echo "<div class=\"d40\">".$fdata['f99']."</div>";
 				?>
 	</div>
 </div>
@@ -421,16 +371,12 @@ if(isset($id))
 	</thead>
 	<tbody>
 	<?php
-	for ($i = 1; $i <= 40; $i++)
-	{
-		if($fdata['f'.$i.'t'] == 0)
-		{
-			$bu = "-";
-		}
-		else
-		{
-			$bu = $funct->procResType($fdata['f'.$i.'t']);
-		}
+	for ($i = 1; $i <= 41; $i++){
+	    if($i == 41) $i = 99;
+	    
+	    if($fdata['f'.$i.'t'] == 0) $bu = "-";
+		else $bu = $funct->procResType($fdata['f'.$i.'t']);
+		
 		echo '
 			<tr>
 				<td class="on">'.$i.'</td>

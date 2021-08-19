@@ -22,7 +22,7 @@ echo "
 	<tr>
 		<th>".NAME."</th>
 		<td>".$alliance->allianceArray['name']."</td>
-
+        <span class=\"error\">".$form->getError("ally3")."</span>
 	</tr>
 	<tr>
 		<td class=\"empty\" colspan=\"2\"></td>
@@ -36,7 +36,6 @@ echo "
     ?>
 <table cellpadding="1" cellspacing="1" id="join">
 <form method="post" action="build.php">
-<input type="hidden" name="id" value="<?php echo $id ?>">
 <input type="hidden" name="a" value="2">
 
 <thead><tr>
@@ -48,7 +47,7 @@ echo "
     	foreach($alliance->inviteArray as $invite) {
         	 echo "<td class=\"abo\"><a href=\"build.php?id=".$id."&a=2&d=".$invite['id']."\"><img class=\"del\" src=\"img/x.gif\" alt=\"refuse\" title=\"".REFUSE."\" /></a></td>
         <td class=\"nam\"><a href=\"allianz.php?aid=".$invite['alliance']."\">&nbsp;".$database->getAllianceName($invite['alliance'])."</a></td>
-        <td class=\"acc\"><a href=\"build.php?id=".$id."&a=3&d=".$invite['id']."\">&nbsp;".ACCEPT."</a></td><tr>";
+        <td class=\"acc\"><a href=\"build.php?id=".$id."&a=3&d=".$invite['id']."\">&nbsp;".ACCEPT."</a></td>";
         }
         }
     else {
@@ -56,6 +55,7 @@ echo "
         }
         ?>
 	</tr></tbody></table>
+	<p class="error"><?php echo $form->getError("ally4"); ?></p>
     <?php
         if($alliance->gotInvite) {
         echo "<p class=\"error2\" style=\"color: #DD0000\">".$form->getError("ally_accept")."</p>";

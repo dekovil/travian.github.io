@@ -12,10 +12,11 @@
 include_once("GameEngine/Data/hero_full.php");
 global $database; 
 
-if (isset($_POST['name'])) { 
-	$_POST['name'] = stripslashes($_POST['name']);
-	mysqli_query($GLOBALS['link'],"UPDATE ".TB_PREFIX."hero SET `name`='".($database->escape($_POST['name']))."' where `uid`='".$database->escape($session->uid)."' AND dead = 0") or die("ERROR:".mysqli_error($database->dblink));   
-    echo "".NAME_CHANGED.""; 
+if (isset($_POST['name']) && !empty($_POST['name'])) { 
+    $_POST['name'] = $database->escape(stripslashes($_POST['name']));
+	mysqli_query($database->dblink,"UPDATE ".TB_PREFIX."hero SET `name`='".$_POST['name']."' where `uid`='".$database->escape($session->uid)."' AND dead = 0") or die("ERROR:".mysqli_error($database->dblink));   
+	$hero_info['name'] = $_POST['name'];
+	echo "".NAME_CHANGED.""; 
 }
 ?>
 
@@ -37,16 +38,8 @@ if (isset($_POST['name'])) {
         <td class="xp"><img class="bar" src="img/x.gif" style="width:<?php echo (2*$hero_info['attack'])+1; ?>px;" alt="<?php echo $hero_info['atk']; ?>" title="<?php echo $hero_info['atk']; ?>" /></td> 
         <td class="up"><span class="none"> 
         <?php 
-        if($hero_info['points'] > 0 && $hero_info['attack'] < 100){ 
-		if($session->access != BANNED){
-            echo "<a href=\"build.php?id=".$id."&add=off\">(<b>+</b>)</a>"; 
-		}else{
-			header("Location: banned.php");
-			exit; 
-		}
-        }else { 
-            echo "<span class=\"none\">(+)</span>"; 
-        } 
+        if($hero_info['points'] > 0 && $hero_info['attack'] < 100) echo "<a href=\"build.php?id=".$id."&add=off\">(<b>+</b>)</a>";     
+        else echo "<span class=\"none\">(+)</span>"; 
         ?> 
         </td> 
         <td class="po"><?php echo $hero_info['attack']; ?></td> 
@@ -57,16 +50,8 @@ if (isset($_POST['name'])) {
         <td class="xp"><img class="bar" src="img/x.gif" style="width:<?php echo (2*$hero_info['defence'])+1; ?>px;" alt="<?php echo ($hero_info['di']) . "/" . ($hero_info['dc']); ?>"  title="<?php echo ($hero_info['di']) . "/" . ($hero_info['dc']); ?>" /></td> 
         <td class="up"><span class="none"> 
         <?php 
-        if($hero_info['points'] > 0 && $hero_info['defence'] < 100){ 
-		if($session->access != BANNED){
-            echo "<a href=\"build.php?id=".$id."&add=deff\">(<b>+</b>)</a>"; 
-		}else{
-			header("Location: banned.php");
-			exit; 
-		}
-        }else { 
-            echo "<span class=\"none\">(+)</span>"; 
-        } 
+        if($hero_info['points'] > 0 && $hero_info['defence'] < 100) echo "<a href=\"build.php?id=".$id."&add=deff\">(<b>+</b>)</a>";           
+        else echo "<span class=\"none\">(+)</span>"; 
         ?> 
         </td> 
         <td class="po"><?php echo $hero_info['defence']; ?></td> 
@@ -77,17 +62,8 @@ if (isset($_POST['name'])) {
         <td class="xp"><img class="bar" src="img/x.gif" style="width:<?php echo ($hero_info['ob']-1)*1000+1; ?>px;" alt="<?php echo ($hero_info['ob']-1)*100; ?>%" title="<?php echo ($hero_info['ob']-1)*100; ?>%" /></td> 
         <td class="up"><span class="none"> 
         <?php 
-        if($hero_info['points'] > 0 && $hero_info['attackbonus'] < 100){ 
-		if($session->access != BANNED){
-            echo "<a href=\"build.php?id=".$id."&add=obonus\">(<b>+</b>)</a>"; 
-		}else{
-			header("Location: banned.php");
-			exit; 
-		}			
-		
-        }else { 
-            echo "<span class=\"none\">(+)</span>"; 
-        } 
+        if($hero_info['points'] > 0 && $hero_info['attackbonus'] < 100) echo "<a href=\"build.php?id=".$id."&add=obonus\">(<b>+</b>)</a>"; 	
+        else echo "<span class=\"none\">(+)</span>"; 
         ?> 
         </td> 
         <td class="po"><?php echo $hero_info['attackbonus']; ?></td> 
@@ -98,17 +74,8 @@ if (isset($_POST['name'])) {
         <td class="xp"><img class="bar" src="img/x.gif" style="width:<?php echo ($hero_info['db']-1)*1000+1; ?>px;" alt="<?php echo ($hero_info['db']-1)*100; ?>%" title="<?php echo ($hero_info['db']-1)*100; ?>%" /></td> 
         <td class="up"><span class="none"> 
         <?php 
-        if($hero_info['points'] > 0 && $hero_info['defencebonus'] < 100){ 
-		if($session->access != BANNED){
-            echo "<a href=\"build.php?id=".$id."&add=dbonus\">(<b>+</b>)</a>"; 
-		}else{
-			header("Location: banned.php");
-			exit; 
-		}
-
-        }else { 
-            echo "<span class=\"none\">(+)</span>"; 
-        } 
+        if($hero_info['points'] > 0 && $hero_info['defencebonus'] < 100) echo "<a href=\"build.php?id=".$id."&add=dbonus\">(<b>+</b>)</a>";
+        else echo "<span class=\"none\">(+)</span>";
         ?> 
         </td> 
         <td class="po"><?php echo $hero_info['defencebonus']; ?></td> 
@@ -119,17 +86,8 @@ if (isset($_POST['name'])) {
         <td class="xp"><img class="bar" src="img/x.gif" style="width:<?php echo ($hero_info['regeneration']*2)+1; ?>px;" alt="<?php echo ($hero_info['regeneration']*5*SPEED); ?>%/Day" title="<?php echo ($hero_info['regeneration']*5*SPEED); ?>%/Day" /></td> 
         <td class="up"><span class="none"> 
         <?php 
-        if($hero_info['points'] > 0 && $hero_info['regeneration'] < 100){ 
-		if($session->access != BANNED){
-            echo "<a href=\"build.php?id=".$id."&add=reg\">(<b>+</b>)</a>"; 
-		}else{
-			header("Location: banned.php");
-			exit; 
-		}
-
-        }else { 
-            echo "<span class=\"none\">(+)</span>"; 
-        } 
+        if($hero_info['points'] > 0 && $hero_info['regeneration'] < 100) echo "<a href=\"build.php?id=".$id."&add=reg\">(<b>+</b>)</a>"; 
+        else echo "<span class=\"none\">(+)</span>"; 
         ?> 
         </td> 
         <td class="po"><?php echo $hero_info['regeneration']; ?></td> 
@@ -171,12 +129,12 @@ if (isset($_POST['name'])) {
             if($_GET['add'] == "reset") { 
                 if($hero_info['level'] <= 3){ 
                       if($hero_info['attack'] != 0 OR $hero_info['defence'] != 0 OR $hero_info['attackbonus'] != 0 OR $hero_info['defencebonus'] != 0 OR $hero_info['regeneration'] != 0){ 
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = '".(($hero_info['level']*5)+5)."' WHERE `heroid` = " . $hero_info['heroid']);
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `attack` = '0' WHERE `heroid` = " . $hero_info['heroid']);
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `defence` = '0' WHERE `heroid` = " . $hero_info['heroid']);
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `attackbonus` = '0' WHERE `heroid` = " . $hero_info['heroid']);
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `defencebonus` = '0' WHERE `heroid` = " . $hero_info['heroid']);
-                    mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `regeneration` = '0' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = '".(($hero_info['level']*5)+5)."' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `attack` = '0' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `defence` = '0' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `attackbonus` = '0' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `defencebonus` = '0' WHERE `heroid` = " . $hero_info['heroid']);
+                    mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `regeneration` = '0' WHERE `heroid` = " . $hero_info['heroid']);
                     header("Location: build.php?id=".$id."");
 					exit; 
                 } 
@@ -184,40 +142,40 @@ if (isset($_POST['name'])) {
          } 
             if($_GET['add'] == "off" && $hero_info['attack'] < 100) { 
                     if($hero_info['points'] > 0) { 
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `attack` = `attack` + 1 WHERE `heroid` = " . $hero_info['heroid']);
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `attack` = `attack` + 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
                         header("Location: build.php?id=".$id."");
 						exit; 
                     } 
                 } 
             if($_GET['add'] == "deff" && $hero_info['defence'] < 100) { 
                     if($hero_info['points'] > 0) { 
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `defence` = `defence` + 1 WHERE `heroid` = " . $hero_info['heroid']);
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `defence` = `defence` + 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
                         header("Location: build.php?id=".$id."");
 						exit; 
                     } 
                 } 
           if($_GET['add'] == "obonus" && $hero_info['attackbonus'] < 100) { 
                     if($hero_info['points'] > 0) { 
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `attackbonus` = `attackbonus` + 1 WHERE `heroid` = " . $hero_info['heroid']);
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `attackbonus` = `attackbonus` + 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
                         header("Location: build.php?id=".$id."");
 						exit; 
                     } 
                 } 
           if($_GET['add'] == "dbonus" && $hero_info['defencebonus'] < 100) { 
                     if($hero_info['points'] > 0) { 
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `defencebonus` = `defencebonus` + 1 WHERE `heroid` = " . $hero_info['heroid']);
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `defencebonus` = `defencebonus` + 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
                         header("Location: build.php?id=".$id."");
 						exit; 
                     } 
                 } 
           if($_GET['add'] == "reg" && $hero_info['regeneration'] < 100) { 
                     if($hero_info['points'] > 0) { 
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `regeneration` = `regeneration` + 1 WHERE `heroid` = " . $hero_info['heroid']);
-                        mysqli_query($GLOBALS['link'],"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `regeneration` = `regeneration` + 1 WHERE `heroid` = " . $hero_info['heroid']);
+                        mysqli_query($database->dblink,"UPDATE " . TB_PREFIX . "hero SET `points` = `points` - 1 WHERE `heroid` = " . $hero_info['heroid']);
                         header("Location: build.php?id=".$id."");
 						exit; 
                     } 

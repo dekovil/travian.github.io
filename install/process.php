@@ -130,10 +130,34 @@ class Process {
 		$findReplace["%WW%"] = $_POST['ww'];
 		$findReplace["%SHOW_NATARS%"] = $_POST['show_natars'];
 		$findReplace["%NATARS_UNITS%"] = $_POST['natars_units'];
+		$findReplace["%NATARS_SPAWN_TIME%"] = $_POST['natars_spawn_time'];
+		$findReplace["%NATARS_WW_SPAWN_TIME%"] = $_POST['natars_ww_spawn_time'];
+		$findReplace["%NATARS_WW_BUILDING_PLAN_SPAWN_TIME%"] = $_POST['natars_ww_building_plan_spawn_time'];
 		$findReplace["%NATURE_REGTIME%"] = $_POST['nature_regtime'];
+		$findReplace["%OASIS_WOOD_MULTIPLIER%"] = $_POST['oasis_wood_multiplier'];
+		$findReplace["%OASIS_CLAY_MULTIPLIER%"] = $_POST['oasis_clay_multiplier'];
+		$findReplace["%OASIS_IRON_MULTIPLIER%"] = $_POST['oasis_iron_multiplier'];
+		$findReplace["%OASIS_CROP_MULTIPLIER%"] = $_POST['oasis_crop_multiplier'];
 		$findReplace["%T4_COMING%"] = $_POST['t4_coming'];
 		$findReplace["%REG_OPEN%"] = $_POST['reg_open'];
 		$findReplace["%PEACE%"] = $_POST['peace'];
+
+		//New Mechanics and Functions
+		$findReplace["%NEW_FUNCTIONS_OASIS%"] = $_POST['new_functions_oasis'];
+		$findReplace["%NEW_FUNCTIONS_ALLIANCE_INVITATION%"] = $_POST['new_functions_alliance_invitation'];
+		$findReplace["%NEW_FUNCTIONS_EMBASSY_MECHANICS%"] = $_POST['new_functions_embassy_mechanics'];
+		$findReplace["%NEW_FUNCTIONS_FORUM_POST_MESSAGE%"] = $_POST['new_functions_forum_post_message'];
+		$findReplace["%NEW_FUNCTIONS_TRIBE_IMAGES%"] = $_POST['new_functions_tribe_images'];
+		$findReplace["%NEW_FUNCTIONS_MHS_IMAGES%"] = $_POST['new_functions_mhs_images'];
+		$findReplace["%NEW_FUNCTIONS_DISPLAY_ARTIFACT%"] = $_POST['new_functions_display_artifact'];
+		$findReplace["%NEW_FUNCTIONS_DISPLAY_WONDER%"] = $_POST['new_functions_display_wonder'];
+		$findReplace["%NEW_FUNCTIONS_VACATION%"] = $_POST['new_functions_vacation'];
+		$findReplace["%NEW_FUNCTIONS_DISPLAY_CATAPULT_TARGET%"] = $_POST['new_functions_display_catapult_target'];
+		$findReplace["%NEW_FUNCTIONS_MANUAL_NATURENATARS%"] = $_POST['new_functions_manual_naturenatars'];
+		$findReplace["%NEW_FUNCTIONS_DISPLAY_LINKS%"] = $_POST['new_functions_display_links'];
+		$findReplace["%NEW_FUNCTIONS_MEDAL_3YEAR%"] = $_POST['new_functions_medal_3year'];
+		$findReplace["%NEW_FUNCTIONS_MEDAL_5YEAR%"] = $_POST['new_functions_medal_5year'];
+		$findReplace["%NEW_FUNCTIONS_MEDAL_10YEAR%"] = $_POST['new_functions_medal_10year'];
 
 		fwrite($gameConfig, str_replace(array_keys($findReplace), array_values($findReplace), $text));
 

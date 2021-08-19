@@ -63,16 +63,18 @@ class Session {
 			private $time;
 			var $logged_in = false;
 			var $referrer, $url;
-			var $username, $uid, $access, $plus, $tribe, $isAdmin, $alliance, $gold, $oldrank, $gpack;
+			var $username, $uid, $access, $plus, $tribe, $isAdmin, $alliance, $gold, $oldrank, $gpack, $goldclub;
 			var $bonus = 0;
 			var $bonus1 = 0;
 			var $bonus2 = 0;
 			var $bonus3 = 0;
 			var $bonus4 = 0;
+			var $timer = 0;
+			var $sharedForums = [];
 			var $checker, $mchecker;
-			public $userinfo = array();
-			private $userarray = array();
-			var $villages = array();
+			public $userinfo = [];
+			private $userarray = [];
+			var $villages = [];
 
 			function __construct() {
         		global $database; //TienTN fix
@@ -82,20 +84,18 @@ class Session {
 
 				$this->logged_in = $this->checkLogin();
 
-				if($this->logged_in && TRACK_USR) {
-					$database->updateActiveUser($this->username, $this->time);
-				}
-				if(isset($_SESSION['url'])) {
-					$this->referrer = $_SESSION['url'];
-				} else {
-					$this->referrer = "/";
-				}
+				if($this->logged_in && TRACK_USR) $database->updateActiveUser($this->username, $this->time);
+				
+				if(isset($_SESSION['url'])) $this->referrer = $_SESSION['url'];
+				else $this->referrer = "/";
+				
 				$this->url = $_SESSION['url'] = $_SERVER['PHP_SELF'];
 				$this->SurfControl();
 			}
 
 			public function Login($user) {
 				global $database, $generator, $logging;
+				
 				$this->logged_in = true;
 				$_SESSION['sessid'] = $generator->generateRandID();
 				$_SESSION['username'] = $user;
@@ -111,19 +111,13 @@ class Session {
 
 				if ($dbarray['id'] > 1) {
                     if(!isset($_SESSION['wid'])) {
-                        if($selected_village!='') {
-                            $data = $database->getVillage($selected_village);
-                        }else{
-                            $data = $database->getVillage($userFields["id"]);
-                        }
+                    	if(!empty($selected_village)) $data = $database->getVillage($selected_village);
+                        else $data = $database->getVillage($userFields["id"]);
                         $_SESSION['wid'] = $data['wref'];
                     } else
-                        if($_SESSION['wid'] == '') {
-                            if($selected_village!='') {
-                                $data = $database->getVillage($selected_village);
-                            }else{
-                                $data = $database->getVillage($userFields["id"]);
-                            }
+                        if(empty($_SESSION['wid'])) {
+                        	if(!empty($selected_village)) $data = $database->getVillage($selected_village);
+                            else $data = $database->getVillage($userFields["id"]);
                             $_SESSION['wid'] = $data['wref'];
                         }
     				$this->PopulateVar();
@@ -157,15 +151,15 @@ class Session {
 
 			public function changeChecker() {
 				global $generator;
+				
 				$this->checker = $_SESSION['checker'] = $generator->generateRandStr(3);
 				$this->mchecker = $_SESSION['mchecker'] = $generator->generateRandStr(5);
 			}
 
 			private function checkLogin(){
         		global $database;
-
-        		$user = '';
-        		$id = '';
+        		
+        		$user = $id = '';
         		$admin = false;
         		$inAdmin = (strpos($_SERVER['REQUEST_URI'], '/Admin') !== false);
 
@@ -178,31 +172,78 @@ class Session {
         		    $admin = true;
         		}
 
-        		if($user && ($admin || isset($_SESSION['sessid']))) {
+        		if($user && ($admin || isset($_SESSION['sessid']))) {        		    
+        		    $this->maintenance();
+        		    $this->isWinner();
+        			
         		    // check if this is not a support user, for who only messages and statistics are available
         		    if ($user == 'Support') {
         		        $req_file = basename($_SERVER['PHP_SELF']);
         		        if (!in_array($req_file, ['nachrichten.php', 'logout.php', 'statistiken.php', 'rules.php', 'karte.php', 'karte2.php', 'spieler.php'])) {
-        		            header('Location:nachrichten.php');
+        		            header('Location: nachrichten.php');
         		            exit;
         		        }
         		    }
 
         			//Get and Populate Data
         			$this->PopulateVar();
+        			
+        			//Check if the player is banned
+        			$this->isBanned();
+        			
         			//update database
         			$database->updateActiveUser($user, $this->time);
             		return true;
-        		} else {
-                    return false;
-        		}
+        		} 
+        		else return false;
     		}
 
-
-			/***************************
-			Function to check Real Hero
-			Made by: Shadow and brainiacX
-			***************************/
+    		/**
+    		 * Called if the player is banned
+    		 *
+    		 */
+    		
+    		function isBanned(){
+    		    if($this->access == BANNED && !in_array(basename($_SERVER['PHP_SELF']), ['banned.php', 'nachrichten.php', 'rules.php'])){
+    		        header('Location: banned.php');
+    		        exit;
+    		    }
+    		}
+    		
+    		/**
+    		 * Called when the server is under maintenance
+    		 * 
+    		 */
+    		
+    		function maintenance(){
+    		    if($_SESSION['ok'] == 2 && basename($_SERVER['PHP_SELF']) != 'maintenance.php'){
+    		        header('Location: maintenance.php');
+    		        exit;
+    		    }
+    		}
+    		
+    		/**
+    		 * Called when there's a player who built a WW to level 100
+    		 * 
+    		 */
+    		
+    		function isWinner(){
+    			global $database;
+    			
+    			$requiredPage = basename($_SERVER['PHP_SELF']);
+    			if($database->isThereAWinner() && (in_array($requiredPage, ['build.php', 'plus1.php']) || 
+    			  (in_array($requiredPage, ['plus.php']) && isset($_GET['id']) && !empty($_GET['id'] && $_GET['id'] >= 7))))
+    			{
+    				header('Location: winner.php');
+    				exit;
+    			} 			
+    		}
+    		
+			/**
+			 * Function to check Real Hero
+			 * Made by: Shadow and brainiacX
+			 * 
+			 */
 
  			function CheckHeroReal () {
 				global $database,$link;
@@ -237,6 +278,7 @@ class Session {
 
 			private function PopulateVar() {
 				global $database;
+				
 				$this->userarray = $this->userinfo = $database->getUserArray($_SESSION['username'], 0);
 				$this->username = $this->userarray['username'];
 				$this->uid = $_SESSION['id_user'] =  $this->userarray['id'];
@@ -256,24 +298,45 @@ class Session {
 				$this->cp = floor($this->userarray['cp']);
 				$this->gold = $this->userarray['gold'];
 				$this->oldrank = $this->userarray['oldrank'];
+				$this->sharedForums = $database->getSharedForums($this->uid, $this->alliance);
 				$_SESSION['ok'] = $this->userarray['ok'];
-				if($this->userarray['b1'] > $this->time) {
-					$this->bonus1 = 1;
-				}
-				if($this->userarray['b2'] > $this->time) {
-					$this->bonus2 = 1;
-				}
-				if($this->userarray['b3'] > $this->time) {
-					$this->bonus3 = 1;
-				}
-				if($this->userarray['b4'] > $this->time) {
-					$this->bonus4 = 1;
-				}
-				if (!in_array($this->username, ['Support', 'Multihunter'])) {
-                    $this->CheckHeroReal();
-                }
-			}
+				
+				if($this->userarray['b1'] > $this->time) $this->bonus1 = 1;
+				if($this->userarray['b2'] > $this->time) $this->bonus2 = 1;
+				if($this->userarray['b3'] > $this->time) $this->bonus3 = 1;
+				if($this->userarray['b4'] > $this->time) $this->bonus4 = 1;
 
+				if (!in_array($this->username, ['Support', 'Multihunter'])) $this->CheckHeroReal();
+			}
+			
+			/**
+			 * Creates an array with the vrefs of attacked/scouted/reinforced villages and oasis
+			 * 
+			 */
+			
+			public function populateAttacks(){
+		        global $database, $village;
+		        
+		        $troopsMovement = $database->getMovement(3, $village->wid, 0);    
+		        if(count($troopsMovement) > 0){
+		            foreach($troopsMovement as $movement)
+		            {
+		                switch($movement['attack_type']){
+		                    case 1:
+		                        $_SESSION['troops_movement']['scouts'][] = $movement['to'];
+		                        break;
+		                    case 2:
+		                        $_SESSION['troops_movement']['enforcements'][] = $movement['to'];
+		                        break;
+		                    case 3:
+		                    case 4:
+		                        $_SESSION['troops_movement']['attacks'][] = $movement['to'];
+		                        break;
+		                }
+		            }
+		        }	        	    
+			}
+			
 			private function SurfControl(){
 				if(SERVER_WEB_ROOT) {
 					$page = $_SERVER['SCRIPT_NAME'];

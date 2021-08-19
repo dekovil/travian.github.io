@@ -230,7 +230,7 @@
 							</tr>
 
 							<tr>
-								<td colspan="2"><a href="?p=editPlus&uid=<?php echo $user['id']; ?>">&raquo; Edit Plus & Bonus</a></td>
+								<td colspan="2"><a href="?p=editPlus&uid=<?php echo $user['id']; ?>">&raquo; Edit Plus & Res Bonus</a></td>
 							</tr>
 
 							<tr>
@@ -261,9 +261,9 @@
 								</td>
 							</tr>
 						</table>
-					<td class="desc1">
+					<td class="desc1"><div class="desc1div">
 						<center><?php echo nl2br($profiel[1]); ?></center>
-					</td>
+					</div></td>
 				</tr>
 			</tbody>
 		</table>
