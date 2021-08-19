@@ -109,6 +109,7 @@ define("TRAVIAN_COPYRIGHT","TravianZ 100% Open Source Travian Clone.");
 //BUILD.TPL
 define("CUR_PROD","Current production");
 define("NEXT_PROD","Production at level ");
+define("CONSTRUCT_BUILD","Construct Building");
 
 //BUILDINGS
 define("B1","Woodcutter");
@@ -143,6 +144,7 @@ define("LOYALTY","Loyalty");
 define("CALCULATED_IN","Calculated in");
 define("SEVER_TIME","Server time:");
 define("HI","HI");
+define("P_IN","in");
 
 //QUEST
 define("Q_CONTINUE","Continue with the next task.");
