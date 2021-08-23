@@ -136,5 +136,3 @@ echo round(($generator->pageLoadTimeEnd()-$start_timer)*1000);
     }
     }
     ?>
-</body>
-</html>
