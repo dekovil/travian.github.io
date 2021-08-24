@@ -1135,7 +1135,7 @@ class MYSQLi_DB implements IDbConnection {
 		$q = "SELECT timestamp from " . TB_PREFIX . "deleting where uid = $uid LIMIT 1";
 		$result = mysqli_query($this->dblink,$q);
 		$dbarray = mysqli_fetch_array($result);
-		return $dbarray['timestamp'];
+		return ( $dbarray ? $dbarray['timestamp'] : false );
 	}
 
 	function modifyGold($userid, $amt, $mode) {
@@ -3853,7 +3853,7 @@ class MYSQLi_DB implements IDbConnection {
         ");
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-        self::$fieldLevelsInVillageSearchCache[$vid.$fieldType] = $row['level'];
+        self::$fieldLevelsInVillageSearchCache[$vid.$fieldType] = ( $row ? $row['level'] : 0 );
         return self::$fieldLevelsInVillageSearchCache[$vid.$fieldType];
     }
 

@@ -77,11 +77,13 @@ AccessLogger::logRequest();
 	<div class="wrapper">
 		<div id="country_select">
 			<div id="flags"></div>
+      <!--
 			<script src="flaggen.js?a" type="text/javascript"></script>
 			<script type="text/javascript">
 			var region_list = new Array('Europe','America','Asia','Middle East','Africa','Oceania');
 			show_flags('', '', region_list);
 			</script>
+			//-->
 		</div>
 		<div id="header"><h1><?php echo $lang['index'][0][1]; ?></h1></div>
 		<div id="navigation">
