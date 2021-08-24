@@ -154,7 +154,8 @@ if($oasis['owner'] == 2){
 		</tr></thead>
 		<tbody>
 		<?php
-if($session->uid == $database->getVillage($_GET['d'])['owner']){
+$vilData = $database->getVillage($_GET['d']);
+if( $vilData && $session->uid == $vilData['owner'] ){
 	$limit = "ntype > 3 AND ntype < 8";
 }
 else $limit = "ntype < 8 OR ntype > 17";
