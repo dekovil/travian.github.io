@@ -1,6 +1,6 @@
 <?php
 $artifactsSum = $database->getArtifactsSumByKind($session->uid, $village->wid, 6);
-$GreatGranaryWarehouseBuildable = $artifactsSum['small'] > 0 || $artifactsSum['large'] > 0;
+$GreatGranaryWarehouseBuildable = $artifactsSum['small'] > 0 || $artifactsSum['great'] > 0;
 
 $mainbuilding = $building->getTypeLevel(15);
 $cranny = $building->getTypeLevel(23);

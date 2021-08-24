@@ -833,6 +833,11 @@ class Building {
 		global $$name, $village, $bid15, $database;
 		
 		$dataarray = $$name;
+
+		if ( !$$name ) {
+			return ["wood" => 0, "clay" => 0, "iron" => 0, "crop" => 0, "pop" => 0, "time" => 0, "cp" => 0];
+		}
+
 		$wood = $dataarray[$village->resarray['f'.$id] + $plus]['wood'];
 		$clay = $dataarray[$village->resarray['f'.$id] + $plus]['clay'];
 		$iron = $dataarray[$village->resarray['f'.$id] + $plus]['iron'];
