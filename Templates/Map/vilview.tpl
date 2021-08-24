@@ -14,7 +14,7 @@ echo !$oasis['conqured']? UNOCCUOASIS : OCCUOASIS; echo " (".$basearray['x']."|"
 $otext = !$oasis['conqured']? UNOCCUOASIS : OCCUOASIS;
 } ?></h1>
 <?php if($basearray['occupied'] && $basearray['capital']) { echo "<div id=\"dmain\">(capital)</div>"; }
-if($uinfo['owner'] == 3 && $uinfo['name'] == PLANVILLAGE){
+if($uinfo && $uinfo['owner'] == 3 && $uinfo['name'] == PLANVILLAGE){
 ?>
 <img src="img/x.gif" id="detailed_map" class="f99" alt="<?php echo PLANVILLAGE;?>" />
 <?php }else{ ?>
