@@ -112,7 +112,7 @@ $free = $session->uid;
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
     
                       <!-- Identify your business so that you can collect the payments. -->
-                      <input type="hidden" name="business" value="<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com'); ?>">
+                      <input type="hidden" name="business" value="<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com'); ?>">
                     
                       <!-- Specify a Buy Now button. -->
                       <input type="hidden" name="cmd" value="_xclick">
@@ -156,7 +156,7 @@ $free = $session->uid;
 							Mit Skrill (moneybookers) kannst du mit deiner Kreditkarte oder per Überweisung von deinem Konto zahlen.                <br />
                 
             				 <?PHP echo'<form action="https://www.moneybookers.com/app/payment.pl" target="_blank">
- <input type="hidden" name="pay_to_email" value="novgorodschi@icloud.com">
+ <input type="hidden" name="pay_to_email" value="sk@martinambrus.com">
  <input type="hidden" name="recipient_description" value="netsoundradio">
  <input type="hidden" name="transaction_id" value="112">
  <input type="hidden" name="return_url" value="http://www.merchant.com/payment_made.htm">
@@ -164,8 +164,8 @@ $free = $session->uid;
  <input type="hidden" name="return_url_target" value="1">
  <input type="hidden" name="cancel_url" value="http://www.merchant.com/payment_cancelled.htm">
  <input type="hidden" name="cancel_url_target" value="1">
- <input type="hidden" name="status_url" value="mailto: novgorodschi@icloud.com">
- <input type="hidden" name="status_url2" value="mailto: novgorodschi@icloud.com">
+ <input type="hidden" name="status_url" value="mailto: sk@martinambrus.com">
+ <input type="hidden" name="status_url2" value="mailto: sk@martinambrus.com">
  <input type="hidden" name="new_window_redirect" value="1">
  <input type="hidden" name="dynamic_descriptor" value="Descriptor">
  <input type="hidden" name="language" value="DE">

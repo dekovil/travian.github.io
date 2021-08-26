@@ -112,7 +112,7 @@ $golds1 = mysqli_fetch_array($MyGold);
 			</tr>
              </tbody></table>
             <p>Please verify the information.<br />It will let us know if the data is incorrect.</p>
-            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com') ?>">our billing address</a>.</p>
+            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com') ?>">our billing address</a>.</p>
           
 <?php
 
@@ -160,7 +160,7 @@ $golds1 = mysqli_fetch_array($MyGold);
 			</tr>
              </tbody></table>
                       <p>Please verify the information.<br />It will let us know if the data is incorrect.</p>
-            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com') ?>">our billing address</a>.</p>
+            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com') ?>">our billing address</a>.</p>
 <?php
 
 }
@@ -207,7 +207,7 @@ $golds1 = mysqli_fetch_array($MyGold);
 			</tr>
              </tbody></table>
                        <p>Please verify the information.<br />It will let us know if the data is incorrect.</p>
-            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com') ?>">our billing address</a>.</p>
+            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com') ?>">our billing address</a>.</p>
 <?php
 
 }
@@ -301,7 +301,7 @@ $golds1 = mysqli_fetch_array($MyGold);
 			</tr>
              </tbody></table>
                         <p>Please verify the information.<br />It will let us know if the data is incorrect.</p>
-            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com') ?>">our billing address</a>.</p>
+            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com') ?>">our billing address</a>.</p>
 <?php
 }
 				if ($amount == 0) 
@@ -330,7 +330,7 @@ $golds1 = mysqli_fetch_array($MyGold);
              </tr>
              </tbody></table>
                        <p>Please verify the information.<br />It will let us know if the data is incorrect.</p>
-            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'novgorodschi@icloud.com') ?>">our billing address</a>.</p>
+            <p>Please mail your username, package, order time and email used to <a href="mailto:<?php echo (defined('PAYPAL_EMAIL') ? PAYPAL_EMAIL : 'sk@martinambrus.com') ?>">our billing address</a>.</p>
 				<?php
 				
 				}
