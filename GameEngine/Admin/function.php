@@ -253,9 +253,9 @@ class funct
             $_SESSION['id'] = $database->getUserField($username, 'id', 1);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             // header("Location: admin.php");
-        } else {
+        }/* else {
             echo "Error";
-        }
+        }*/
     }
 
     function LogOut()
