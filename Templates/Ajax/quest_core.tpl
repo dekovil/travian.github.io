@@ -788,10 +788,11 @@ if ($residence<10 && $palace<10){?>
 
 <?php } elseif($_SESSION['qst']== 34){
 
-// Checking 3 settlers trained or no
+// check whether 3 settlers were trained, or whether the user already has a second village founded
 $units = $village->unitall;
 $unarray2=array("","u10", "u20","u30");
-if ($units[$unarray2[$session->userinfo['tribe']]]<3){ $cp = CP;?>
+$vil = $database->getProfileVillages($session->uid);
+if ( $units[$unarray2[$session->userinfo['tribe']]] < 3 && count( $vil ) == 1 ){ $cp = CP;?>
 
 {"markup":"\n\t\t<div id=\"qstd\"><h1> <img class=\"point\" src=\"img\/x.gif\" alt=\"\" title=\"\"\/> <?php echo Q34; ?><\/h1><br \/><i>&rdquo;<?php echo Q34_DESC; ?>&rdquo;<\/i><br \/><br \/><div class=\"rew\"><p class=\"ta_aw\"><?php echo Q34_ORDER; ?><\/div><br \/><span id=\"qst_accpt\"><\/span><\/div>\n\t\t<div id=\"qstbg\" class=\"new_village\"><\/div>\n\t\t","number":"-34","reward":false,"qgsrc":"q_l<?php echo $session->userinfo['tribe'];?>","msrc":"<?php echo $messagelol; ?>","altstep":99}
 <?php $_SESSION['qstnew']='0'; }else{ $_SESSION['qstnew']='1'; ?>
