@@ -46,10 +46,11 @@ echo "<div class=\"headline\"><span class=\"f10 c5\">Error creating constant.php
                     <option value="5,Asia/Kuala_Lumpur" <?php if ($tz==5) echo "selected";?>>Asia</option>
                     <option value="6,Atlantic/Azores" <?php if ($tz==6) echo "selected";?>>Atlantic</option>
                     <option value="7,Australia/Melbourne" <?php if ($tz==7) echo "selected";?>>Australia</option>
-                    <option value="8,Europe/Bucharest" <?php if ($tz==8) echo "selected";?>>Europe (Bucharest)</option>
-                    <option value="9,Europe/London" <?php if ($tz==9) echo "selected";?>>Europe (London)</option>
-                    <option value="10,Indian/Maldives" <?php if ($tz==10) echo "selected";?>>Indian</option>
-                    <option value="11,Pacific/Fiji" <?php if ($tz==11) echo "selected";?>>Pacific</option>
+                    <option value="8,Europe/Bratislava" <?php if ($tz==8) echo "selected";?>>Europe (Bratislava)</option>
+                    <option value="9,Europe/Bucharest" <?php if ($tz==9) echo "selected";?>>Europe (Bucharest)</option>
+                    <option value="10,Europe/London" <?php if ($tz==10) echo "selected";?>>Europe (London)</option>
+                    <option value="11,Indian/Maldives" <?php if ($tz==11) echo "selected";?>>Indian</option>
+                    <option value="12,Pacific/Fiji" <?php if ($tz==12) echo "selected";?>>Pacific</option>
                 </select>
             </td>
         </tr>
