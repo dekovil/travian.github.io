@@ -18,8 +18,6 @@
 
 // make sure we only run the automation script once and wait until it's done,
 // so concurrent AJAX calls from many different users won't overload the server
-define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
-
 if ( file_exists( AUTOMATION_LOCK_FILE_NAME ) ) {
     // check that the file is not too old, in which case our PHP script hung
     // and we need to remove the lock and run automation again

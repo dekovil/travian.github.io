@@ -19,6 +19,8 @@
 define("ERROR_REPORT","%ERRORREPORT%");
 %ERROR%
 
+define('AUTOMATION_LOCK_FILE_NAME', 'automation.lck');
+
 //////////////////////////////////
 // *****  SERVER SETTINGS  *****//
 //////////////////////////////////
