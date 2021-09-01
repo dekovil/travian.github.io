@@ -6010,7 +6010,7 @@ References: User ID/Message ID, Mode
 	 */
 	
 	function addUnits($vid, $troopsArray = null) {
-	    list($vid, $type, $values) = $this->escape_input($vid, $type, $values);
+	    list($vid) = $this->escape_input($vid);
 	    
 	    if (!is_array($vid)) $vid = [$vid];
 	    $types = $values = "";
