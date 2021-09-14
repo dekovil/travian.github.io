@@ -274,13 +274,13 @@ if($stable == 0 && (($blacksmith <= 2 && $blacksmith != 0) || ($academy >= 2 && 
 if($treasury == 0 && $mainbuilding <= 9 && $mainbuilding >= 5 && $village->natar == 0) {
     include("soon/treasury.tpl");
 }
-if($brickyard == 0 && $claypit <= 9 && $claypit >= 5 && $mainbuilding >= 2) {
+if($brickyard == 0 && ( ($claypit <= 9 && $claypit >= 5) || $claypit == 10 ) && $mainbuilding >= 2) {
     include("soon/brickyard.tpl");
 }
-if($sawmill == 0 && $woodcutter <= 9 && $woodcutter >= 5 && $mainbuilding >= 2) {
+if($sawmill == 0 && ( ( $woodcutter <= 9 && $woodcutter >= 5 ) || $woodcutter == 10 ) && $mainbuilding >= 2) {
     include("soon/sawmill.tpl");
 }
-if($ironfoundry == 0 && $ironmine <= 9 && $ironmine >= 5 && $mainbuilding >= 2) {
+if($ironfoundry == 0 && ( ( $ironmine <= 9 && $ironmine >= 5 ) || $ironmine == 10 ) && $mainbuilding >= 2) {
     include("soon/ironfoundry.tpl");
 }
 if($workshop == 0 && $academy <= 9 && $academy >= 5 && $mainbuilding >= 2) {
