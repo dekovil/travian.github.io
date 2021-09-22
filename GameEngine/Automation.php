@@ -3786,6 +3786,9 @@ class Automation {
                         
                         if($maxtype > 0){
                             $starvingTroops[$utype.$maxtype]--;
+                            if ( !isset($killedUnits[$maxtype]) ) {
+                                $killedUnits[$maxtype] = 0;
+                            }
                             $killedUnits[$maxtype]++;                      
                             $difcrop -= $GLOBALS['u'.(($special) ? $maxtype + ($tribe - 1) * 10 : $maxtype)]['crop'];
                         }

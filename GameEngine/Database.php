@@ -6428,7 +6428,7 @@ References: User ID/Message ID, Mode
             //Fixed part of negative troops (double troops) - by InCube
             $array_amt[$i] = (int) $array_amt[$i] < 0 ? 0 : $array_amt[$i];
             //Fixed part of negative troops (double troops) - by InCube
-            $units .= $unit.' = '.$unit.' '.(($array_mode[$i] == 1)? '+':'-').'  '.($array_amt[$i] ? $array_amt[$i] : 0).(($number > $i+1) ? ', ' : '');
+            $units .= $unit.' = '.$unit.' '.(($array_mode[$i] == 1)? '+':'-').'  '.( isset($array_amt[$i]) ? $array_amt[$i] : 0).(($number > $i+1) ? ', ' : '');
 		}
 		$q = "UPDATE ".TB_PREFIX."units set $units WHERE vref = $vref";
 		return mysqli_query($this->dblink, $q);
