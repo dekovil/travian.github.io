@@ -6118,12 +6118,22 @@ References: User ID/Message ID, Mode
         $end              = ( $ownertribe * 10 );
 
         for ( $i = $start; $i <= $end; $i ++ ) {
+          if ( $movingunits ) {
             $totalunits += $movingunits[ 'u' . $i ];
+          }
+
+          if ( $reinforcingunits ) {
             $totalunits += $reinforcingunits[ 'u' . $i ];
+          }
         }
 
-        $totalunits += $movingunits['hero'];
-        $totalunits += $reinforcingunits['hero'];
+        if ( $movingunits ) {
+          $totalunits += $movingunits['hero'];
+        }
+
+        if ( $reinforcingunits ) {
+          $totalunits += $reinforcingunits['hero'];
+        }
 
 		return $totalunits;
 	}
@@ -7728,7 +7738,7 @@ References: User ID/Message ID, Mode
 		$q = 'SELECT * FROM ' . TB_PREFIX . 'farmlist WHERE owner = '.$uid.' ORDER BY wref ASC LIMIT 1';
 		$result = mysqli_query($this->dblink,$q);
 		$dbarray = mysqli_fetch_array($result);
-		return $dbarray['id'] > 0;
+		return ( $dbarray && $dbarray['id'] > 0 );
 	}
 
     // no need to cache this method
