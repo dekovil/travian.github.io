@@ -1212,6 +1212,9 @@ class Automation {
                     if(empty($scout) || $NatarCapital){
                         for ($i = 1; $i <= 11; $i++){
                             if (!isset(${'traped'.$i})) ${'traped'.$i} = 0;
+                            if ( !isset($totaltraped_att) ) {
+                                $totaltraped_att = 0;
+                            }
                             $totaltraped_att += ${'traped'.$i};
                         }
                         
@@ -1754,6 +1757,9 @@ class Automation {
 
                     for($i = 1; $i <= 10; $i++){
                         $unitarray = $GLOBALS["u".(($att_tribe - 1) * 10 + $i)];
+                        if ( !isset($totalpoint_def) ) {
+                            $totalpoint_def = 0;
+                        }
                         $totalpoint_def += (${'dead'.$i}*$unitarray['pop']);
                     }
 

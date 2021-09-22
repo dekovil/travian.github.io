@@ -7903,7 +7903,7 @@ References: User ID/Message ID, Mode
 	    $getVillage = $this->getVillage($wref);
 	    
 	    //Exlude Support, Nature, Natars, TaskMaster and Multihunter
-	    if ($getVillage['owner'] > 5){	        
+	    if ($getVillage && $getVillage['owner'] > 5){
 	        $crop = $this->getCropProdstarv($wref, false);
 	        $unitArrays = $technology->getAllUnits($wref, false, 0, false);
 	        $villageUpkeep = $getVillage['pop'] + $technology->getUpkeep($unitArrays, 0, $wref);
