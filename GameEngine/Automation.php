@@ -742,15 +742,17 @@ class Automation {
                 $database->setVillageLevel($data['to'], $fieldsToSet, $fieldValuesToSet);
                 
                 $buildarray = $GLOBALS["bid".$tbgid];
-                
-                // (great) warehouse level was changed
-                if ($tbgid == 10 || $tbgid == 38) {
-                    $database->setMaxStoreForVillage($data['to'], $buildarray[$newLevel]['attri']);
-                }
-                
-                // (great) granary level was changed
-                if ($tbgid == 11 || $tbgid == 39) {
-                    $database->setMaxCropForVillage($data['to'], $buildarray[$newLevel]['attri']);
+
+                if ( isset( $buildarray[$newLevel] ) ) {
+                    // (great) warehouse level was changed
+                    if ($tbgid == 10 || $tbgid == 38) {
+                        $database->setMaxStoreForVillage($data['to'], $buildarray[$newLevel]['attri']);
+                    }
+
+                    // (great) granary level was changed
+                    if ($tbgid == 11 || $tbgid == 39) {
+                        $database->setMaxCropForVillage($data['to'], $buildarray[$newLevel]['attri']);
+                    }
                 }
                 
                 // oasis cannot be destroyed

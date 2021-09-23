@@ -837,7 +837,7 @@ define("RALLYPOINT_COMMENCE","Troops movement will be displayed when the ".RALLY
 define("OVERVIEW","Overview");
 define("REINFORCEMENT","Reinforcement");
 define("EVASION_SETTINGS","evasion settings");
-define("SEND_TROOPS_AWAY_MAX","Send troops away a maximun of");
+define("SEND_TROOPS_AWAY_MAX","Send troops away a maximum of");
 define("TIMES","times");
 define("PER_EVASION","per evasion");
 define("RALLYPOINT_DESC","Your village's troops meet here. From here you can send them out to conquer, raid or reinforce other villages.");

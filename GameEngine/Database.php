@@ -5257,12 +5257,13 @@ References: User ID/Message ID, Mode
     function modifyBData($wid, $field, $levels, $tribe){
     	list($wid, $field, $levels, $tribe) = $this->escape_input((int) $wid, (int) $field, (int) $levels, (int) $tribe);
         
-        if($levels[0] == 0){ 
+        if ( is_array( $levels ) && $levels[0] == 0){
         	$q = "SELECT id FROM " .TB_PREFIX. "bdata WHERE wid = $wid AND field = $field";
         	$orders = $this->mysqli_fetch_all(mysqli_query($this->dblink, $q));
         	foreach($orders as $order) $this->removeBuilding($order['id'], $tribe, $wid);
+        } else {
+          mysqli_query( $this->dblink, $q = "UPDATE " . TB_PREFIX . "bdata SET level = level - $levels[1] + $levels[0] WHERE wid = $wid AND field = $field" );
         }
-        else mysqli_query($this->dblink, $q = "UPDATE " .TB_PREFIX. "bdata SET level = level - $levels[1] + $levels[0] WHERE wid = $wid AND field = $field");
     }
     
     private function getBData($wid, $use_cache = true, $orderByID = false) {
