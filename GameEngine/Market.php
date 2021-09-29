@@ -350,13 +350,13 @@ class Market
             if($session->userinfo['gold'] >= 3){
                 // check that we're not trying to sell more resources that we actually have
                 if (
-                  (int) $post['m2'][0] > round($village->awood)
+                  (int) $post['m2'][0] < 0 && round($village->awood) + (int) $post['m2'][0] < 0
                   ||
-                  (int) $post['m2'][1] > round($village->aclay)
+                  (int) $post['m2'][1] < 0 && round($village->aclay) + (int) $post['m2'][1] < 0
                   ||
-                  (int) $post['m2'][2] > round($village->airon)
+                  (int) $post['m2'][2] < 0 && round($village->airon) + (int) $post['m2'][2] < 0
                   ||
-                  (int) $post['m2'][3] > round($village->acrop)
+                  (int) $post['m2'][3] < 0 && round($village->acrop) + (int) $post['m2'][3] < 0
                 ) {
                     header("Location: build.php?id=".$post['id']."&t=3");
                     exit;
