@@ -363,7 +363,7 @@ class Market
                 }
 
                 //Check if there are too many resources
-                if ( ($post['m2'][0] + $post['m2'][1] + $post['m2'][2] + $post['m2'][3] ) <= ( round($village->awood) + round($village->aclay) + round($village->airon) + round($village->acrop) ) ) {
+                if ( ((int) $post['m2'][0] + (int) $post['m2'][1] + (int) $post['m2'][2] + (int) $post['m2'][3] ) <= ( round($village->awood) + round($village->aclay) + round($village->airon) + round($village->acrop) ) ) {
                     $database->setVillageField(
                         $village->wid,
                         ["wood", "clay", "iron", "crop"],
