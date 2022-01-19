@@ -1,15 +1,3 @@
-[![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/martinambrus/TravianZ)
-[![GitHub Release](https://img.shields.io/github/release/martinambrus/TravianZ/all.svg)](https://github.com/martinambrus/TravianZ)
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/martinambrus/TravianZ)
-[![GitHub contributors](https://img.shields.io/github/contributors/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
-[![license](https://img.shields.io/github/license/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
-[![GitHub last commit](https://img.shields.io/github/last-commit/martinambrus/TravianZ.svg)](https://github.com/martinambrus/TravianZ)
-[![Watch how this was made on YouTube](https://img.shields.io/badge/The%20making%20of...-YouTube-FF0000.svg)](https://www.youtube.com/watch?v=1XiHhpGUmQg&list=PLzV5avt1FFHorlIeoL9YX0pdb9bj-FO84)
-======
-[![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)](https://github.com/martinambrus/TravianZ)
-[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars)](https://github.com/martinambrus/TravianZ)
-[![GitHub watchers](https://img.shields.io/github/watchers/badges/shields.svg?style=social&label=Watch)](https://github.com/martinambrus/TravianZ)
-[![GitHub followers](https://img.shields.io/github/followers/espadrine.svg?style=social&label=Follow)](https://github.com/martinambrus/TravianZ)
 ======
 TravianZ Version **v.8.3.5**
 ======
